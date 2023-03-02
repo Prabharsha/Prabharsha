@@ -1,5 +1,5 @@
 # 🐱‍👤 About Me:
-🔭 I’m currently working on my own academic projects<br>🌱 I’m currently learning a Bachelor of Science (Hons) in Computing<br>🐱‍👤 Passion-driven tech junkie
+🐱‍👤 Passion-driven tech junkie
 
 
 ## 🌐 Socials:
