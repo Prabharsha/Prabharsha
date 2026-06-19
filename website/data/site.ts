@@ -231,8 +231,51 @@ export const experience: Job[] = [
   },
 ];
 
+export type Stat = { label: string; value: number; suffix: string };
+
+export const stats: Stat[] = [
+  { label: "Years building software", value: 3, suffix: "+" },
+  { label: "Projects shipped", value: 20, suffix: "+" },
+  { label: "Technologies used", value: 15, suffix: "+" },
+  { label: "Fintech companies", value: 2, suffix: "" },
+];
+
+export type Service = {
+  key: "fullstack" | "backend" | "fintech" | "saas";
+  title: string;
+  description: string;
+};
+
+export const services: Service[] = [
+  {
+    key: "fullstack",
+    title: "Full-Stack Web",
+    description:
+      "End-to-end web apps with Next.js, React & TypeScript — from UI to data layer, responsive and fast.",
+  },
+  {
+    key: "backend",
+    title: "Backend & APIs",
+    description:
+      "Robust services and REST APIs with Java & Spring Boot, designed for reliability and clean integration.",
+  },
+  {
+    key: "fintech",
+    title: "Fintech Systems",
+    description:
+      "Payment-domain software built with care for correctness, security and the details that matter in money.",
+  },
+  {
+    key: "saas",
+    title: "SaaS Products",
+    description:
+      "Shipping product-grade SaaS like ClickSuite — auth, dashboards, billing flows and polished UX.",
+  },
+];
+
 export const navLinks = [
   { href: "#about", label: "about" },
+  { href: "#services", label: "services" },
   { href: "#skills", label: "skills" },
   { href: "#work", label: "work" },
   { href: "#experience", label: "experience" },

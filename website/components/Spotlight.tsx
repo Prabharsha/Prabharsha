@@ -26,7 +26,10 @@ export default function Spotlight() {
       const rect = parent.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const y = e.clientY - rect.top;
-      el.style.background = `radial-gradient(420px circle at ${x}px ${y}px, rgba(34,211,238,0.16), transparent 70%)`;
+      const accent = getComputedStyle(document.documentElement)
+        .getPropertyValue("--accent")
+        .trim();
+      el.style.background = `radial-gradient(420px circle at ${x}px ${y}px, rgb(${accent} / 0.16), transparent 70%)`;
       el.style.opacity = "1";
     };
     const onLeave = () => {

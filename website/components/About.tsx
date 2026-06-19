@@ -1,8 +1,9 @@
 import { MapPin, Code2, Rocket } from "lucide-react";
-import { site } from "@/data/site";
+import { site, stats } from "@/data/site";
 import SectionHeading from "./ui/SectionHeading";
 import GlassCard from "./ui/GlassCard";
 import Reveal from "./ui/Reveal";
+import Counter from "./ui/Counter";
 
 const facts = [
   { Icon: MapPin, label: "Location", value: site.location },
@@ -15,7 +16,7 @@ export default function About() {
     <section id="about" className="container-px scroll-mt-24 py-24">
       <SectionHeading index="02" title="About" />
       <div className="grid gap-5 lg:grid-cols-5">
-        <Reveal className="lg:col-span-3">
+        <Reveal variant="left" className="lg:col-span-3">
           <GlassCard hover={false} className="h-full p-7 sm:p-9">
             <p className="text-lg leading-relaxed text-ink/90">{site.bio}</p>
             <p className="mt-4 leading-relaxed text-muted">
@@ -26,7 +27,7 @@ export default function About() {
           </GlassCard>
         </Reveal>
 
-        <Reveal delay={0.1} className="lg:col-span-2">
+        <Reveal variant="right" delay={0.1} className="lg:col-span-2">
           <div className="grid h-full gap-4">
             {facts.map(({ Icon, label, value }) => (
               <GlassCard
@@ -47,6 +48,25 @@ export default function About() {
           </div>
         </Reveal>
       </div>
+
+      {/* Animated stats */}
+      <Reveal variant="blur" delay={0.15} className="mt-5">
+        <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line/[0.07] bg-line/[0.04] sm:grid-cols-4">
+          {stats.map((stat) => (
+            <div
+              key={stat.label}
+              className="bg-surface/40 p-6 text-center backdrop-blur-md transition-colors hover:bg-line/[0.04]"
+            >
+              <div className="text-3xl font-bold accent-gradient-text sm:text-4xl">
+                <Counter to={stat.value} suffix={stat.suffix} />
+              </div>
+              <div className="mt-1 text-xs text-muted sm:text-sm">
+                {stat.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </Reveal>
     </section>
   );
 }

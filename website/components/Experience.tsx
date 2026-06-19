@@ -6,7 +6,7 @@ import Reveal from "./ui/Reveal";
 export default function Experience() {
   return (
     <section id="experience" className="container-px scroll-mt-24 py-24">
-      <SectionHeading index="05" title="Experience" />
+      <SectionHeading index="06" title="Experience" />
 
       <div className="relative">
         {/* Timeline rail */}
@@ -14,7 +14,7 @@ export default function Experience() {
 
         <div className="flex flex-col gap-6">
           {experience.map((job, i) => (
-            <Reveal key={job.company} delay={i * 0.08}>
+            <Reveal key={job.company} variant="left" delay={i * 0.1}>
               <div className="relative sm:pl-10">
                 {/* Timeline node */}
                 <span className="absolute left-0 top-3 hidden h-4 w-4 rounded-full border-2 border-accent bg-surface sm:block" />

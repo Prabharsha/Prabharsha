@@ -1,6 +1,11 @@
 "use client";
 
-import { motion } from "framer-motion";
+import {
+  motion,
+  useMotionTemplate,
+  useMotionValue,
+  useSpring,
+} from "framer-motion";
 import { ArrowUpRight, Github, Lock, Star } from "lucide-react";
 import type { Project } from "@/data/site";
 
@@ -16,9 +21,31 @@ export default function ProjectCard({ project }: { project: Project }) {
     label,
   } = project;
 
+  // Interactive 3D tilt that follows the cursor.
+  const rx = useSpring(useMotionValue(0), { stiffness: 200, damping: 18 });
+  const ry = useSpring(useMotionValue(0), { stiffness: 200, damping: 18 });
+  const transform = useMotionTemplate`perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+
+  const onMove = (e: React.MouseEvent<HTMLElement>) => {
+    const r = e.currentTarget.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    const max = featured ? 4 : 7;
+    rx.set(-py * max);
+    ry.set(px * max);
+  };
+
+  const reset = () => {
+    rx.set(0);
+    ry.set(0);
+  };
+
   return (
     <motion.article
+      onMouseMove={onMove}
+      onMouseLeave={reset}
       whileHover={{ y: -4 }}
+      style={{ transform }}
       transition={{ type: "spring", stiffness: 300, damping: 22 }}
       className={`glass glass-hover group relative flex h-full flex-col rounded-2xl p-6 ${
         featured ? "sm:p-8" : ""
