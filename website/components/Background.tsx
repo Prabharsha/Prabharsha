@@ -47,8 +47,8 @@ function Blob({
       <div
         className={`h-full w-full rounded-full ${animClass}`}
         style={{
-          background: `radial-gradient(circle at 50% 50%, rgb(var(${colorVar}) / 0.6) 0%, rgb(var(${colorVar}) / 0.22) 38%, transparent 72%)`,
-          filter: "blur(72px)",
+          background: `radial-gradient(circle at 50% 50%, rgb(var(${colorVar}) / 0.9) 0%, rgb(var(${colorVar}) / 0.4) 40%, transparent 72%)`,
+          filter: "blur(64px)",
         }}
       />
     </motion.div>
@@ -78,41 +78,51 @@ export default function Background() {
       {/* Colorful animated ink blobs (behind the frosted-glass UI) */}
       <Blob
         colorVar="--aurora-a"
-        posClass="-left-[12%] -top-[14%] h-[62vh] w-[62vh]"
+        posClass="-left-[12%] -top-[14%] h-[68vh] w-[68vh]"
         animClass="animate-aurora-1"
-        depth={55}
+        depth={60}
         delay={0.2}
-        opacity={0.7}
+        opacity={1}
         mx={mx}
         my={my}
       />
       <Blob
         colorVar="--aurora-b"
-        posClass="right-[-14%] top-[4%] h-[58vh] w-[58vh]"
+        posClass="right-[-14%] top-[2%] h-[64vh] w-[64vh]"
         animClass="animate-aurora-2"
-        depth={-45}
-        delay={0.6}
-        opacity={0.65}
+        depth={-50}
+        delay={0.5}
+        opacity={0.95}
         mx={mx}
         my={my}
       />
       <Blob
         colorVar="--aurora-c"
-        posClass="bottom-[-20%] left-[18%] h-[58vh] w-[58vh]"
+        posClass="bottom-[-20%] left-[16%] h-[64vh] w-[64vh]"
         animClass="animate-aurora-3"
-        depth={40}
-        delay={1}
-        opacity={0.6}
+        depth={45}
+        delay={0.8}
+        opacity={0.9}
         mx={mx}
         my={my}
       />
       <Blob
         colorVar="--aurora-d"
-        posClass="left-[42%] top-[34%] h-[46vh] w-[46vh]"
+        posClass="left-[40%] top-[30%] h-[52vh] w-[52vh]"
         animClass="animate-aurora-2"
-        depth={-60}
+        depth={-65}
+        delay={1.1}
+        opacity={0.8}
+        mx={mx}
+        my={my}
+      />
+      <Blob
+        colorVar="--aurora-a"
+        posClass="right-[20%] bottom-[6%] h-[44vh] w-[44vh]"
+        animClass="animate-aurora-1"
+        depth={70}
         delay={1.4}
-        opacity={0.5}
+        opacity={0.75}
         mx={mx}
         my={my}
       />
@@ -120,8 +130,8 @@ export default function Background() {
       {/* Faint dotted grid */}
       <div className="bg-grid absolute inset-0" />
 
-      {/* Vignette to keep text legible over the ink */}
-      <div className="absolute inset-0 bg-gradient-to-b from-surface/30 via-surface/10 to-surface/70" />
+      {/* Light vignette — keeps text legible while letting the ink read strongly */}
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-surface/5 to-surface/55" />
     </div>
   );
 }
