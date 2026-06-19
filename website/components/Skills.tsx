@@ -7,7 +7,7 @@ export default function Skills() {
   return (
     <section id="skills" className="container-px scroll-mt-24 py-24">
       <SectionHeading
-        index="03"
+        index="04"
         title="Skills"
         subtitle="The tools I reach for day to day, plus a few I'm exploring on the side."
       />
@@ -15,7 +15,8 @@ export default function Skills() {
         {skillGroups.map((group, i) => (
           <Reveal
             key={group.label}
-            delay={i * 0.05}
+            variant="scale"
+            delay={i * 0.06}
             className={group.secondary ? "sm:col-span-2 lg:col-span-3" : ""}
           >
             <GlassCard className="h-full p-6">

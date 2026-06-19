@@ -10,15 +10,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Brand accent (electric cyan) + secondary violet
+        // Brand accent — driven by CSS vars so the theme can swap warm/cool
         accent: {
-          DEFAULT: "#22d3ee",
-          soft: "#67e8f9",
-          deep: "#06b6d4",
+          DEFAULT: "rgb(var(--accent) / <alpha-value>)",
+          soft: "rgb(var(--accent-soft) / <alpha-value>)",
+          deep: "rgb(var(--accent-deep) / <alpha-value>)",
         },
         violet: {
-          glow: "#a78bfa",
+          glow: "rgb(var(--violet) / <alpha-value>)",
         },
+        "ink-contrast": "rgb(var(--ink-contrast) / <alpha-value>)",
         // Surfaces driven by CSS variables so the theme toggle can swap them
         ink: "rgb(var(--ink) / <alpha-value>)",
         surface: "rgb(var(--surface) / <alpha-value>)",

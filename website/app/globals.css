@@ -3,25 +3,48 @@
 @tailwind utilities;
 
 @layer base {
-  /* Dark theme (default) */
+  /* Dark theme (default) — cool electric */
   :root,
   .dark {
     --ink: 235 240 255; /* near-white text */
+    --ink-contrast: 4 20 26; /* text sitting on the accent fill */
     --surface: 10 10 18; /* near-black navy bg */
     --muted: 148 163 184; /* slate-400 */
     --line: 255 255 255; /* used with low alpha for borders */
     --grid-opacity: 0.04;
-    --aurora-opacity: 0.55;
+    --aurora-opacity: 0.7;
+
+    --accent: 34 211 238; /* cyan */
+    --accent-soft: 103 232 249;
+    --accent-deep: 6 182 212;
+    --violet: 167 139 250;
+
+    /* animated ink blob colors */
+    --aurora-a: 34 211 238; /* cyan */
+    --aurora-b: 167 139 250; /* violet */
+    --aurora-c: 6 182 212; /* deep cyan */
+    --aurora-d: 56 189 248; /* sky */
   }
 
-  /* Light theme */
+  /* Light theme — warm & comfortable */
   .light {
-    --ink: 15 23 42; /* slate-900 */
-    --surface: 247 248 252; /* soft off-white */
-    --muted: 71 85 105; /* slate-600 */
-    --line: 15 23 42;
+    --ink: 41 32 28; /* warm stone-900 */
+    --ink-contrast: 38 22 4; /* dark text on warm accent */
+    --surface: 248 243 235; /* warm cream */
+    --muted: 96 84 74; /* warm stone-600 */
+    --line: 60 48 40; /* warm dark for borders/grid */
     --grid-opacity: 0.05;
-    --aurora-opacity: 0.35;
+    --aurora-opacity: 0.45;
+
+    --accent: 200 92 24; /* warm burnt amber */
+    --accent-soft: 234 130 50;
+    --accent-deep: 158 64 12;
+    --violet: 200 60 110; /* warm rose */
+
+    --aurora-a: 251 191 36; /* amber */
+    --aurora-b: 244 114 182; /* warm pink */
+    --aurora-c: 251 146 60; /* orange */
+    --aurora-d: 250 204 21; /* yellow */
   }
 
   html {
@@ -36,13 +59,13 @@
   }
 
   ::selection {
-    background-color: #22d3ee;
-    color: #04141a;
+    background-color: rgb(var(--accent));
+    color: rgb(var(--ink-contrast));
   }
 
   /* Accessible focus ring */
   :focus-visible {
-    outline: 2px solid #22d3ee;
+    outline: 2px solid rgb(var(--accent));
     outline-offset: 2px;
     border-radius: 4px;
   }
@@ -50,11 +73,11 @@
 
 @layer components {
   .glass {
-    @apply border border-line/10 bg-line/[0.03] backdrop-blur-md;
+    @apply border border-line/[0.07] bg-line/[0.03] backdrop-blur-md;
   }
 
   .glass-hover {
-    @apply transition-all duration-300 hover:border-accent/40 hover:bg-line/[0.06] hover:shadow-[0_0_40px_-12px_rgba(34,211,238,0.45)];
+    @apply transition-all duration-300 hover:border-accent/40 hover:bg-line/[0.06] hover:shadow-[0_0_40px_-12px_rgb(var(--accent)/0.45)];
   }
 
   .section-index {
@@ -71,7 +94,7 @@
     @apply mx-auto w-full max-w-content px-5 sm:px-8;
   }
 
-  /* Faint dotted grid + code motif background */
+  /* Faint dotted grid background */
   .bg-grid {
     background-image: radial-gradient(
       rgb(var(--line) / 0.5) 1px,

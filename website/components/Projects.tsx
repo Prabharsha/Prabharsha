@@ -16,13 +16,13 @@ export default function Projects() {
   return (
     <section id="work" className="container-px scroll-mt-24 py-24">
       <SectionHeading
-        index="04"
+        index="05"
         title="Selected work"
         subtitle="A mix of professional and personal projects — fintech, full-stack web and a couple of things I built to learn."
       />
 
       {featured ? (
-        <Reveal className="mb-5">
+        <Reveal variant="blur" className="mb-5">
           <ProjectCard project={featured} />
         </Reveal>
       ) : null}
@@ -31,7 +31,8 @@ export default function Projects() {
         {rest.map((project, i) => (
           <Reveal
             key={project.title}
-            delay={(i % 3) * 0.06}
+            variant="rise"
+            delay={(i % 3) * 0.08}
             className={spanClass[project.span ?? "sm"]}
           >
             <ProjectCard project={project} />

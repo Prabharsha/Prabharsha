@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
 import { site } from "@/data/site";
 import Spotlight from "./Spotlight";
+import Magnetic from "./ui/Magnetic";
 
 const container = {
   hidden: {},
@@ -63,19 +64,23 @@ export default function Hero() {
             variants={item}
             className="mt-9 flex flex-wrap items-center gap-3"
           >
-            <a
-              href="#work"
-              className="group inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 font-medium text-[#04141a] transition-transform hover:scale-[1.03]"
-            >
-              View my work
-              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
-            <a
-              href="#contact"
-              className="glass glass-hover inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-medium"
-            >
-              Get in touch
-            </a>
+            <Magnetic>
+              <a
+                href="#work"
+                className="group inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 font-medium text-ink-contrast transition-transform hover:scale-[1.03]"
+              >
+                View my work
+                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+            </Magnetic>
+            <Magnetic>
+              <a
+                href="#contact"
+                className="glass glass-hover inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-medium"
+              >
+                Get in touch
+              </a>
+            </Magnetic>
           </motion.div>
 
           <motion.div variants={item} className="mt-8 flex items-center gap-4">
