@@ -17,7 +17,7 @@ export default function SectionHeading({
         <span className="section-index">
           {index} <span className="text-muted">/</span> {title.toLowerCase()}
         </span>
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+        <h2 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">
           {title}
         </h2>
         {subtitle ? (

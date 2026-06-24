@@ -39,15 +39,15 @@ export default function Hero() {
 
           <motion.h1
             variants={item}
-            className="text-4xl font-bold leading-tight tracking-tight sm:text-6xl lg:text-7xl"
+            className="font-display text-5xl font-light leading-[1.05] tracking-tight sm:text-7xl lg:text-8xl"
           >
             Hi, I&apos;m{" "}
-            <span className="accent-gradient-text">Prabharsha.</span>
+            <span className="accent-gradient-text italic">Prabharsha.</span>
           </motion.h1>
 
           <motion.p
             variants={item}
-            className="mt-4 font-mono text-lg text-accent sm:text-xl"
+            className="mt-5 font-mono text-base text-accent sm:text-lg"
           >
             {site.role}
           </motion.p>

@@ -12,7 +12,7 @@ export default function Contact() {
       <Reveal variant="scale">
         <div className="glass relative overflow-hidden rounded-3xl p-8 text-center sm:p-14">
           <div className="pointer-events-none absolute inset-x-0 -top-24 mx-auto h-48 w-48 rounded-full bg-accent/30 blur-[100px]" />
-          <h3 className="text-3xl font-bold tracking-tight sm:text-4xl">
+          <h3 className="font-display text-4xl font-light tracking-tight sm:text-5xl">
             Let&apos;s build something.
           </h3>
           <p className="mx-auto mt-4 max-w-lg text-muted">

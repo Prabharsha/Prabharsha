@@ -29,6 +29,7 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
         mono: ["var(--font-jetbrains)", "ui-monospace", "monospace"],
+        display: ["var(--font-fraunces)", "Georgia", "serif"],
       },
       maxWidth: {
         content: "72rem",
