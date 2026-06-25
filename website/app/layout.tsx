@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
-import ThemeProvider from "@/components/ThemeProvider";
-import Background from "@/components/Background";
+import Atmosphere from "@/components/Atmosphere";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -14,6 +13,13 @@ const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains",
   display: "swap",
+});
+
+const fraunces = Fraunces({
+  subsets: ["latin"],
+  variable: "--font-fraunces",
+  display: "swap",
+  style: ["normal", "italic"],
 });
 
 const siteUrl = "https://prabharsha.vercel.app";
@@ -58,14 +64,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      suppressHydrationWarning
-      className={`${inter.variable} ${jetbrains.variable}`}
+      className={`${inter.variable} ${jetbrains.variable} ${fraunces.variable}`}
     >
       <body className="font-sans antialiased">
-        <ThemeProvider>
-          <Background />
-          {children}
-        </ThemeProvider>
+        <Atmosphere />
+        {children}
       </body>
     </html>
   );

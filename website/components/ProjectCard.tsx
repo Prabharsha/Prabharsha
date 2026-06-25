@@ -57,9 +57,11 @@ export default function ProjectCard({ project }: { project: Project }) {
             <Star className="h-4 w-4 fill-accent text-accent" />
           ) : null}
           <h3
-            className={`font-semibold ${
-              featured ? "text-2xl" : "text-lg"
-            }`}
+            className={
+              featured
+                ? "font-display text-3xl font-light"
+                : "text-lg font-semibold"
+            }
           >
             {title}
           </h3>

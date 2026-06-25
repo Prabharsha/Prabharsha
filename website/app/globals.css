@@ -3,48 +3,23 @@
 @tailwind utilities;
 
 @layer base {
-  /* Dark theme (default) — cool electric */
-  :root,
-  .dark {
-    --ink: 235 240 255; /* near-white text */
-    --ink-contrast: 4 20 26; /* text sitting on the accent fill */
-    --surface: 10 10 18; /* near-black navy bg */
-    --muted: 148 163 184; /* slate-400 */
+  /*
+   * Palette = "day" (top of page). These vars are continuously interpolated
+   * toward dusk/night by <Atmosphere/> based on scroll progress. Text stays
+   * light on a rich, shifting sky throughout the day→night journey.
+   */
+  :root {
+    --ink: 255 244 230; /* warm light text */
+    --ink-contrast: 26 18 10; /* dark text sitting on the accent fill */
+    --surface: 46 26 16; /* deep warm dawn sky */
+    --muted: 205 180 160; /* warm muted */
     --line: 255 255 255; /* used with low alpha for borders */
-    --grid-opacity: 0.04;
-    --aurora-opacity: 0.7;
+    --grid-opacity: 0.03;
 
-    --accent: 34 211 238; /* cyan */
-    --accent-soft: 103 232 249;
-    --accent-deep: 6 182 212;
-    --violet: 167 139 250;
-
-    /* animated ink blob colors */
-    --aurora-a: 34 211 238; /* cyan */
-    --aurora-b: 167 139 250; /* violet */
-    --aurora-c: 6 182 212; /* deep cyan */
-    --aurora-d: 56 189 248; /* sky */
-  }
-
-  /* Light theme — warm & comfortable */
-  .light {
-    --ink: 41 32 28; /* warm stone-900 */
-    --ink-contrast: 38 22 4; /* dark text on warm accent */
-    --surface: 248 243 235; /* warm cream */
-    --muted: 96 84 74; /* warm stone-600 */
-    --line: 60 48 40; /* warm dark for borders/grid */
-    --grid-opacity: 0.05;
-    --aurora-opacity: 0.45;
-
-    --accent: 200 92 24; /* warm burnt amber */
-    --accent-soft: 234 130 50;
-    --accent-deep: 158 64 12;
-    --violet: 200 60 110; /* warm rose */
-
-    --aurora-a: 251 191 36; /* amber */
-    --aurora-b: 244 114 182; /* warm pink */
-    --aurora-c: 251 146 60; /* orange */
-    --aurora-d: 250 204 21; /* yellow */
+    --accent: 245 180 80; /* warm gold (sun) */
+    --accent-soft: 255 205 130;
+    --accent-deep: 210 140 40;
+    --violet: 245 150 90; /* warm */
   }
 
   html {

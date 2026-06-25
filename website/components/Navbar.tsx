@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { Menu, X, FileText } from "lucide-react";
 import { navLinks, site } from "@/data/site";
-import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -83,7 +82,6 @@ export default function Navbar() {
               <FileText className="h-3.5 w-3.5" />
               Resume
             </a>
-            <ThemeToggle />
             <button
               type="button"
               aria-label="Toggle menu"
