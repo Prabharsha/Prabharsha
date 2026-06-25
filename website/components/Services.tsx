@@ -29,7 +29,7 @@ export default function Services() {
               key={service.key}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
+              viewport={{ once: false, margin: "-60px" }}
               transition={{ duration: 0.6, delay: i * 0.1 }}
               whileHover={{ y: -6 }}
               className="glass glass-hover group relative overflow-hidden rounded-2xl p-6"

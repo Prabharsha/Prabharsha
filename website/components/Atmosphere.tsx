@@ -118,8 +118,10 @@ export default function Atmosphere() {
   const mx = useSpring(mxRaw, { stiffness: 40, damping: 20, mass: 0.6 });
   const my = useSpring(myRaw, { stiffness: 40, damping: 20, mass: 0.6 });
 
-  // Sun: rises high & bright at the top, sets below the horizon by the bottom.
-  const sunTop = useTransform(scrollYProgress, [0, 1], ["14%", "104%"]);
+  // Sun: rises high & bright at the top-right, arcs down toward the right
+  // corner and sets below the horizon by the bottom of the page.
+  const sunTop = useTransform(scrollYProgress, [0, 1], ["12%", "104%"]);
+  const sunLeft = useTransform(scrollYProgress, [0, 1], ["70%", "94%"]);
   const sunScale = useTransform(scrollYProgress, [0, 0.6, 1], [1, 0.78, 0.6]);
   const sunOpacity = useTransform(
     scrollYProgress,
@@ -161,13 +163,14 @@ export default function Atmosphere() {
     >
       {/* Sky base + vertical depth grading */}
       <div className="absolute inset-0 bg-[rgb(var(--surface))]" />
-      <div className="absolute inset-0 bg-gradient-to-b from-white/[0.04] via-transparent to-black/40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
 
       {/* Horizon glow that tracks the sun */}
       <motion.div
-        className="absolute left-1/2 h-[60vh] w-[140vw] -translate-x-1/2 rounded-[50%]"
+        className="absolute h-[60vh] w-[120vw] -translate-x-1/2 rounded-[50%]"
         style={{
           top: sunTop,
+          left: sunLeft,
           opacity: sunOpacity,
           background:
             "radial-gradient(closest-side, rgb(var(--accent-soft) / 0.45), rgb(var(--accent) / 0.18) 45%, transparent 75%)",
@@ -177,9 +180,10 @@ export default function Atmosphere() {
 
       {/* The sun */}
       <motion.div
-        className="absolute left-1/2 h-[26vh] w-[26vh] -translate-x-1/2 rounded-full"
+        className="absolute h-[26vh] w-[26vh] -translate-x-1/2 rounded-full"
         style={{
           top: sunTop,
+          left: sunLeft,
           scale: sunScale,
           opacity: sunOpacity,
           background:

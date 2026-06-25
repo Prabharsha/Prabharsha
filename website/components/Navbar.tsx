@@ -44,7 +44,7 @@ export default function Navbar() {
         <div
           className={`flex items-center justify-between rounded-full px-4 py-2.5 transition-all duration-300 ${
             scrolled
-              ? "border border-line/[0.06] bg-surface/70 shadow-lg shadow-black/10 backdrop-blur-xl"
+              ? "bg-surface/80 shadow-xl shadow-black/30 backdrop-blur-xl"
               : ""
           }`}
         >
