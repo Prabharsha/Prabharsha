@@ -53,7 +53,7 @@ export default function Reveal({
       variants={variants[variant]}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: false, margin: "-60px" }}
       transition={{ duration, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
     >
       {children}
