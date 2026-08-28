@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import Atmosphere from "@/components/Atmosphere";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -69,6 +70,7 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <Atmosphere />
         {children}
+        <SpeedInsights />
       </body>
     </html>
   );
