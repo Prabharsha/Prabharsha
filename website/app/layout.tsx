@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import Atmosphere from "@/components/Atmosphere";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -71,6 +72,7 @@ export default function RootLayout({
         <Atmosphere />
         {children}
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
