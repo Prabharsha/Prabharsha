@@ -38,7 +38,6 @@ export const site = {
   focus: "Full-stack web & backend",
   building: "ClickSuite, a booking SaaS",
   email: "prabharsha03@gmail.com",
-  // Replace public/resume.pdf with your real CV.
   resume: "/resume.pdf",
   socials: {
     github: "https://github.com/Prabharsha",
