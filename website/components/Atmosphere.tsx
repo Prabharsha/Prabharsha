@@ -9,7 +9,7 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 type RGB = [number, number, number];
 
@@ -55,6 +55,16 @@ const STOPS: Record<string, [RGB, RGB, RGB]> = {
   ],
 };
 
+const KEYS = Object.keys(STOPS);
+
+/**
+ * Writing to :root invalidates style for the whole document, and every blurred
+ * sky layer and glass panel below depends on these vars. So the palette is
+ * quantised into steps: a full-page scroll repaints the sky ~STEPS times
+ * instead of once per scroll event, while still reading as a continuous fade.
+ */
+const STEPS = 48;
+
 function lerp(a: number, b: number, t: number) {
   return Math.round(a + (b - a) * t);
 }
@@ -76,7 +86,7 @@ function paletteAt(p: number, key: string): string {
 
 function applyPalette(p: number) {
   const root = document.documentElement;
-  for (const key of Object.keys(STOPS)) {
+  for (const key of KEYS) {
     root.style.setProperty(key, paletteAt(p, key));
   }
 }
@@ -118,6 +128,10 @@ export default function Atmosphere() {
   const mx = useSpring(mxRaw, { stiffness: 40, damping: 20, mass: 0.6 });
   const my = useSpring(myRaw, { stiffness: 40, damping: 20, mass: 0.6 });
 
+  // Last palette step written to :root; repeat scroll events become no-ops.
+  const step = useRef(-1);
+  const frame = useRef(0);
+
   // Sun: rises high & bright at the top-right, arcs down toward the right
   // corner and sets below the horizon by the bottom of the page.
   const sunTop = useTransform(scrollYProgress, [0, 1], ["12%", "104%"]);
@@ -140,7 +154,9 @@ export default function Atmosphere() {
     ).matches;
 
     // Set initial palette from current scroll position.
-    applyPalette(reduce ? 0.85 : scrollYProgress.get());
+    const start = reduce ? 0.85 : scrollYProgress.get();
+    step.current = Math.round(start * STEPS);
+    applyPalette(step.current / STEPS);
 
     const onMove = (e: PointerEvent) => {
       mxRaw.set(e.clientX / window.innerWidth);
@@ -149,11 +165,23 @@ export default function Atmosphere() {
     if (!reduce) {
       window.addEventListener("pointermove", onMove, { passive: true });
     }
-    return () => window.removeEventListener("pointermove", onMove);
+    return () => {
+      window.removeEventListener("pointermove", onMove);
+      if (frame.current) cancelAnimationFrame(frame.current);
+    };
   }, [scrollYProgress, mxRaw, myRaw]);
 
   useMotionValueEvent(scrollYProgress, "change", (p) => {
-    applyPalette(p);
+    if (Math.round(p * STEPS) === step.current || frame.current) return;
+    // Defer the :root write out of the scroll handler so it lands at most once
+    // per frame and never forces style recalc mid-scroll.
+    frame.current = requestAnimationFrame(() => {
+      frame.current = 0;
+      const next = Math.round(scrollYProgress.get() * STEPS);
+      if (next === step.current) return;
+      step.current = next;
+      applyPalette(next / STEPS);
+    });
   });
 
   return (
@@ -224,7 +252,7 @@ export default function Atmosphere() {
 
       {/* Subtle film grain for a cinematic finish */}
       <div
-        className="absolute inset-0 opacity-[0.05] mix-blend-overlay"
+        className="absolute inset-0 opacity-[0.06]"
         style={{
           backgroundImage:
             "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",

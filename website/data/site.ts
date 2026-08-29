@@ -32,11 +32,11 @@ export const site = {
     "Crafting fintech & SaaS products.",
     "Java · Spring · Next.js · TypeScript",
   ],
-  // NOTE: refine this bio anytime — it stays honest to the real profile.
-  bio: "I'm a software engineer at PayMedia in Colombo, Sri Lanka, building reliable fintech and payment systems. I work across the stack — server-side services with Java & Spring Boot and modern web frontends with Next.js & TypeScript — with a focus on shipping clean, maintainable products.",
+  // NOTE: refine this bio anytime; it stays honest to the real profile.
+  bio: "I'm a software engineer at PayMedia in Colombo, Sri Lanka, building reliable fintech and payment systems. I work across the stack, from server-side services with Java & Spring Boot to modern web frontends with Next.js & TypeScript, with a focus on shipping clean, maintainable products.",
   location: "Colombo, Sri Lanka",
   focus: "Full-stack web & backend",
-  building: "ClickSuite — a booking SaaS",
+  building: "ClickSuite, a booking SaaS",
   email: "prabharsha03@gmail.com",
   // Replace public/resume.pdf with your real CV.
   resume: "/resume.pdf",
@@ -103,7 +103,7 @@ export const skillGroups: SkillGroup[] = [
   {
     label: "Also exploring",
     secondary: true,
-    note: "Personal / learning projects — not professional focus.",
+    note: "Personal / learning projects, not professional focus.",
     items: [
       { name: "Python", Icon: SiPython, color: "#3776ab" },
       { name: "Flutter", Icon: SiFlutter, color: "#02569b" },
@@ -128,7 +128,7 @@ export const projects: Project[] = [
   {
     title: "ClickSuite",
     description:
-      "A premium booking & studio-management SaaS for photographers, videographers and creative studios — scheduling, client management and media workflows in one place.",
+      "A premium booking & studio-management SaaS for photographers, videographers and creative studios: scheduling, client management and media workflows in one place.",
     tags: ["Next.js", "TypeScript", "Tailwind CSS", "SaaS"],
     featured: true,
     private: true,
@@ -199,13 +199,13 @@ export const experience: Job[] = [
     roles: [
       {
         title: "Software Engineer",
-        period: "May 2025 — Present",
+        period: "May 2025 to Present",
         detail:
           "Building and maintaining fintech products across server-side services and front-end development.",
       },
       {
         title: "Associate Software Engineer",
-        period: "Apr 2024 — May 2025",
+        period: "Apr 2024 to May 2025",
         detail:
           "Developed backend services and REST APIs with Spring Boot and RESTful web services.",
       },
@@ -217,13 +217,13 @@ export const experience: Job[] = [
     roles: [
       {
         title: "Associate Software Engineer",
-        period: "May 2023 — Apr 2024",
+        period: "May 2023 to Apr 2024",
         detail:
           "Back-end web development with Java, building and integrating payment-related services.",
       },
       {
         title: "Software Engineer Intern",
-        period: "Nov 2022 — Apr 2023",
+        period: "Nov 2022 to Apr 2023",
         detail:
           "Started in back-end web development with Java, contributing to core services remotely.",
       },
@@ -251,7 +251,7 @@ export const services: Service[] = [
     key: "fullstack",
     title: "Full-Stack Web",
     description:
-      "End-to-end web apps with Next.js, React & TypeScript — from UI to data layer, responsive and fast.",
+      "End-to-end web apps with Next.js, React & TypeScript, from UI to data layer, responsive and fast.",
   },
   {
     key: "backend",
@@ -269,7 +269,7 @@ export const services: Service[] = [
     key: "saas",
     title: "SaaS Products",
     description:
-      "Shipping product-grade SaaS like ClickSuite — auth, dashboards, billing flows and polished UX.",
+      "Shipping product-grade SaaS like ClickSuite: auth, dashboards, billing flows and polished UX.",
   },
 ];
 

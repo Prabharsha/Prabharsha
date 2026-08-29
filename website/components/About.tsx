@@ -55,7 +55,7 @@ export default function About() {
           {stats.map((stat) => (
             <div
               key={stat.label}
-              className="bg-surface/40 p-6 text-center backdrop-blur-md transition-colors hover:bg-line/[0.04]"
+              className="bg-surface/60 p-6 text-center transition-colors hover:bg-line/[0.04]"
             >
               <div className="text-3xl font-bold accent-gradient-text sm:text-4xl">
                 <Counter to={stat.value} suffix={stat.suffix} />

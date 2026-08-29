@@ -36,15 +36,15 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-[padding] duration-300 ${
         scrolled ? "py-3" : "py-5"
       }`}
     >
       <nav className="container-px">
         <div
-          className={`flex items-center justify-between rounded-full px-4 py-2.5 transition-all duration-300 ${
+          className={`flex items-center justify-between rounded-full px-4 py-2.5 transition-[background-color,box-shadow] duration-300 ${
             scrolled
-              ? "bg-surface/80 shadow-xl shadow-black/30 backdrop-blur-xl"
+              ? "bg-surface/80 shadow-xl shadow-black/30 backdrop-blur-md"
               : ""
           }`}
         >
