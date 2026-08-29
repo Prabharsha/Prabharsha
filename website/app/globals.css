@@ -24,9 +24,14 @@
 
   html {
     scroll-behavior: smooth;
+    /* Reveal animations translate elements sideways before they settle; clip
+       that overhang instead of growing a horizontal scrollbar. `clip` keeps
+       html from becoming a scroll container the way `hidden` would. */
+    overflow-x: clip;
   }
 
   body {
+    overflow-x: clip;
     background-color: rgb(var(--surface));
     color: rgb(var(--ink));
     -webkit-font-smoothing: antialiased;
@@ -48,11 +53,14 @@
 
 @layer components {
   .glass {
-    @apply border border-line/[0.07] bg-line/[0.03] backdrop-blur-md;
+    @apply border border-line/[0.07] bg-line/[0.03] backdrop-blur-sm;
   }
 
   .glass-hover {
-    @apply transition-all duration-300 hover:border-accent/40 hover:bg-line/[0.06] hover:shadow-[0_0_40px_-12px_rgb(var(--accent)/0.45)];
+    @apply duration-300 hover:border-accent/40 hover:bg-line/[0.06] hover:shadow-[0_0_40px_-12px_rgb(var(--accent)/0.45)];
+    /* Not transition-all: the sky palette rewrites --accent/--line as you
+       scroll, and `all` restarted a transition on every glass panel each time. */
+    transition-property: border-color, background-color, box-shadow;
   }
 
   .section-index {
@@ -61,6 +69,16 @@
 
   .accent-gradient-text {
     @apply bg-gradient-to-r from-accent via-accent-soft to-violet-glow bg-clip-text text-transparent;
+  }
+
+  /* Cursor spotlight in the hero. Declared here so the move handler only has to
+     update two custom properties instead of rebuilding the gradient string. */
+  .spotlight {
+    background: radial-gradient(
+      420px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+      rgb(var(--accent) / 0.16),
+      transparent 70%
+    );
   }
 }
 

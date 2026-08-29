@@ -28,7 +28,7 @@ const siteUrl = "https://prabharsha.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
-  title: "Prabharsha — Fintech · Software Engineer",
+  title: "Prabharsha | Fintech Software Engineer",
   description:
     "Prabharsha is a fintech software engineer in Colombo, Sri Lanka, building full-stack web and backend systems with Java, Spring, Next.js and TypeScript.",
   keywords: [
@@ -43,7 +43,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Prabharsha" }],
   openGraph: {
-    title: "Prabharsha — Fintech · Software Engineer",
+    title: "Prabharsha | Fintech Software Engineer",
     description:
       "Full-stack web & backend engineer building fintech and SaaS products.",
     url: siteUrl,
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Prabharsha — Fintech · Software Engineer",
+    title: "Prabharsha | Fintech Software Engineer",
     description:
       "Full-stack web & backend engineer building fintech and SaaS products.",
   },

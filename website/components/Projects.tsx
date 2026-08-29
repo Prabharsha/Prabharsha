@@ -18,7 +18,7 @@ export default function Projects() {
       <SectionHeading
         index="05"
         title="Selected work"
-        subtitle="A mix of professional and personal projects — fintech, full-stack web and a couple of things I built to learn."
+        subtitle="A mix of professional and personal projects across fintech, full-stack web and a couple of things I built to learn."
       />
 
       {featured ? (
