@@ -135,6 +135,15 @@ export const projects: Project[] = [
     span: "lg",
   },
   {
+    title: "Mathy Surf Coach",
+    description:
+      "A live marketing site for a surf school in Weligama, Sri Lanka: lessons and packages, an interactive surf-spot map, gallery, reviews and FAQ, with bookings going straight to WhatsApp.",
+    tags: ["React", "Vite", "Tailwind CSS", "Framer Motion", "Google Maps", "Cloudflare"],
+    live: "https://mathysurfcoach.com",
+    label: "Client work",
+    span: "lg",
+  },
+  {
     title: "Event.Book",
     description:
       "An event booking application exploring a modern full-stack setup with App Router, server actions and a document database.",

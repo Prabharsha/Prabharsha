@@ -67,6 +67,7 @@
 | Project | What it is | Stack |
 | --- | --- | --- |
 | **ClickSuite** _(private)_ | Premium booking &amp; studio-management SaaS for creative studios | Next.js · TypeScript |
+| [**Mathy Surf Coach**](https://mathysurfcoach.com) _(client, live)_ | Marketing site for a surf school in Weligama, Sri Lanka | React · Vite · Tailwind · Cloudflare |
 | [**Event.Book**](https://github.com/Prabharsha/Event.Book) | Event booking app | Next.js 14 · MongoDB · Node.js |
 | [**TrainParcelAdvisor SL**](https://github.com/Prabharsha/TrainParcelAdvisor-SL) | Railway parcel system + travel-time prediction API | Java · Spring · TypeScript · FastAPI |
 | [**upload-it**](https://github.com/Prabharsha/upload-it) | Cloud storage service | Next.js · TypeScript · Vercel |
