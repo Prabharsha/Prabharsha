@@ -14,6 +14,7 @@ export default function ProjectCard({ project }: { project: Project }) {
     featured,
     private: isPrivate,
     label,
+    span,
   } = project;
 
   // Interactive 3D tilt that follows the cursor. The rotations are handed to
@@ -27,7 +28,8 @@ export default function ProjectCard({ project }: { project: Project }) {
     const r = e.currentTarget.getBoundingClientRect();
     const px = (e.clientX - r.left) / r.width - 0.5;
     const py = (e.clientY - r.top) / r.height - 0.5;
-    const max = featured ? 4 : 7;
+    // Wide cards tilt less, or their far edges swing too far.
+    const max = featured || span === "lg" ? 4 : 7;
     rx.set(-py * max);
     ry.set(px * max);
   };
