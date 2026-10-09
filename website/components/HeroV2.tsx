@@ -10,10 +10,10 @@ import "./hero-v2/hero-v2.css";
 /**
  * Scroll-driven hero (teal / lime).
  *
- * Layers, back to front: gradient, cursor glow, headline, cut-out portrait,
- * labels. The headline sits BEHIND the portrait. On scroll the whole card
- * shrinks into a code-editor window over columns of project screens that
- * drift upward on their own, then the pin releases into the rest of the page.
+ * Layers, back to front: gradient, cursor glow, intro chips, cut-out portrait,
+ * labels. On scroll the whole card shrinks into a code-editor window over
+ * columns of project screens that drift upward on their own, then the pin
+ * releases into the rest of the page.
  *
  * The markup is static, so it is injected as a string; GSAP only touches it
  * after mount. Without JS or with reduced motion the hero stays a plain,
@@ -47,7 +47,6 @@ export default function HeroV2() {
         const intro = gsap.timeline({ defaults: { ease: "power4.out" } });
         intro
           .from(q(".hv2-stage-bg"), { scale: 1.12, duration: 1.8, ease: "power2.out" }, 0)
-          .from(q(".hv2-hl-line > span"), { yPercent: 115, duration: 1.1, stagger: 0.12 }, 0.15)
           .from(q(".hv2-subject"), { y: 70, opacity: 0, duration: 1.4 }, 0.35)
           .from(q(".hv2-meta, .hv2-hint"), { opacity: 0, y: -12, duration: 0.8, stagger: 0.06 }, 0.8);
         if (!full) return () => intro.kill();
@@ -61,8 +60,8 @@ export default function HeroV2() {
             y: gsap.quickTo(q(sel)[0], "y", { duration: 0.9, ease: "power3.out" }),
           }),
         );
-        const gx = gsap.quickTo(glow, "x", { duration: 0.55, ease: "power3.out" });
-        const gy = gsap.quickTo(glow, "y", { duration: 0.55, ease: "power3.out" });
+        const gx = gsap.quickTo(glow, "x", { duration: 1.1, ease: "power2.out" });
+        const gy = gsap.quickTo(glow, "y", { duration: 1.1, ease: "power2.out" });
         gsap.set(glow, { x: innerWidth * 0.6, y: innerHeight * 0.3 });
         const onMove = (e: PointerEvent) => {
           const nx = (e.clientX / innerWidth) * 2 - 1;

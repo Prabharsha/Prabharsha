@@ -60,7 +60,7 @@ const markup = `<div class="hv2-collage" aria-hidden="true">${columns.map(column
         <div class="hv2-bg-wrap"><div class="hv2-stage-bg"></div><div class="hv2-drift"><i></i><i></i></div></div>
         <div class="hv2-glow" aria-hidden="true"></div>
         <div class="hv2-intro">
-          <h1 class="hv2-headline" id="hero-heading"><span class="hv2-hl-line"><span>Full-stack</span></span><span class="hv2-hl-line"><span>engineer in</span></span><span class="hv2-hl-line"><span>fintech.</span></span></h1>
+          <h1 class="sr-only" id="hero-heading">Prabharsha, full-stack software engineer in fintech</h1>
           <div class="hv2-metas">
             <p class="hv2-meta"><strong>Software Engineer</strong>Colombo, Sri Lanka</p>
             <p class="hv2-meta"><strong>Fintech engineering</strong>Java · Spring Boot · React</p>

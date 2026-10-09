@@ -117,6 +117,24 @@ function Study({ study, index }: { study: CaseStudy; index: number }) {
         <ul className="tag-list" aria-label={`${study.title} technologies`}>{study.tags.map((t) => <li key={t}>{t}</li>)}</ul>
         <a className="pill-button cs-cta" href={study.link.href} target="_blank" rel="noopener noreferrer"><i aria-hidden="true" />{study.link.label} <ArrowUpRight size={16} /></a>
       </div>
+      {study.spotlight && (
+        <div className="cs-spot">
+          <div className="cs-spot-copy">
+            <p className="cs-kicker"><span>Highlight</span>Trip replay</p>
+            <h4>{study.spotlight.title}</h4>
+            <p>{study.spotlight.text}</p>
+            <ul>{study.spotlight.points.map((pt) => <li key={pt}><Check size={13} aria-hidden="true" />{pt}</li>)}</ul>
+          </div>
+          <figure className="cs-spot-pair">
+            {study.spotlight.screens.map((s) => (
+              <div key={s.src} className="cs-phone">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={s.src} alt={s.alt} width={432} height={960} loading="lazy" decoding="async" />
+              </div>
+            ))}
+          </figure>
+        </div>
+      )}
     </article>
   );
 }
@@ -145,6 +163,10 @@ export default function CaseStudies() {
         gsap.fromTo(ph.querySelector(".cs-phone-slot--left"), { xPercent: 55, rotate: 6, autoAlpha: 0.4 }, { xPercent: 0, rotate: 0, autoAlpha: 1, ease: "none", scrollTrigger: st(ph) });
         gsap.fromTo(ph.querySelector(".cs-phone-slot--right"), { xPercent: -55, rotate: -6, autoAlpha: 0.4 }, { xPercent: 0, rotate: 0, autoAlpha: 1, ease: "none", scrollTrigger: st(ph) });
         gsap.fromTo(ph.querySelector(".cs-phone-slot--center"), { y: 80 }, { y: 0, ease: "none", scrollTrigger: st(ph) });
+      });
+      q<HTMLElement>(".cs-spot").forEach((spot) => {
+        // the pair slides together from a single stack
+        gsap.from(spot.querySelectorAll(".cs-spot-pair .cs-phone"), { y: 90, xPercent: (i: number) => (i ? -40 : 0), autoAlpha: 0, duration: 1.1, ease: "power3.out", stagger: 0.15, scrollTrigger: { trigger: spot, start: "top 80%" } });
       });
       q<HTMLElement>(".cs-copy").forEach((copy) => {
         gsap.from(copy.children, { y: 30, autoAlpha: 0, duration: 0.8, ease: "power3.out", stagger: 0.07, scrollTrigger: { trigger: copy, start: "top 80%" } });

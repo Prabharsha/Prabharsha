@@ -18,9 +18,9 @@ import WorkShowcase from "./WorkShowcase";
 
 const links = [
   { href: "#work", label: "Work" },
+  { href: "#skills", label: "Stack" },
   { href: "#about", label: "About" },
   { href: "#experience", label: "Experience" },
-  { href: "#skills", label: "Stack" },
   { href: "#contact", label: "Contact" },
 ];
 
@@ -62,8 +62,8 @@ export default function Portfolio() {
       const card = q<HTMLElement>(".contact-card")[0];
       const glow = q<HTMLElement>(".contact-glow")[0];
       if (!card || !glow) return;
-      const gx = gsap.quickTo(glow, "x", { duration: 0.55, ease: "power3.out" });
-      const gy = gsap.quickTo(glow, "y", { duration: 0.55, ease: "power3.out" });
+      const gx = gsap.quickTo(glow, "x", { duration: 1.1, ease: "power2.out" });
+      const gy = gsap.quickTo(glow, "y", { duration: 1.1, ease: "power2.out" });
       const layers = ([[".contact-top", 14], [".contact-bottom", 8]] as const).map(([sel, f]) => ({
         f,
         x: gsap.quickTo(q(sel)[0], "x", { duration: 0.9, ease: "power3.out" }),
@@ -122,7 +122,7 @@ export default function Portfolio() {
         <nav aria-label="Main navigation" className="desktop-nav">{links.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}</nav>
         <div className="header-actions">
           <ThemeToggle />
-          <a href={site.resume} className="resume-link" target="_blank" rel="noopener noreferrer"><i aria-hidden="true" />Résumé</a>
+          <a href={site.resume} className="resume-link" target="_blank" rel="noopener noreferrer"><i aria-hidden="true" />Resume</a>
         </div>
         <button ref={menuButton} type="button" className="menu-toggle" aria-expanded={menuOpen} aria-controls="mobile-navigation" aria-label={menuOpen ? "Close navigation" : "Open navigation"} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
       </div>
@@ -133,6 +133,7 @@ export default function Portfolio() {
     <main id="main">
       <HeroV2 />
       <WorkShowcase />
+      <StackOrbit />
 
       <section id="about" className="why-section wrap section-space" aria-labelledby="about-heading">
         <div className="why-head" data-reveal>
@@ -174,13 +175,12 @@ export default function Portfolio() {
           <h2 id="experience-heading">Built on<br /><em>experience.</em></h2>
           <div className="exp-intro">
             <p>Three-plus years building payment software at two fintech companies in Sri Lanka, from backend services and APIs to the front ends and Linux servers they run on. Along the way I have mentored software engineering interns and designed technical assessments.</p>
-            <a className="text-link" href={site.resume} target="_blank" rel="noopener noreferrer">Read my résumé <Download size={17} /></a>
+            <a className="text-link" href={site.resume} target="_blank" rel="noopener noreferrer">Read my resume <Download size={17} /></a>
           </div>
         </div>
         <ExperienceList />
       </section>
 
-      <StackOrbit />
       <Recommendations />
 
       <section id="contact" className="contact-section wrap" aria-labelledby="contact-heading">
