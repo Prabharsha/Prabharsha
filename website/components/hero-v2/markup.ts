@@ -32,7 +32,7 @@ $ _</div></div></div>
     <div class="hv2-card">
       <div class="hv2-chrome" aria-hidden="true"><i></i><i></i><i></i><span>~/prabharsha/portfolio/hero.tsx</span></div>
       <div class="hv2-stage">
-        <div class="hv2-bg-wrap"><div class="hv2-stage-bg"></div></div>
+        <div class="hv2-bg-wrap"><div class="hv2-stage-bg"></div><div class="hv2-drift"><i></i><i></i></div></div>
         <div class="hv2-glow" aria-hidden="true"></div>
         <div class="hv2-intro">
           <h1 class="hv2-headline" id="hero-heading"><span class="hv2-hl-line"><span>Full-stack</span></span><span class="hv2-hl-line"><span>engineer in</span></span><span class="hv2-hl-line"><span>fintech.</span></span></h1>

@@ -66,6 +66,7 @@ export default function WorkShowcase() {
   return (
     <section id="work" ref={root} className="work-panel" aria-labelledby="work-heading">
       <div className="work-stage">
+        <div className="drift" aria-hidden="true"><i /><i /></div>
         <div className="wrap work-inner">
           <h2 id="work-heading" className="work-title">Less talk. <em>More building.</em></h2>
           <div className="work-grid">

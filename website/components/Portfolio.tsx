@@ -11,6 +11,7 @@ import { site, services } from "@/data/site";
 
 import ExperienceList from "./ExperienceList";
 import HeroV2 from "./HeroV2";
+import Recommendations from "./Recommendations";
 import StackOrbit from "./StackOrbit";
 import ThemeToggle from "./ThemeToggle";
 import WorkShowcase from "./WorkShowcase";
@@ -128,6 +129,7 @@ export default function Portfolio() {
       <nav id="mobile-navigation" aria-label="Mobile navigation" className="mobile-nav" hidden={!menuOpen}>{links.map(link => <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>{link.label}<ArrowUpRight size={18} /></a>)}</nav>
     </header>
 
+    <div className="ambient" aria-hidden="true"><i /><i /><i /><i /></div>
     <main id="main">
       <HeroV2 />
       <WorkShowcase />
@@ -170,15 +172,20 @@ export default function Portfolio() {
       <section id="experience" className="exp-section wrap section-space" aria-labelledby="experience-heading">
         <div className="exp-head" data-reveal>
           <h2 id="experience-heading">Built on<br /><em>experience.</em></h2>
-          <a className="text-link" href={site.resume} target="_blank" rel="noopener noreferrer">Read my résumé <Download size={17} /></a>
+          <div className="exp-intro">
+            <p>Three-plus years building payment software at two fintech companies in Sri Lanka, from backend services and APIs to the front ends and Linux servers they run on. Along the way I have mentored software engineering interns and designed technical assessments.</p>
+            <a className="text-link" href={site.resume} target="_blank" rel="noopener noreferrer">Read my résumé <Download size={17} /></a>
+          </div>
         </div>
         <ExperienceList />
       </section>
 
       <StackOrbit />
+      <Recommendations />
 
       <section id="contact" className="contact-section wrap" aria-labelledby="contact-heading">
         <div className="contact-card" data-reveal>
+          <div className="drift" aria-hidden="true"><i /><i /></div>
           <div className="contact-glow" aria-hidden="true" />
           <div className="contact-top">
             <p className="contact-mark" aria-hidden="true">prabharsha<span>.</span></p>
