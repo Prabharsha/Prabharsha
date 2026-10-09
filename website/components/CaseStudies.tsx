@@ -2,7 +2,7 @@
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowUpRight, Check, Lock } from "lucide-react";
+import { ArrowUpRight, Check, ChevronLeft, ChevronRight, Lock, X, ZoomIn } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { caseStudies, type CaseStudy } from "@/data/caseStudies";
@@ -42,8 +42,11 @@ function SiteShowcase({ media, title }: { media: SiteMedia; title: string }) {
 function PhoneShowcase({ media, title }: { media: PhoneMedia; title: string }) {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [open, setOpen] = useState(false);
   const box = useRef<HTMLDivElement>(null);
+  const dialog = useRef<HTMLDialogElement>(null);
   const count = media.screens.length;
+  const step = (d: number) => setCurrent((c) => (c + d + count) % count);
 
   useEffect(() => {
     const el = box.current;
@@ -51,9 +54,9 @@ function PhoneShowcase({ media, title }: { media: PhoneMedia; title: string }) {
     let visible = false;
     const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0.3 });
     io.observe(el);
-    const id = window.setInterval(() => { if (visible && !paused) setCurrent((c) => (c + 1) % count); }, 2600);
+    const id = window.setInterval(() => { if (visible && !paused && !open) setCurrent((c) => (c + 1) % count); }, 2600);
     return () => { io.disconnect(); window.clearInterval(id); };
-  }, [count, paused]);
+  }, [count, paused, open]);
 
   const back = [media.screens[2], media.screens[4]];
   return (
@@ -72,7 +75,20 @@ function PhoneShowcase({ media, title }: { media: PhoneMedia; title: string }) {
           <img key={s.src} src={s.src} alt={i === current ? s.alt : ""} aria-hidden={i !== current} width={432} height={960}
             loading="lazy" decoding="async" className={i === current ? "is-on" : ""} />
         ))}
+        <button type="button" className="cs-zoom" aria-label={`Enlarge screen: ${media.screens[current].alt}`}
+          onClick={() => { setOpen(true); dialog.current?.showModal(); }}>
+          <span aria-hidden="true"><ZoomIn size={16} /></span>
+        </button>
       </div></div>
+      {/* Native modal: focus trap, Esc to close and backdrop for free. Click outside the image closes it. */}
+      <dialog ref={dialog} className="cs-lightbox" aria-label={`${title} screen`} onClose={() => setOpen(false)}
+        onClick={(e) => { if (e.target === e.currentTarget) e.currentTarget.close(); }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={media.screens[current].src} alt={media.screens[current].alt} width={432} height={960} />
+        <button type="button" className="cs-lightbox-btn cs-lightbox-prev" aria-label="Previous screen" onClick={() => step(-1)}><ChevronLeft size={22} /></button>
+        <button type="button" className="cs-lightbox-btn cs-lightbox-next" aria-label="Next screen" onClick={() => step(1)}><ChevronRight size={22} /></button>
+        <button type="button" className="cs-lightbox-btn cs-lightbox-close" aria-label="Close" onClick={() => dialog.current?.close()}><X size={20} /></button>
+      </dialog>
       <div className="cs-dots" role="group" aria-label={`${title} screens`}>
         {media.screens.map((s, i) => (
           <button key={s.src} type="button" aria-label={`Show screen ${i + 1}: ${s.alt}`} aria-pressed={i === current} onClick={() => setCurrent(i)} />
