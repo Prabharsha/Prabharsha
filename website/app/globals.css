@@ -38,6 +38,14 @@
     text-rendering: optimizeLegibility;
   }
 
+  /* The hero lines start hidden so the server markup already matches the state
+     anime.js takes over on mount; without it the first paint would show the
+     whole block and then blink it away to replay the cascade. */
+  [data-hero-item] {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
   ::selection {
     background-color: rgb(var(--accent));
     color: rgb(var(--ink-contrast));
@@ -69,6 +77,72 @@
 
   .accent-gradient-text {
     @apply bg-gradient-to-r from-accent via-accent-soft to-violet-glow bg-clip-text text-transparent;
+  }
+
+  /*
+   * The hero clip.
+   *
+   * The source is a flat cream studio plate, which would otherwise read as a
+   * pasted rectangle against the night sky. The radial mask dissolves its
+   * edges so only the lit centre survives, and the blend/contrast trim lets
+   * the remaining warm tones sit inside the palette instead of on top of it.
+   */
+  .hero-clip {
+    /*
+     * Two edge feathers intersected, not one ellipse.
+     *
+     * The clip is cropped tight to the figure, so it now fills its frame. An
+     * ellipse can only reach full transparency inside the box if its radii
+     * stay under 50%, which on a full-bleed subject means biting into the desk
+     * and the top of the head. Feathering each axis independently instead
+     * dissolves all four edges by a fixed margin and leaves the middle whole.
+     *
+     * The vertical ramp is two-stage: the hair starts ~6% down, so it climbs
+     * fast to mostly-opaque and then eases the rest of the way. A single stop
+     * either left a hard line across the top of the plate or turned the top of
+     * the head translucent.
+     */
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        #000 13%,
+        #000 87%,
+        transparent 100%
+      ),
+      linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgb(0 0 0 / 0.72) 7%,
+        #000 14%,
+        #000 84%,
+        transparent 100%
+      );
+    mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        #000 13%,
+        #000 87%,
+        transparent 100%
+      ),
+      linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgb(0 0 0 / 0.72) 7%,
+        #000 14%,
+        #000 84%,
+        transparent 100%
+      );
+    /* Both layers must agree for a pixel to survive: `intersect` is the modern
+       keyword, `source-in` the older WebKit one that Safari still reads. */
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+    /* No blend mode on purpose: the plate is bright, and screen/lighten would
+       blow it out to flat white against the night end of the palette.
+       The grade instead pulls the neutral-grey studio plate a little warm so
+       it belongs to the same sky as everything around it, and trims the
+       brightness so it stops glaring. */
+    filter: contrast(1.05) saturate(1.12) brightness(0.9) sepia(0.2)
+      hue-rotate(-10deg);
   }
 
   /* Cursor spotlight in the hero. Declared here so the move handler only has to

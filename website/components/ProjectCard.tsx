@@ -1,8 +1,10 @@
 "use client";
 
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { createAnimatable, type AnimatableObject } from "animejs";
 import { ArrowUpRight, Github, Lock, Star } from "lucide-react";
+import { useEffect, useRef } from "react";
 import type { Project } from "@/data/site";
+import { EASE_FOLLOW, isCoarsePointer, prefersReducedMotion } from "@/lib/motion";
 
 export default function ProjectCard({ project }: { project: Project }) {
   const {
@@ -17,35 +19,57 @@ export default function ProjectCard({ project }: { project: Project }) {
     span,
   } = project;
 
-  // Interactive 3D tilt that follows the cursor. The rotations are handed to
-  // framer as motion values rather than composed into a transform string: a
-  // string in `style.transform` overrides whileHover's lift, and rebuilding it
-  // every spring frame on each card is needless work.
-  const rx = useSpring(useMotionValue(0), { stiffness: 200, damping: 18 });
-  const ry = useSpring(useMotionValue(0), { stiffness: 200, damping: 18 });
+  const ref = useRef<HTMLElement>(null);
+  const tilt = useRef<AnimatableObject | null>(null);
 
-  const onMove = (e: React.MouseEvent<HTMLElement>) => {
-    const r = e.currentTarget.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width - 0.5;
-    const py = (e.clientY - r.top) / r.height - 0.5;
+  // Interactive 3D tilt that follows the cursor.
+  //
+  // rotateX/rotateY/translateY all live on one animatable, so anime composes a
+  // single transform per frame instead of the card fighting between a hover
+  // lift and a tilt written separately. Pointer handlers do no interpolation of
+  // their own — they just hand anime the latest target angles.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || prefersReducedMotion() || isCoarsePointer()) return;
+
     // Wide cards tilt less, or their far edges swing too far.
     const max = featured || span === "lg" ? 4 : 7;
-    rx.set(-py * max);
-    ry.set(px * max);
-  };
+    const anim = createAnimatable(el, {
+      rotateX: 420,
+      rotateY: 420,
+      y: 320,
+      ease: EASE_FOLLOW,
+    });
+    tilt.current = anim;
 
-  const reset = () => {
-    rx.set(0);
-    ry.set(0);
-  };
+    const onMove = (e: PointerEvent) => {
+      const r = el.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width - 0.5;
+      const py = (e.clientY - r.top) / r.height - 0.5;
+      anim.rotateX(-py * max);
+      anim.rotateY(px * max);
+      anim.y(-4);
+    };
+    const onLeave = () => {
+      anim.rotateX(0);
+      anim.rotateY(0);
+      anim.y(0);
+    };
+
+    el.addEventListener("pointermove", onMove, { passive: true });
+    el.addEventListener("pointerleave", onLeave);
+    return () => {
+      el.removeEventListener("pointermove", onMove);
+      el.removeEventListener("pointerleave", onLeave);
+      anim.revert();
+      tilt.current = null;
+    };
+  }, [featured, span]);
 
   return (
-    <motion.article
-      onMouseMove={onMove}
-      onMouseLeave={reset}
-      whileHover={{ y: -4 }}
-      style={{ rotateX: rx, rotateY: ry, transformPerspective: 900 }}
-      transition={{ type: "spring", stiffness: 300, damping: 22 }}
+    <article
+      ref={ref}
+      style={{ perspective: 900 }}
       className={`glass glass-hover group relative flex h-full flex-col rounded-2xl p-6 ${
         featured ? "sm:p-8" : ""
       }`}
@@ -122,6 +146,6 @@ export default function ProjectCard({ project }: { project: Project }) {
           </span>
         ) : null}
       </div>
-    </motion.article>
+    </article>
   );
 }
