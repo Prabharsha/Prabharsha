@@ -76,12 +76,12 @@ export default function StackOrbit() {
           const drift = (i % 2 ? 1 : -1) * 18;
           tl.fromTo(
             chip,
-            { autoAlpha: 0, scale: 0.7, filter: "blur(14px)", xPercent: -50, yPercent: -50, y: 30 },
+            { autoAlpha: 0, scale: 0.8, filter: "blur(8px)", xPercent: -50, yPercent: -50, y: 30 },
             { autoAlpha: 1, scale: 1, filter: "blur(0px)", y: 0, duration: 0.6, ease: "power2.out" },
             i * step,
           ).to(
             chip,
-            { autoAlpha: 0, scale: 1.12, filter: "blur(12px)", y: -30, x: drift, duration: 0.6, ease: "power2.in" },
+            { autoAlpha: 0, scale: 1.08, filter: "blur(8px)", y: -30, x: drift, duration: 0.6, ease: "power2.in" },
             i * step + 1.3,
           );
         });
@@ -108,7 +108,7 @@ export default function StackOrbit() {
         </div>
         <ul className="stack-cloud" aria-label="Technologies I work with">
           {items.map(({ name, Icon, color, group }) => (
-            <li key={name} className="stack-chip" style={{ "--c": color } as CSSProperties} title={group}>
+            <li key={name} className="stack-chip" style={{ "--c": color } as CSSProperties} data-mono={color.toLowerCase() === "#ffffff" ? "" : undefined} title={group}>
               <Icon aria-hidden="true" />
               <span>{name}</span>
             </li>

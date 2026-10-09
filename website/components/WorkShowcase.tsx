@@ -6,6 +6,7 @@ import { ArrowUpRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { projects, site, type Project } from "@/data/site";
+import { scrollToY } from "@/lib/smooth";
 
 function projectLink(project: Project) {
   if (project.github) return { href: project.github, label: "Explore the code", external: true };
@@ -59,7 +60,7 @@ export default function WorkShowcase() {
     const st = trigger.current;
     if (!st) { setActive(index); return; }
     const y = st.start + ((index + 0.5) / projects.length) * (st.end - st.start);
-    window.scrollTo({ top: y, behavior: "smooth" });
+    scrollToY(y);
   };
 
   return (

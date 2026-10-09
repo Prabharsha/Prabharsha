@@ -91,7 +91,7 @@ export default function HeroV2() {
             invalidateOnRefresh: true,
           },
         });
-        tl.to(q(".hv2-card"), { scale: 0.46, borderRadius: 56, boxShadow: "0 60px 160px rgba(0,0,0,.6)", duration: 1 }, 0)
+        tl.to(q(".hv2-card"), { scale: 0.46, borderRadius: 56, duration: 1 }, 0)
           .to(q(".hv2-ui, .hv2-glow, .hv2-metas"), { autoAlpha: 0, duration: 0.35 }, 0)
           .to(q(".hv2-chrome"), { autoAlpha: 1, duration: 0.45 }, 0.4)
           .fromTo(

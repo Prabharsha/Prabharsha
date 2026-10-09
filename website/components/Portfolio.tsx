@@ -12,6 +12,7 @@ import { site, services } from "@/data/site";
 import ExperienceList from "./ExperienceList";
 import HeroV2 from "./HeroV2";
 import StackOrbit from "./StackOrbit";
+import ThemeToggle from "./ThemeToggle";
 import WorkShowcase from "./WorkShowcase";
 
 const links = [
@@ -83,7 +84,10 @@ export default function Portfolio() {
       <div className="header-inner wrap">
         <a href="#top" className="wordmark" aria-label="Prabharsha, back to top">prabharsha<span>.</span></a>
         <nav aria-label="Main navigation" className="desktop-nav">{links.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}</nav>
-        <a href={site.resume} className="resume-link" target="_blank" rel="noopener noreferrer"><i aria-hidden="true" />Résumé</a>
+        <div className="header-actions">
+          <ThemeToggle />
+          <a href={site.resume} className="resume-link" target="_blank" rel="noopener noreferrer"><i aria-hidden="true" />Résumé</a>
+        </div>
         <button ref={menuButton} type="button" className="menu-toggle" aria-expanded={menuOpen} aria-controls="mobile-navigation" aria-label={menuOpen ? "Close navigation" : "Open navigation"} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
       </div>
       <nav id="mobile-navigation" aria-label="Mobile navigation" className="mobile-nav" hidden={!menuOpen}>{links.map(link => <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>{link.label}<ArrowUpRight size={18} /></a>)}</nav>

@@ -4,6 +4,9 @@ import "./globals.css";
 import "./portfolio.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import "lenis/dist/lenis.css";
+
+import Providers from "@/components/Providers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -73,10 +76,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${inter.variable} ${jetbrains.variable} ${fraunces.variable} ${archivo.variable}`}
     >
       <body className="font-sans antialiased">
-        {children}
+        <Providers>{children}</Providers>
         <SpeedInsights />
         <Analytics />
       </body>
