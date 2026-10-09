@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Archivo, Inter, JetBrains_Mono, Fraunces } from "next/font/google";
+import { Forum, Inter, JetBrains_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import "./portfolio.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -27,10 +27,10 @@ const fraunces = Fraunces({
   style: ["normal", "italic"],
 });
 
-const archivo = Archivo({
+const forum = Forum({
   subsets: ["latin"],
-  variable: "--font-archivo",
-  axes: ["wdth"],
+  variable: "--font-forum",
+  weight: "400",
   display: "swap",
 });
 
@@ -77,7 +77,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${jetbrains.variable} ${fraunces.variable} ${archivo.variable}`}
+      className={`${inter.variable} ${jetbrains.variable} ${fraunces.variable} ${forum.variable}`}
     >
       <body className="font-sans antialiased">
         <Providers>{children}</Providers>
