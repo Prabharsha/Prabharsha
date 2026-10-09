@@ -26,54 +26,68 @@
 .hv2-card {
   position: absolute; inset: 0; overflow: hidden; z-index: 2;
   transform-origin: 50% 50%; will-change: transform;
+  /* static: only visible once the card shrinks (the section clips it at full size) */
+  box-shadow: 0 60px 160px rgba(0,0,0,.55);
 }
 .hv2-stage { position: absolute; inset: 0; --H: calc(100svh - var(--hh)); --u: min(1vw, calc(var(--H) * .0207)); }
 .hv2-bg-wrap { position: absolute; inset: -4%; }
 .hv2-stage-bg {
   position: absolute; inset: 0;
   background:
-    radial-gradient(34% 46% at 77% 46%, rgba(236,255,182,.85) 0%, rgba(236,255,182,0) 72%),
-    radial-gradient(56% 78% at 80% 70%, rgba(214,251,0,.9) 0%, rgba(214,251,0,0) 70%),
+    radial-gradient(30% 46% at 86% 44%, rgba(236,255,182,.85) 0%, rgba(236,255,182,0) 72%),
+    radial-gradient(52% 78% at 88% 72%, rgba(214,251,0,.9) 0%, rgba(214,251,0,0) 70%),
     radial-gradient(60% 80% at -4% -8%, rgba(0,30,35,.75) 0%, rgba(0,30,35,0) 68%),
     linear-gradient(158deg, #00697a 0%, #00545f 52%, #00333b 100%);
 }
 .hv2-stage-bg::after {
-  content: ""; position: absolute; inset: 0; opacity: .16; mix-blend-mode: overlay;
+  content: ""; position: absolute; inset: 0; opacity: .07;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
+.hv2-drift { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.hv2-drift i { position: absolute; display: block; border-radius: 50%; will-change: transform; animation: hv2-drift-a 26s ease-in-out infinite alternate; }
+.hv2-drift i:nth-child(1) { width: 60vmax; height: 60vmax; right: -12vmax; bottom: -22vmax; background: radial-gradient(closest-side, rgba(214,251,0,.42), rgba(214,251,0,0)); }
+.hv2-drift i:nth-child(2) { display: none; }
+@keyframes hv2-drift-a { 0% { transform: translate3d(0,0,0) scale(1); } 50% { transform: translate3d(-9vw,-7vh,0) scale(1.15); } 100% { transform: translate3d(-3vw,4vh,0) scale(.95); } }
+@keyframes hv2-drift-b { 0% { transform: translate3d(0,0,0) scale(1); } 50% { transform: translate3d(10vw,8vh,0) scale(.9); } 100% { transform: translate3d(4vw,14vh,0) scale(1.12); } }
+@media (prefers-reduced-motion: reduce) { .hv2-drift i { animation: none; } }
 .hv2-glow {
-  position: absolute; left: 0; top: 0; width: 46vmax; height: 46vmax; margin: -23vmax 0 0 -23vmax;
-  background: radial-gradient(closest-side, rgba(214,251,0,.26), rgba(214,251,0,0));
-  mix-blend-mode: screen; pointer-events: none; display: none;
+  position: absolute; left: 0; top: 0; width: 56vmax; height: 56vmax; margin: -28vmax 0 0 -28vmax;
+  background:
+    radial-gradient(closest-side, rgba(236,255,182,.55) 0%, rgba(236,255,182,0) 32%),
+    radial-gradient(closest-side, rgba(214,251,0,.5) 0%, rgba(214,251,0,.18) 45%, rgba(214,251,0,0) 100%);
+  pointer-events: none; display: none; will-change: transform;
 }
 @media (min-width: 768px) and (prefers-reduced-motion: no-preference) { .hv2-glow { display: block; } }
+.hv2-intro {
+  position: absolute; left: var(--gutter); top: 0; bottom: 0; z-index: 1;
+  display: flex; flex-direction: column; justify-content: center; gap: clamp(20px, 3.4vh, 36px);
+  padding-bottom: 2vh;
+}
 .hv2-headline {
-  position: absolute; left: var(--gutter); top: 0; bottom: 0; margin: 0; z-index: 1;
-  display: flex; flex-direction: column; justify-content: center;
+  position: relative; margin: 0;
+  display: flex; flex-direction: column;
   font-family: var(--font-display); font-weight: 780; font-stretch: 108%;
   font-size: max(2.6rem, calc(var(--u) * 8.4)); line-height: .93; letter-spacing: -.025em;
-  text-wrap: nowrap; padding-bottom: 2vh;
+  text-wrap: nowrap;
 }
 .hv2-hl-line { display: block; overflow: hidden; padding-bottom: .2em; margin-bottom: -.2em; }
 .hv2-hl-line > span { display: block; }
 .hv2-hl-line:last-child { color: var(--lime); }
 .hv2-subject-wrap { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
 .hv2-subject {
-  position: absolute; left: calc(var(--u) * 70); top: calc(var(--H) * .075); height: calc(var(--H) * 1.7); width: auto;
-  max-width: none; margin-left: calc(var(--H) * -.2863);
-  filter: drop-shadow(0 0 30px rgba(0,60,68,.55)) drop-shadow(-18px 10px 44px rgba(0,30,35,.35));
+  position: absolute; right: calc(var(--gutter) * .35); left: auto; top: calc(var(--H) * .075); height: calc(var(--H) * 1.7); width: auto;
+  max-width: none;
 }
 .hv2-ui { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
 .hv2-ui > * { pointer-events: auto; }
 .hv2-meta {
-  position: absolute; right: var(--gutter); z-index: 3; margin: 0; text-align: right;
+  position: relative; margin: 0; text-align: left;
   font-size: clamp(.78rem, .92vw, 1rem); line-height: 1.35; color: var(--mist);
-  background: rgba(0,30,35,.58); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  background: rgba(0,30,35,.62); border: 1px solid rgba(255,255,255,.12); box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
   padding: .6em .9em; border-radius: .8em;
 }
 .hv2-meta strong { display: block; color: #fff; font-weight: 600; }
-.hv2-meta--top { top: 22%; }
-.hv2-meta--bottom { bottom: clamp(24px, 5vh, 56px); }
+.hv2-metas { display: flex; flex-wrap: wrap; gap: 12px; }
 .hv2-hint {
   position: absolute; left: var(--gutter); bottom: clamp(24px, 5vh, 56px); z-index: 3;
   display: flex; align-items: center; gap: .8em; font-size: .8rem; color: var(--mist);
@@ -154,9 +168,17 @@
 
 /* ───────── PHONE / SMALL ───────── */
 @media (max-width: 767px) {
-  .hv2-headline { top: 21%; bottom: auto; justify-content: flex-start; font-size: min(11.2vw, 5.4svh); padding-bottom: 0; }
-  .hv2-subject { left: 58%; top: calc(var(--H) * .325); height: calc(var(--H) * 1.0); margin-left: calc(var(--H) * -.1684); }
-  .hv2-meta { display: none; }
+  .hv2-intro { top: 18%; bottom: auto; justify-content: flex-start; padding-bottom: 0; }
+  .hv2-headline { font-size: min(13vw, 6svh); }
+  .hv2-subject { right: -4%; top: calc(var(--H) * .44); height: calc(var(--H) * .95); }
+  .hv2-metas { display: none; }
   .hv2-hint { display: none; }
   
 }
+
+/* ───────── LIGHT THEME ───────── */
+/* The hero card keeps its teal/lime gradient in both themes; only the space
+   around it (seen once it shrinks into the collage) follows the page. */
+[data-theme="light"] .hv2 { background: #e9efe4; }
+[data-theme="light"] .hv2-tile { box-shadow: 0 1.2vw 3vw rgba(0,60,68,.18); }
+[data-theme="light"] .hv2-card { box-shadow: 0 50px 120px rgba(0,60,68,.25); }

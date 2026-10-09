@@ -1,57 +1,35 @@
-"use client";
-
-import gsap from "gsap";
-import { useEffect, useRef, useState } from "react";
-
 import { experience } from "@/data/site";
 
-const rows = experience.flatMap((job) => job.roles.map((role) => ({ ...role, company: job.company, meta: job.meta })));
-
 /**
- * Role list modelled on the reference's "Awards" rows: one line per role, and on
- * hover (fine pointers only) a lime card trails the cursor with the detail.
- * The detail is also in each row for touch, keyboard and screen readers.
+ * Experience, grouped by company. Each role row: title, period, summary,
+ * highlights and the stack used.
  */
 export default function ExperienceList() {
-  const list = useRef<HTMLDivElement>(null);
-  const card = useRef<HTMLDivElement>(null);
-  const [hovered, setHovered] = useState<number | null>(null);
-
-  useEffect(() => {
-    const box = list.current;
-    const preview = card.current;
-    if (!box || !preview) return;
-    const fine = window.matchMedia("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)");
-    if (!fine.matches) return;
-    const x = gsap.quickTo(preview, "x", { duration: 0.5, ease: "power3.out" });
-    const y = gsap.quickTo(preview, "y", { duration: 0.5, ease: "power3.out" });
-    const move = (e: PointerEvent) => {
-      const r = box.getBoundingClientRect();
-      x(e.clientX - r.left);
-      y(e.clientY - r.top);
-    };
-    box.addEventListener("pointermove", move);
-    return () => box.removeEventListener("pointermove", move);
-  }, []);
-
-  const current = hovered === null ? null : rows[hovered];
-
   return (
-    <div className="exp-wrap" ref={list} onPointerLeave={() => setHovered(null)}>
-      <ol className="exp-list">
-        {rows.map((row, index) => (
-          <li key={`${row.company}-${row.title}`} className="exp-row" onPointerEnter={() => setHovered(index)}>
-            <div className="exp-main">
-              <h3>{row.title}</h3>
-              <p className="exp-meta">{row.company} · {row.period}</p>
-            </div>
-            <p className="exp-detail">{row.detail}</p>
-          </li>
-        ))}
-      </ol>
-      <div ref={card} className={`exp-preview ${current ? "is-on" : ""}`} aria-hidden="true">
-          {current && <><span>{current.company}</span><strong>{current.title}</strong><small>{current.period}</small></>}
-      </div>
+    <div className="exp-companies">
+      {experience.map((job) => (
+        <section key={job.company} className="exp-company" aria-labelledby={`exp-${job.company}`}>
+          <header className="exp-company-head">
+            <h3 id={`exp-${job.company}`}>{job.company}</h3>
+            <p>{job.meta}</p>
+          </header>
+          <ol className="exp-list">
+            {job.roles.map((role) => (
+              <li key={role.title + role.period} className="exp-row">
+                <div className="exp-main">
+                  <p className="exp-meta">{role.period}</p>
+                  <h4>{role.title}</h4>
+                  {role.tags && <ul className="tag-list" aria-label={`${role.title} stack`}>{role.tags.map((t) => <li key={t}>{t}</li>)}</ul>}
+                </div>
+                <div className="exp-body">
+                  <p className="exp-detail">{role.detail}</p>
+                  {role.highlights && <ul className="exp-points">{role.highlights.map((h) => <li key={h}>{h}</li>)}</ul>}
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))}
     </div>
   );
 }

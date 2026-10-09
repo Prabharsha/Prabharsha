@@ -6,6 +6,7 @@ import { ArrowUpRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { projects, site, type Project } from "@/data/site";
+import { scrollToY } from "@/lib/smooth";
 
 function projectLink(project: Project) {
   if (project.github) return { href: project.github, label: "Explore the code", external: true };
@@ -17,7 +18,7 @@ const slug = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, "-").
 
 /**
  * "Selected work" panel, modelled on the reference's curved accent panel.
- * Desktop with motion: the panel pins, scroll steps through the project list on
+ * Desktop with motion: the list + card pin centred on screen, scroll steps through the project list on
  * the left and the window card on the right swaps to match. Phones and reduced
  * motion get every card stacked as a plain list.
  */
@@ -35,8 +36,13 @@ export default function WorkShowcase() {
       el.classList.add("is-pinned");
       const header = document.querySelector<HTMLElement>(".site-header");
       const st = ScrollTrigger.create({
-        trigger: el.querySelector(".work-stage"),
-        start: () => `top ${header?.offsetHeight ?? 80}px`,
+        // Pin the list + card only, once the whole card sits centred in the
+        // space under the header; the title scrolls away first.
+        trigger: el.querySelector(".work-grid"),
+        start: () => {
+          const h = header?.offsetHeight ?? 80;
+          return `center ${h + (innerHeight - h) / 2}px`;
+        },
         end: () => `+=${projects.length * innerHeight * 0.38}`,
         pin: true,
         anticipatePin: 1,
@@ -54,12 +60,13 @@ export default function WorkShowcase() {
     const st = trigger.current;
     if (!st) { setActive(index); return; }
     const y = st.start + ((index + 0.5) / projects.length) * (st.end - st.start);
-    window.scrollTo({ top: y, behavior: "smooth" });
+    scrollToY(y);
   };
 
   return (
     <section id="work" ref={root} className="work-panel" aria-labelledby="work-heading">
       <div className="work-stage">
+        <div className="drift" aria-hidden="true"><i /><i /></div>
         <div className="wrap work-inner">
           <h2 id="work-heading" className="work-title">Less talk. <em>More building.</em></h2>
           <div className="work-grid">

@@ -11,7 +11,9 @@ import { site, services } from "@/data/site";
 
 import ExperienceList from "./ExperienceList";
 import HeroV2 from "./HeroV2";
+import Recommendations from "./Recommendations";
 import StackOrbit from "./StackOrbit";
+import ThemeToggle from "./ThemeToggle";
 import WorkShowcase from "./WorkShowcase";
 
 const links = [
@@ -55,6 +57,41 @@ export default function Portfolio() {
     mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)", () => {
       gsap.fromTo(q(".service-track"), { xPercent: 6 }, { xPercent: -6, ease: "none", scrollTrigger: { trigger: q(".services-section")[0], start: "top bottom", end: "bottom top", scrub: 0.6 } });
     });
+    // Contact card: the hero's cursor glow, plus a gentle counter-move of the content.
+    mm.add("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)", () => {
+      const card = q<HTMLElement>(".contact-card")[0];
+      const glow = q<HTMLElement>(".contact-glow")[0];
+      if (!card || !glow) return;
+      const gx = gsap.quickTo(glow, "x", { duration: 0.55, ease: "power3.out" });
+      const gy = gsap.quickTo(glow, "y", { duration: 0.55, ease: "power3.out" });
+      const layers = ([[".contact-top", 14], [".contact-bottom", 8]] as const).map(([sel, f]) => ({
+        f,
+        x: gsap.quickTo(q(sel)[0], "x", { duration: 0.9, ease: "power3.out" }),
+        y: gsap.quickTo(q(sel)[0], "y", { duration: 0.9, ease: "power3.out" }),
+      }));
+      gsap.set(glow, { x: card.offsetWidth * 0.3, y: card.offsetHeight * 0.8 });
+      const move = (e: PointerEvent) => {
+        const r = card.getBoundingClientRect();
+        gx(e.clientX - r.left);
+        gy(e.clientY - r.top);
+        const nx = ((e.clientX - r.left) / r.width) * 2 - 1;
+        const ny = ((e.clientY - r.top) / r.height) * 2 - 1;
+        layers.forEach((l) => { l.x(nx * l.f); l.y(ny * l.f * 0.6); });
+      };
+      const enter = () => gsap.to(glow, { autoAlpha: 1, duration: 0.4 });
+      const leave = () => {
+        gsap.to(glow, { autoAlpha: 0, duration: 0.6 });
+        layers.forEach((l) => { l.x(0); l.y(0); });
+      };
+      card.addEventListener("pointermove", move);
+      card.addEventListener("pointerenter", enter);
+      card.addEventListener("pointerleave", leave);
+      return () => {
+        card.removeEventListener("pointermove", move);
+        card.removeEventListener("pointerenter", enter);
+        card.removeEventListener("pointerleave", leave);
+      };
+    });
     const refresh = () => ScrollTrigger.refresh();
     window.addEventListener("load", refresh);
     return () => { window.removeEventListener("load", refresh); mm.revert(); };
@@ -83,12 +120,16 @@ export default function Portfolio() {
       <div className="header-inner wrap">
         <a href="#top" className="wordmark" aria-label="Prabharsha, back to top">prabharsha<span>.</span></a>
         <nav aria-label="Main navigation" className="desktop-nav">{links.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}</nav>
-        <a href={site.resume} className="resume-link" target="_blank" rel="noopener noreferrer"><i aria-hidden="true" />Résumé</a>
+        <div className="header-actions">
+          <ThemeToggle />
+          <a href={site.resume} className="resume-link" target="_blank" rel="noopener noreferrer"><i aria-hidden="true" />Résumé</a>
+        </div>
         <button ref={menuButton} type="button" className="menu-toggle" aria-expanded={menuOpen} aria-controls="mobile-navigation" aria-label={menuOpen ? "Close navigation" : "Open navigation"} onClick={() => setMenuOpen(!menuOpen)}>{menuOpen ? <X /> : <Menu />}</button>
       </div>
       <nav id="mobile-navigation" aria-label="Mobile navigation" className="mobile-nav" hidden={!menuOpen}>{links.map(link => <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>{link.label}<ArrowUpRight size={18} /></a>)}</nav>
     </header>
 
+    <div className="ambient" aria-hidden="true"><i /><i /><i /><i /></div>
     <main id="main">
       <HeroV2 />
       <WorkShowcase />
@@ -131,15 +172,21 @@ export default function Portfolio() {
       <section id="experience" className="exp-section wrap section-space" aria-labelledby="experience-heading">
         <div className="exp-head" data-reveal>
           <h2 id="experience-heading">Built on<br /><em>experience.</em></h2>
-          <a className="text-link" href={site.resume} target="_blank" rel="noopener noreferrer">Read my résumé <Download size={17} /></a>
+          <div className="exp-intro">
+            <p>Three-plus years building payment software at two fintech companies in Sri Lanka, from backend services and APIs to the front ends and Linux servers they run on. Along the way I have mentored software engineering interns and designed technical assessments.</p>
+            <a className="text-link" href={site.resume} target="_blank" rel="noopener noreferrer">Read my résumé <Download size={17} /></a>
+          </div>
         </div>
         <ExperienceList />
       </section>
 
       <StackOrbit />
+      <Recommendations />
 
       <section id="contact" className="contact-section wrap" aria-labelledby="contact-heading">
         <div className="contact-card" data-reveal>
+          <div className="drift" aria-hidden="true"><i /><i /></div>
+          <div className="contact-glow" aria-hidden="true" />
           <div className="contact-top">
             <p className="contact-mark" aria-hidden="true">prabharsha<span>.</span></p>
             <div className="contact-cta">
