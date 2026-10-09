@@ -163,8 +163,9 @@ body { background: var(--bg); color: var(--text); transition: background-color .
 }
 .work-stage::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .05; background-image: var(--noise); }
 .work-stage::before { content: ""; position: absolute; inset: 0 0 auto; height: 240px; z-index: 1; pointer-events: none; background: linear-gradient(180deg, var(--bg) 0%, color-mix(in srgb, var(--bg) 55%, transparent) 45%, transparent 100%); }
-/* Soft hand-off into the stack section: fade the band's bottom into the page colour. */
-.work-stage > .work-fade { position: absolute; inset: auto 0 0; height: 150px; z-index: 1; pointer-events: none; background: linear-gradient(180deg, transparent 0%, color-mix(in srgb, var(--bg) 60%, transparent) 55%, var(--bg) 100%); }
+/* Soft hand-off into the stack section: the band itself fades out, so whatever
+   page background sits behind it shows through (no colour seam in either theme). */
+.work-stage { --fade: 150px; -webkit-mask-image: linear-gradient(180deg, #000 calc(100% - var(--fade)), transparent); mask-image: linear-gradient(180deg, #000 calc(100% - var(--fade)), transparent); }
 .work-inner { position: relative; z-index: 2; }
 .work-title { text-align: center; margin-bottom: 64px !important; }
 .work-panel .work-title em { color: var(--lime); background: none; }
@@ -303,7 +304,7 @@ body { background: var(--bg); color: var(--text); transition: background-color .
 /* motion mode: pinned full-height stage, chips placed around the heading */
 /* The heading is centred in a full-height pinned stage, so its top half is empty
    before the pin starts: tuck that half under the work band's fade-out. */
-.stack-section.is-orbit { margin-top: calc((100svh - var(--hh-site)) * -.25); }
+.stack-section.is-orbit { margin-top: calc((100svh - var(--hh-site)) * -.3); }
 .stack-section.is-orbit .stack-stage { height: calc(100svh - var(--hh-site)); min-height: 560px; padding: 0; display: grid; place-items: center; overflow: hidden; }
 .stack-section.is-orbit .stack-cloud { position: absolute; inset: 0; width: auto; margin: 0; display: block; }
 .stack-section.is-orbit .stack-chip { position: absolute; font-size: clamp(16px, 1.6vw, 24px); opacity: 0; visibility: hidden; will-change: transform, opacity; }
@@ -362,7 +363,7 @@ body { background: var(--bg); color: var(--text); transition: background-color .
 }
 @media (max-width: 899px) {
   .work-stage { padding: 90px 0 100px; }
-  .work-stage > .work-fade { height: 100px; }
+  .work-stage { --fade: 100px; }
   .service-viewport { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
   .service-viewport::-webkit-scrollbar { display: none; }
   .service-track { justify-content: flex-start; padding-inline: 32px; }

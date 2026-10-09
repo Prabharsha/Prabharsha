@@ -111,7 +111,6 @@ export default function WorkShowcase() {
             </div>
           </div>
         </div>
-        <div className="work-fade" aria-hidden="true" />
       </div>
     </section>
   );
