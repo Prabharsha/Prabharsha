@@ -1,15 +1,9 @@
 "use client";
 
-import {
-  motion,
-  useMotionValue,
-  useMotionValueEvent,
-  useScroll,
-  useSpring,
-  useTransform,
-  type MotionValue,
-} from "framer-motion";
+import { createAnimatable, utils, type AnimatableObject } from "animejs";
 import { useEffect, useRef } from "react";
+
+import { EASE_FOLLOW, prefersReducedMotion } from "@/lib/motion";
 
 type RGB = [number, number, number];
 
@@ -65,124 +59,174 @@ const KEYS = Object.keys(STOPS);
  */
 const STEPS = 48;
 
-function lerp(a: number, b: number, t: number) {
-  return Math.round(a + (b - a) * t);
-}
-
 function paletteAt(p: number, key: string): string {
   const [day, dusk, night] = STOPS[key];
-  let from: RGB, to: RGB, t: number;
-  if (p < 0.5) {
-    from = day;
-    to = dusk;
-    t = p / 0.5;
-  } else {
-    from = dusk;
-    to = night;
-    t = (p - 0.5) / 0.5;
-  }
-  return `${lerp(from[0], to[0], t)} ${lerp(from[1], to[1], t)} ${lerp(from[2], to[2], t)}`;
+  const from = p < 0.5 ? day : dusk;
+  const to = p < 0.5 ? dusk : night;
+  const t = p < 0.5 ? p / 0.5 : (p - 0.5) / 0.5;
+  const r = Math.round(utils.lerp(from[0], to[0], t));
+  const g = Math.round(utils.lerp(from[1], to[1], t));
+  const b = Math.round(utils.lerp(from[2], to[2], t));
+  return r + " " + g + " " + b;
 }
 
 function applyPalette(p: number) {
   const root = document.documentElement;
-  for (const key of KEYS) {
-    root.style.setProperty(key, paletteAt(p, key));
-  }
+  for (const key of KEYS) root.style.setProperty(key, paletteAt(p, key));
 }
 
-type GlowProps = {
-  className: string;
-  depth: number;
-  delay: number;
-  mx: MotionValue<number>;
-  my: MotionValue<number>;
-};
+/** Scroll progress through the whole document, clamped to 0..1. */
+function scrollProgress(): number {
+  const max = document.documentElement.scrollHeight - window.innerHeight;
+  return max <= 0 ? 0 : utils.clamp(window.scrollY / max, 0, 1);
+}
 
-function Glow({ className, depth, delay, mx, my }: GlowProps) {
-  const x = useTransform(mx, [0, 1], [depth, -depth]);
-  const y = useTransform(my, [0, 1], [depth, -depth]);
-  return (
-    <motion.div
-      className={`absolute rounded-full ${className}`}
-      style={{
-        x,
-        y,
-        background:
-          "radial-gradient(circle at 50% 50%, rgb(var(--accent-soft) / 0.35) 0%, transparent 70%)",
-        filter: "blur(70px)",
-      }}
-      initial={{ opacity: 0, scale: 0.6 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 2.4, delay, ease: "easeOut" }}
-    />
-  );
+/** Where the sun sits, how big and how bright, at a given scroll progress. */
+function arc(p: number) {
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  return {
+    // Percentages of the viewport resolved to px, so the whole arc composites
+    // as a transform instead of re-laying-out `top`/`left` every frame.
+    x: (0.7 + p * 0.24) * vw,
+    y: (0.12 + p * 0.92) * vh,
+    scale:
+      p < 0.6
+        ? utils.mapRange(p, 0, 0.6, 1, 0.78)
+        : utils.mapRange(p, 0.6, 1, 0.78, 0.6),
+    opacity:
+      p < 0.55
+        ? utils.mapRange(p, 0, 0.55, 1, 0.85)
+        : utils.clamp(utils.mapRange(p, 0.55, 0.85, 0.85, 0), 0, 1),
+    stars: utils.clamp(utils.mapRange(p, 0.55, 0.92, 0, 0.8), 0, 0.8),
+  };
 }
 
 export default function Atmosphere() {
-  const { scrollYProgress } = useScroll();
-
-  // Cursor parallax for the light glows.
-  const mxRaw = useMotionValue(0.5);
-  const myRaw = useMotionValue(0.5);
-  const mx = useSpring(mxRaw, { stiffness: 40, damping: 20, mass: 0.6 });
-  const my = useSpring(myRaw, { stiffness: 40, damping: 20, mass: 0.6 });
-
-  // Last palette step written to :root; repeat scroll events become no-ops.
-  const step = useRef(-1);
-  const frame = useRef(0);
-
-  // Sun: rises high & bright at the top-right, arcs down toward the right
-  // corner and sets below the horizon by the bottom of the page.
-  const sunTop = useTransform(scrollYProgress, [0, 1], ["12%", "104%"]);
-  const sunLeft = useTransform(scrollYProgress, [0, 1], ["70%", "94%"]);
-  const sunScale = useTransform(scrollYProgress, [0, 0.6, 1], [1, 0.78, 0.6]);
-  const sunOpacity = useTransform(
-    scrollYProgress,
-    [0, 0.55, 0.85],
-    [1, 0.85, 0]
-  );
-  const starsOpacity = useTransform(
-    scrollYProgress,
-    [0.55, 0.92],
-    [0, 0.8]
-  );
+  const sunRef = useRef<HTMLDivElement>(null);
+  const haloRef = useRef<HTMLDivElement>(null);
+  const starsRef = useRef<HTMLDivElement>(null);
+  const glowARef = useRef<HTMLDivElement>(null);
+  const glowBRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const reduce = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
+    const sun = sunRef.current;
+    const halo = haloRef.current;
+    const stars = starsRef.current;
+    const glowA = glowARef.current;
+    const glowB = glowBRef.current;
+    if (!sun || !halo || !stars || !glowA || !glowB) return;
 
-    // Set initial palette from current scroll position.
-    const start = reduce ? 0.85 : scrollYProgress.get();
-    step.current = Math.round(start * STEPS);
-    applyPalette(step.current / STEPS);
+    const reduce = prefersReducedMotion();
+    const animatables: AnimatableObject[] = [];
 
-    const onMove = (e: PointerEvent) => {
-      mxRaw.set(e.clientX / window.innerWidth);
-      myRaw.set(e.clientY / window.innerHeight);
-    };
-    if (!reduce) {
-      window.addEventListener("pointermove", onMove, { passive: true });
-    }
-    return () => {
-      window.removeEventListener("pointermove", onMove);
-      if (frame.current) cancelAnimationFrame(frame.current);
-    };
-  }, [scrollYProgress, mxRaw, myRaw]);
+    /* ------------------- sun + sky, driven by scroll ------------------- */
 
-  useMotionValueEvent(scrollYProgress, "change", (p) => {
-    if (Math.round(p * STEPS) === step.current || frame.current) return;
-    // Defer the :root write out of the scroll handler so it lands at most once
-    // per frame and never forces style recalc mid-scroll.
-    frame.current = requestAnimationFrame(() => {
-      frame.current = 0;
-      const next = Math.round(scrollYProgress.get() * STEPS);
-      if (next === step.current) return;
-      step.current = next;
-      applyPalette(next / STEPS);
+    // The sun's arc is scroll-*linked*, not scroll-triggered, so it rides on
+    // animatables with a short follow duration. anime smooths between the
+    // quantised scroll samples on its own frame loop, which is what the two
+    // framer springs used to do, minus the per-value React subscriptions.
+    const follow = reduce ? 0 : 220;
+    const sunAnim = createAnimatable(sun, {
+      x: follow,
+      y: follow,
+      scale: follow,
+      opacity: follow,
+      ease: EASE_FOLLOW,
     });
-  });
+    const haloAnim = createAnimatable(halo, {
+      x: follow,
+      y: follow,
+      opacity: follow,
+      ease: EASE_FOLLOW,
+    });
+    const starsAnim = createAnimatable(stars, {
+      opacity: reduce ? 0 : 400,
+      ease: "linear",
+    });
+    animatables.push(sunAnim, haloAnim, starsAnim);
+
+    // Last palette step written to :root; repeat scroll events become no-ops.
+    let step = -1;
+    let frame = 0;
+
+    // `snap` skips the follow duration. Used for the very first paint and on
+    // resize, where easing toward the new position would read as a glitch
+    // rather than as motion.
+    const render = (snap = false) => {
+      frame = 0;
+      const p = scrollProgress();
+      const a = arc(p);
+      const d = snap ? 0 : undefined;
+
+      sunAnim.x(a.x, d);
+      sunAnim.y(a.y, d);
+      sunAnim.scale(a.scale, d);
+      sunAnim.opacity(a.opacity, d);
+      haloAnim.x(a.x, d);
+      haloAnim.y(a.y, d);
+      haloAnim.opacity(a.opacity, d);
+      starsAnim.opacity(a.stars, d);
+
+      const next = Math.round(p * STEPS);
+      if (next !== step) {
+        step = next;
+        applyPalette(next / STEPS);
+      }
+    };
+
+    // Defer every scroll response out of the event handler so it lands at most
+    // once per frame and never forces a style recalc mid-scroll.
+    const onScrollEvent = () => {
+      if (!frame) frame = requestAnimationFrame(() => render());
+    };
+    const onResize = () => {
+      if (frame) cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => render(true));
+    };
+
+    if (reduce) {
+      // Skip straight to night and leave the sky static.
+      step = Math.round(0.85 * STEPS);
+      applyPalette(step / STEPS);
+      const a = arc(0.85);
+      sunAnim.x(a.x, 0);
+      sunAnim.y(a.y, 0);
+      sunAnim.opacity(0, 0);
+      starsAnim.opacity(0.8, 0);
+    } else {
+      render(true);
+      window.addEventListener("scroll", onScrollEvent, { passive: true });
+      window.addEventListener("resize", onResize, { passive: true });
+    }
+
+    /* ---------------- cursor parallax on the light studies ---------------- */
+
+    let onPointer: ((e: PointerEvent) => void) | null = null;
+    if (!reduce) {
+      const a = createAnimatable(glowA, { x: 900, y: 900, ease: EASE_FOLLOW });
+      const b = createAnimatable(glowB, { x: 900, y: 900, ease: EASE_FOLLOW });
+      animatables.push(a, b);
+
+      onPointer = (e: PointerEvent) => {
+        const nx = e.clientX / window.innerWidth - 0.5;
+        const ny = e.clientY / window.innerHeight - 0.5;
+        a.x(-nx * 110);
+        a.y(-ny * 110);
+        b.x(nx * 100);
+        b.y(ny * 100);
+      };
+      window.addEventListener("pointermove", onPointer, { passive: true });
+    }
+
+    return () => {
+      window.removeEventListener("scroll", onScrollEvent);
+      window.removeEventListener("resize", onResize);
+      if (onPointer) window.removeEventListener("pointermove", onPointer);
+      if (frame) cancelAnimationFrame(frame);
+      for (const a of animatables) a.revert();
+    };
+  }, []);
 
   return (
     <div
@@ -194,12 +238,13 @@ export default function Atmosphere() {
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/40" />
 
       {/* Horizon glow that tracks the sun */}
-      <motion.div
-        className="absolute h-[60vh] w-[120vw] -translate-x-1/2 rounded-[50%]"
+      {/* Anchored at the top-left and pulled back by half its own width, so the
+          transform anime writes positions its centre-x / top edge — matching
+          how the arc was framed when it rode on `top`/`left`. */}
+      <div
+        ref={haloRef}
+        className="absolute left-0 top-0 -ml-[60vw] h-[60vh] w-[120vw] rounded-[50%] opacity-0 will-change-transform"
         style={{
-          top: sunTop,
-          left: sunLeft,
-          opacity: sunOpacity,
           background:
             "radial-gradient(closest-side, rgb(var(--accent-soft) / 0.45), rgb(var(--accent) / 0.18) 45%, transparent 75%)",
           filter: "blur(40px)",
@@ -207,40 +252,53 @@ export default function Atmosphere() {
       />
 
       {/* The sun */}
-      <motion.div
-        className="absolute h-[26vh] w-[26vh] -translate-x-1/2 rounded-full"
+      <div
+        ref={sunRef}
+        className="absolute left-0 top-0 -ml-[13vh] h-[26vh] w-[26vh] rounded-full opacity-0 will-change-transform"
         style={{
-          top: sunTop,
-          left: sunLeft,
-          scale: sunScale,
-          opacity: sunOpacity,
           background:
             "radial-gradient(circle at 50% 50%, rgb(var(--accent-soft)) 0%, rgb(var(--accent) / 0.85) 32%, rgb(var(--accent-deep) / 0.25) 55%, transparent 72%)",
           filter: "blur(8px)",
         }}
       />
 
-      {/* Parallax light studies */}
-      <Glow
-        className="-left-[10%] top-[8%] h-[55vh] w-[55vh]"
-        depth={55}
-        delay={0.3}
-        mx={mx}
-        my={my}
-      />
-      <Glow
-        className="right-[-12%] top-[45%] h-[50vh] w-[50vh]"
-        depth={-50}
-        delay={0.7}
-        mx={mx}
-        my={my}
-      />
+      {/* Parallax light studies.
+          Two nested elements on purpose: the outer one carries the cursor
+          parallax that anime writes continuously, the inner one carries the
+          one-shot entrance. Sharing a single node would mean the entrance's
+          `transform` and the parallax's `transform` overwriting each other. */}
+      <div
+        ref={glowARef}
+        className="absolute -left-[10%] top-[8%] h-[55vh] w-[55vh] will-change-transform"
+      >
+        <div
+          className="h-full w-full animate-glow-in rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle at 50% 50%, rgb(var(--accent-soft) / 0.35) 0%, transparent 70%)",
+            filter: "blur(70px)",
+          }}
+        />
+      </div>
+      <div
+        ref={glowBRef}
+        className="absolute right-[-12%] top-[45%] h-[50vh] w-[50vh] will-change-transform"
+      >
+        <div
+          className="h-full w-full animate-glow-in-late rounded-full"
+          style={{
+            background:
+              "radial-gradient(circle at 50% 50%, rgb(var(--accent-soft) / 0.35) 0%, transparent 70%)",
+            filter: "blur(70px)",
+          }}
+        />
+      </div>
 
       {/* Stars fade in at night */}
-      <motion.div
-        className="absolute inset-0"
+      <div
+        ref={starsRef}
+        className="absolute inset-0 opacity-0"
         style={{
-          opacity: starsOpacity,
           backgroundImage:
             "radial-gradient(1.4px 1.4px at 20% 30%, rgba(255,255,255,0.9), transparent), radial-gradient(1.2px 1.2px at 70% 20%, rgba(255,255,255,0.8), transparent), radial-gradient(1.6px 1.6px at 40% 70%, rgba(255,255,255,0.85), transparent), radial-gradient(1.1px 1.1px at 85% 60%, rgba(255,255,255,0.7), transparent), radial-gradient(1.3px 1.3px at 55% 45%, rgba(255,255,255,0.8), transparent), radial-gradient(1px 1px at 15% 80%, rgba(255,255,255,0.6), transparent), radial-gradient(1.5px 1.5px at 90% 35%, rgba(255,255,255,0.85), transparent), radial-gradient(1px 1px at 30% 15%, rgba(255,255,255,0.6), transparent)",
           backgroundSize: "100% 100%",

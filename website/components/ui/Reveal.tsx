@@ -1,36 +1,16 @@
 "use client";
 
-import { motion, useInView, type Variants } from "framer-motion";
-import { useRef, type ReactNode } from "react";
-
-type RevealVariant = "up" | "left" | "right" | "blur" | "scale" | "rise";
-
-const variants: Record<RevealVariant, Variants> = {
-  up: {
-    hidden: { opacity: 0, y: 24 },
-    show: { opacity: 1, y: 0 },
-  },
-  rise: {
-    hidden: { opacity: 0, y: 48 },
-    show: { opacity: 1, y: 0 },
-  },
-  left: {
-    hidden: { opacity: 0, x: -32 },
-    show: { opacity: 1, x: 0 },
-  },
-  right: {
-    hidden: { opacity: 0, x: 32 },
-    show: { opacity: 1, x: 0 },
-  },
-  blur: {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 },
-  },
-  scale: {
-    hidden: { opacity: 0, scale: 0.94, y: 16 },
-    show: { opacity: 1, scale: 1, y: 0 },
-  },
-};
+import { useEffect, useRef, type ReactNode } from "react";
+import {
+  hiddenStyle,
+  observeInView,
+  playIn,
+  playOut,
+  prefersReducedMotion,
+  setHidden,
+  setShown,
+  type RevealVariant,
+} from "@/lib/motion";
 
 type RevealProps = {
   children: ReactNode;
@@ -44,10 +24,13 @@ type RevealProps = {
  * Scroll reveal that replays each time the element comes back into view.
  *
  * Visibility is observed on a plain wrapper, never on the element that moves.
- * With `whileInView` the observer watches the animated box, so the hidden
- * state's own offset can push the element out of the trigger area; the
- * observer then has nothing left to report and the content stays invisible
- * for good. Splitting the two makes the trigger independent of the animation.
+ * If the observer watched the animated box, the hidden state's own offset could
+ * push the element out of the trigger area; the observer would then have
+ * nothing left to report and the content would stay invisible for good.
+ * Splitting the two makes the trigger independent of the animation.
+ *
+ * The trigger is a page-wide shared IntersectionObserver and the motion runs on
+ * anime.js, so a reveal costs no React render and no observer of its own.
  */
 export default function Reveal({
   children,
@@ -56,22 +39,37 @@ export default function Reveal({
   duration = 0.7,
   className,
 }: RevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { margin: "-60px 0px" });
+  const trigger = useRef<HTMLDivElement>(null);
+  const mover = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = mover.current;
+    const box = trigger.current;
+    if (!el || !box) return;
+
+    if (prefersReducedMotion()) {
+      setShown(el, variant);
+      return;
+    }
+
+    setHidden(el, variant);
+    return observeInView(box, (inView) => {
+      if (inView) playIn(el, variant, duration, delay);
+      else playOut(el, variant);
+    });
+  }, [variant, delay, duration]);
 
   // h-full on the inner element keeps `h-full` children working: the wrapper is
   // the grid item that stretches, so the mover must pass that height through.
   return (
-    <div ref={ref} className={className}>
-      <motion.div
-        className="h-full"
-        variants={variants[variant]}
-        initial="hidden"
-        animate={inView ? "show" : "hidden"}
-        transition={{ duration, delay, ease: [0.21, 0.47, 0.32, 0.98] }}
+    <div ref={trigger} className={className}>
+      <div
+        ref={mover}
+        className="h-full will-change-[transform,opacity]"
+        style={hiddenStyle(variant)}
       >
         {children}
-      </motion.div>
+      </div>
     </div>
   );
 }
