@@ -12,8 +12,8 @@ import "./hero-v2/hero-v2.css";
  *
  * Layers, back to front: gradient, cursor glow, headline, cut-out portrait,
  * labels. The headline sits BEHIND the portrait. On scroll the whole card
- * shrinks into a code-editor window over a collage of project screens, then
- * the pin releases into the rest of the page.
+ * shrinks into a code-editor window over columns of project screens that
+ * drift upward on their own, then the pin releases into the rest of the page.
  *
  * The markup is static, so it is injected as a string; GSAP only touches it
  * after mount. Without JS or with reduced motion the hero stays a plain,
@@ -94,16 +94,12 @@ export default function HeroV2() {
         tl.to(q(".hv2-card"), { scale: 0.46, borderRadius: 56, duration: 1 }, 0)
           .to(q(".hv2-ui, .hv2-glow, .hv2-metas"), { autoAlpha: 0, duration: 0.35 }, 0)
           .to(q(".hv2-chrome"), { autoAlpha: 1, duration: 0.45 }, 0.4)
+          // tiles arrive here; their endless upward drift is a CSS marquee (hero-v2.css)
           .fromTo(
             q(".hv2-tile"),
             { autoAlpha: 0, scale: 1.4 },
-            { autoAlpha: 1, scale: 1, duration: 0.9, stagger: { each: 0.05, from: "center" } },
+            { autoAlpha: 1, scale: 1, duration: 0.9, stagger: { amount: 0.5, from: "center" } },
             0.1,
-          )
-          .to(
-            q(".hv2-tile"),
-            { y: (_i: number, t: HTMLElement) => -Number(t.dataset.depth) * 34, duration: 1.5, ease: "none" },
-            0,
           )
           .to({}, { duration: 0.4 });
 

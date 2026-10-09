@@ -103,13 +103,21 @@
 .hv2-chrome i:first-child { background: var(--lime); }
 .hv2-chrome span { margin-left: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-/* collage of project screens, behind the card (desktop + motion only) */
-.hv2-collage { position: absolute; inset: 0; z-index: 1; display: none; }
-@media (min-width: 768px) and (prefers-reduced-motion: no-preference) { .hv2-collage { display: block; } }
-.hv2-tile {
-  position: absolute; left: var(--x); top: var(--y); width: var(--w, 21vw);
-  border-radius: .9vw; overflow: hidden; box-shadow: 0 1.6vw 4vw rgba(0,10,12,.5);
+/* collage of project screens, behind the card (desktop + motion only):
+   columns that drift upward on an endless loop, each at its own speed */
+.hv2-collage { position: absolute; inset: 0; z-index: 1; display: none; justify-content: space-evenly; container-type: size; }
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) { .hv2-collage { display: flex; } }
+.hv2-col { flex: none; width: 21vw; }
+.hv2-track {
+  /* tile height is 21vw * 10/16; the gap grows on tall screens so one copy of a
+     column is always at least the hero's height and the loop never shows a seam */
+  --gap: max(2vw, 100cqh / var(--n) - 13.125vw);
+  display: flow-root; /* keep the last tile's margin inside, so -50% is exactly one copy */
+  animation: hv2-marquee var(--dur) linear var(--delay, 0s) infinite var(--dir, normal);
+  will-change: transform;
 }
+@keyframes hv2-marquee { to { transform: translate3d(0, -50%, 0); } }
+.hv2-tile { margin-bottom: var(--gap); border-radius: .9vw; overflow: hidden; box-shadow: 0 1.6vw 4vw rgba(0,10,12,.5); }
 
 /* ───────── MOCK SCREENS (all sizes derive from container width) ───────── */
 .hv2-screen { container-type: inline-size; position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #012a30; }
