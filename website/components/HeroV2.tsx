@@ -54,7 +54,7 @@ export default function HeroV2() {
 
         // 2. mouse parallax: portrait moves most, headline less, background against them
         const glow = q(".hv2-glow")[0];
-        const layers = ([[".hv2-bg-wrap", -7], [".hv2-headline", 7], [".hv2-subject-wrap", 14]] as const).map(
+        const layers = ([[".hv2-bg-wrap", -7], [".hv2-intro", 7], [".hv2-subject-wrap", 14]] as const).map(
           ([sel, f]) => ({
             f,
             x: gsap.quickTo(q(sel)[0], "x", { duration: 1, ease: "power3.out" }),
@@ -92,7 +92,7 @@ export default function HeroV2() {
           },
         });
         tl.to(q(".hv2-card"), { scale: 0.46, borderRadius: 56, boxShadow: "0 60px 160px rgba(0,0,0,.6)", duration: 1 }, 0)
-          .to(q(".hv2-ui, .hv2-glow"), { autoAlpha: 0, duration: 0.35 }, 0)
+          .to(q(".hv2-ui, .hv2-glow, .hv2-metas"), { autoAlpha: 0, duration: 0.35 }, 0)
           .to(q(".hv2-chrome"), { autoAlpha: 1, duration: 0.45 }, 0.4)
           .fromTo(
             q(".hv2-tile"),

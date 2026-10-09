@@ -34,13 +34,17 @@ $ _</div></div></div>
       <div class="hv2-stage">
         <div class="hv2-bg-wrap"><div class="hv2-stage-bg"></div></div>
         <div class="hv2-glow" aria-hidden="true"></div>
-        <h1 class="hv2-headline" id="hero-heading"><span class="hv2-hl-line"><span>Engineering the</span></span><span class="hv2-hl-line"><span>systems behind</span></span><span class="hv2-hl-line"><span>money.</span></span></h1>
+        <div class="hv2-intro">
+          <h1 class="hv2-headline" id="hero-heading"><span class="hv2-hl-line"><span>Full-stack</span></span><span class="hv2-hl-line"><span>engineer in</span></span><span class="hv2-hl-line"><span>fintech.</span></span></h1>
+          <div class="hv2-metas">
+            <p class="hv2-meta"><strong>Software Engineer</strong>Colombo, Sri Lanka</p>
+            <p class="hv2-meta"><strong>Fintech engineering</strong>Java · Spring Boot · React</p>
+          </div>
+        </div>
         <div class="hv2-subject-wrap">
           <img class="hv2-subject" src="/images/hero-subject.webp" width="722" height="2144" alt="3D illustrated portrait of Prabharsha in sunglasses and a black t-shirt, hand in pocket" decoding="async" fetchpriority="high">
         </div>
         <div class="hv2-ui">
-                <p class="hv2-meta hv2-meta--top"><strong>Fintech engineering</strong>Java · Spring Boot · React</p>
-        <p class="hv2-meta hv2-meta--bottom"><strong>Software Engineer</strong>Colombo, Sri Lanka</p>
         <p class="hv2-hint">Scroll</p>
         </div>
       </div>
