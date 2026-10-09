@@ -5,8 +5,14 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowUpRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import { projects, site, type Project } from "@/data/site";
+import { caseStudyTitles } from "@/data/caseStudies";
+import { projects as allProjects, site, type Project } from "@/data/site";
 import { scrollToY } from "@/lib/smooth";
+
+import CaseStudies from "./CaseStudies";
+
+// Projects with real captures get full case studies above; the rest go in the pinned list.
+const projects = allProjects.filter((p) => !caseStudyTitles.has(p.title));
 
 function projectLink(project: Project) {
   if (project.github) return { href: project.github, label: "Explore the code", external: true };
@@ -69,6 +75,11 @@ export default function WorkShowcase() {
         <div className="drift" aria-hidden="true"><i /><i /></div>
         <div className="wrap work-inner">
           <h2 id="work-heading" className="work-title">Less talk. <em>More building.</em></h2>
+          <CaseStudies />
+          <div className="work-more-head">
+            <h3>More projects</h3>
+            <p>Products, client work and experiments across the stack.</p>
+          </div>
           <div className="work-grid">
             <ol className="work-list" aria-label="Projects">
               {projects.map((project, index) => (
