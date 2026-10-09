@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Layers, Server, Landmark, Rocket, type LucideIcon } from "lucide-react";
 import { services, type Service } from "@/data/site";
 import SectionHeading from "./ui/SectionHeading";
@@ -27,11 +26,10 @@ export default function Services() {
           const Icon = icons[service.key];
           return (
             <Reveal key={service.key} variant="up" delay={i * 0.1} duration={0.6}>
-              <motion.div
-                whileHover={{ y: -6 }}
-                transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                className="glass glass-hover group relative h-full overflow-hidden rounded-2xl p-6"
-              >
+              {/* The lift is a plain CSS transition: a one-shot hover onto a
+                  static offset needs no animation engine, and keeping it off
+                  the JS loop leaves the frame budget to the reveals. */}
+              <div className="glass glass-hover group relative h-full overflow-hidden rounded-2xl p-6 transition-transform duration-300 ease-out hover:-translate-y-1.5">
                 {/* hover glow */}
                 <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-accent/20 opacity-0 blur-2xl transition-opacity duration-300 group-hover:opacity-100" />
 
@@ -42,7 +40,7 @@ export default function Services() {
                 <p className="mt-2 text-sm leading-relaxed text-muted">
                   {service.description}
                 </p>
-              </motion.div>
+              </div>
             </Reveal>
           );
         })}

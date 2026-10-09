@@ -55,6 +55,12 @@ const config: Config = {
           "0%": { opacity: "0", transform: "translateY(12px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        // Entrance for the sky's light studies. Kept on the inner node so it
+        // never collides with the parallax transform on the wrapper.
+        "glow-in": {
+          "0%": { opacity: "0", transform: "scale(0.6)" },
+          "100%": { opacity: "1", transform: "scale(1)" },
+        },
       },
       animation: {
         "aurora-1": "aurora-1 18s ease-in-out infinite",
@@ -62,6 +68,11 @@ const config: Config = {
         "aurora-3": "aurora-3 26s ease-in-out infinite",
         float: "float 4s ease-in-out infinite",
         "fade-up": "fade-up 0.6s ease-out both",
+        // Named rather than arbitrary (`animate-[glow-in_...]`) because
+        // Tailwind only emits the @keyframes block for animations reached
+        // through this map.
+        "glow-in": "glow-in 2.4s ease-out 0.3s both",
+        "glow-in-late": "glow-in 2.4s ease-out 0.7s both",
       },
     },
   },

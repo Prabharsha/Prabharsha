@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
-import Atmosphere from "@/components/Atmosphere";
+import "./portfolio.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
 
@@ -24,7 +24,7 @@ const fraunces = Fraunces({
   style: ["normal", "italic"],
 });
 
-const siteUrl = "https://prabharsha.vercel.app";
+const siteUrl = "https://prabharsha.me";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -69,7 +69,6 @@ export default function RootLayout({
       className={`${inter.variable} ${jetbrains.variable} ${fraunces.variable}`}
     >
       <body className="font-sans antialiased">
-        <Atmosphere />
         {children}
         <SpeedInsights />
         <Analytics />
