@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Fraunces } from "next/font/google";
+import { Archivo, Inter, JetBrains_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import "./portfolio.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
+import "lenis/dist/lenis.css";
+
+import Providers from "@/components/Providers";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -22,6 +25,13 @@ const fraunces = Fraunces({
   variable: "--font-fraunces",
   display: "swap",
   style: ["normal", "italic"],
+});
+
+const archivo = Archivo({
+  subsets: ["latin"],
+  variable: "--font-archivo",
+  axes: ["wdth"],
+  display: "swap",
 });
 
 const siteUrl = "https://prabharsha.me";
@@ -66,10 +76,11 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${jetbrains.variable} ${fraunces.variable}`}
+      suppressHydrationWarning
+      className={`${inter.variable} ${jetbrains.variable} ${fraunces.variable} ${archivo.variable}`}
     >
       <body className="font-sans antialiased">
-        {children}
+        <Providers>{children}</Providers>
         <SpeedInsights />
         <Analytics />
       </body>

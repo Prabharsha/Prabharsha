@@ -1,0 +1,184 @@
+/*
+ * v2 hero: teal / lime palette, scroll-driven. Everything is scoped under .hv2 and
+ * prefixed hv2- so it cannot collide with portfolio.css or Tailwind.
+ */
+.hv2 {
+  --night: #001e23;
+  --teal-deep: #00333b;
+  --teal: #00545f;
+  --lime: #d6fb00;
+  --lime-pale: #ecffb6;
+  --ember: #ff7a3d;
+  --ink: #04323a;
+  --mist: #bfe0cf;
+  --font-display: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --font-body: var(--font-archivo), "Helvetica Neue", Arial, sans-serif;
+  --font-code: var(--font-jetbrains), ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --gutter: clamp(16px, 3.2vw, 56px);
+  --hh: 88px; /* sticky site header height, measured at runtime */
+  position: relative; height: calc(100svh - var(--hh)); min-height: 520px; overflow: hidden;
+  background: var(--night); color: #fff;
+  font-family: var(--font-body); font-size: 16px; line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+.hv2 *, .hv2 *::before, .hv2 *::after { box-sizing: border-box; }
+/* ───────── HERO ───────── */
+.hv2-card {
+  position: absolute; inset: 0; overflow: hidden; z-index: 2;
+  transform-origin: 50% 50%; will-change: transform;
+  /* static: only visible once the card shrinks (the section clips it at full size) */
+  box-shadow: 0 60px 160px rgba(0,0,0,.55);
+}
+.hv2-stage { position: absolute; inset: 0; --H: calc(100svh - var(--hh)); --u: min(1vw, calc(var(--H) * .0207)); }
+.hv2-bg-wrap { position: absolute; inset: -4%; }
+.hv2-stage-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(30% 46% at 86% 44%, rgba(236,255,182,.85) 0%, rgba(236,255,182,0) 72%),
+    radial-gradient(52% 78% at 88% 72%, rgba(214,251,0,.9) 0%, rgba(214,251,0,0) 70%),
+    radial-gradient(60% 80% at -4% -8%, rgba(0,30,35,.75) 0%, rgba(0,30,35,0) 68%),
+    linear-gradient(158deg, #00697a 0%, #00545f 52%, #00333b 100%);
+}
+.hv2-stage-bg::after {
+  content: ""; position: absolute; inset: 0; opacity: .07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.hv2-drift { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.hv2-drift i { position: absolute; display: block; border-radius: 50%; will-change: transform; animation: hv2-drift-a 26s ease-in-out infinite alternate; }
+.hv2-drift i:nth-child(1) { width: 60vmax; height: 60vmax; right: -12vmax; bottom: -22vmax; background: radial-gradient(closest-side, rgba(214,251,0,.42), rgba(214,251,0,0)); }
+.hv2-drift i:nth-child(2) { display: none; }
+@keyframes hv2-drift-a { 0% { transform: translate3d(0,0,0) scale(1); } 50% { transform: translate3d(-9vw,-7vh,0) scale(1.15); } 100% { transform: translate3d(-3vw,4vh,0) scale(.95); } }
+@keyframes hv2-drift-b { 0% { transform: translate3d(0,0,0) scale(1); } 50% { transform: translate3d(10vw,8vh,0) scale(.9); } 100% { transform: translate3d(4vw,14vh,0) scale(1.12); } }
+@media (prefers-reduced-motion: reduce) { .hv2-drift i { animation: none; } }
+.hv2-glow {
+  position: absolute; left: 0; top: 0; width: 56vmax; height: 56vmax; margin: -28vmax 0 0 -28vmax;
+  background:
+    radial-gradient(closest-side, rgba(236,255,182,.55) 0%, rgba(236,255,182,0) 32%),
+    radial-gradient(closest-side, rgba(214,251,0,.5) 0%, rgba(214,251,0,.18) 45%, rgba(214,251,0,0) 100%);
+  pointer-events: none; display: none; will-change: transform;
+}
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) { .hv2-glow { display: block; } }
+.hv2-intro {
+  position: absolute; left: var(--gutter); top: 0; bottom: 0; z-index: 1;
+  display: flex; flex-direction: column; justify-content: center; gap: clamp(20px, 3.4vh, 36px);
+  padding-bottom: 2vh;
+}
+.hv2-headline {
+  position: relative; margin: 0;
+  display: flex; flex-direction: column;
+  font-family: var(--font-display); font-weight: 780; font-stretch: 108%;
+  font-size: max(2.6rem, calc(var(--u) * 8.4)); line-height: .93; letter-spacing: -.025em;
+  text-wrap: nowrap;
+}
+.hv2-hl-line { display: block; overflow: hidden; padding-bottom: .2em; margin-bottom: -.2em; }
+.hv2-hl-line > span { display: block; }
+.hv2-hl-line:last-child { color: var(--lime); }
+.hv2-subject-wrap { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.hv2-subject {
+  position: absolute; right: calc(var(--gutter) * .35); left: auto; top: calc(var(--H) * .075); height: calc(var(--H) * 1.7); width: auto;
+  max-width: none;
+}
+.hv2-ui { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.hv2-ui > * { pointer-events: auto; }
+.hv2-meta {
+  position: relative; margin: 0; text-align: left;
+  font-size: clamp(.78rem, .92vw, 1rem); line-height: 1.35; color: var(--mist);
+  background: rgba(0,30,35,.62); border: 1px solid rgba(255,255,255,.12); box-shadow: inset 0 1px 0 rgba(255,255,255,.12);
+  padding: .6em .9em; border-radius: .8em;
+}
+.hv2-meta strong { display: block; color: #fff; font-weight: 600; }
+.hv2-metas { display: flex; flex-wrap: wrap; gap: 12px; }
+.hv2-hint {
+  position: absolute; left: var(--gutter); bottom: clamp(24px, 5vh, 56px); z-index: 3;
+  display: flex; align-items: center; gap: .8em; font-size: .8rem; color: var(--mist);
+}
+.hv2-hint::after { content: ""; width: 56px; height: 1px; background: currentColor; opacity: .7; }
+.hv2-chrome {
+  position: absolute; left: 0; right: 0; top: 0; z-index: 5; height: 96px;
+  display: flex; align-items: center; gap: 22px; padding: 0 36px; opacity: 0; visibility: hidden;
+  background: rgba(0,30,35,.94); border-bottom: 1px solid rgba(255,255,255,.1);
+  font-family: var(--font-code); font-size: 30px; color: var(--mist);
+}
+.hv2-chrome i { width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,.25); flex: none; }
+.hv2-chrome i:first-child { background: var(--lime); }
+.hv2-chrome span { margin-left: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* collage of project screens, behind the card (desktop + motion only) */
+.hv2-collage { position: absolute; inset: 0; z-index: 1; display: none; }
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) { .hv2-collage { display: block; } }
+.hv2-tile {
+  position: absolute; left: var(--x); top: var(--y); width: var(--w, 21vw);
+  border-radius: .9vw; overflow: hidden; box-shadow: 0 1.6vw 4vw rgba(0,10,12,.5);
+}
+
+/* ───────── MOCK SCREENS (all sizes derive from container width) ───────── */
+.hv2-screen { container-type: inline-size; position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: #012a30; }
+.hv2-mock { position: absolute; inset: 0; font-size: 3.3cqw; line-height: 1.3; font-family: var(--font-body); }
+.hv2-mock * { margin: 0; }
+.hv2-mock i { font-style: normal; }
+.hv2-m-dash { display: flex; background: #012a30; color: #e6f7d8; }
+.hv2-m-dash .hv2-rail { width: 9%; background: #063e46; }
+.hv2-m-dash .hv2-pane { flex: 1; padding: 1.2em 1.4em; display: flex; flex-direction: column; gap: .9em; min-width: 0; }
+.hv2-ttl { font-weight: 650; display: flex; justify-content: space-between; align-items: baseline; gap: 1em; }
+.hv2-ttl span { opacity: .5; font-weight: 400; font-size: .8em; }
+.hv2-kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6em; }
+.hv2-kpis b { background: #0a4a54; border-radius: .5em; padding: .5em .6em; font-size: 1.25em; font-weight: 650; display: flex; flex-direction: column; }
+.hv2-kpis small { font-size: .5em; opacity: .55; font-weight: 400; }
+.hv2-bars { flex: 1; display: flex; align-items: flex-end; gap: .5em; min-height: 0; }
+.hv2-bars u { flex: 1; height: var(--h); background: linear-gradient(#d6fb00, #86a800); border-radius: .25em .25em 0 0; }
+.hv2-m-dash.hv2-light { background: #f3fcd8; color: #04323a; }
+.hv2-m-dash.hv2-light .hv2-rail { background: #e2f2ad; }
+.hv2-m-dash.hv2-light .hv2-kpis b { background: #fff; box-shadow: 0 .1em .4em rgba(0,50,58,.1); }
+.hv2-m-dash.hv2-light .hv2-bars u { background: linear-gradient(#1c8795, #00545f); }
+.hv2-m-code { background: #01262b; color: #d4efe0; font-family: var(--font-code); }
+.hv2-m-code .hv2-tabs { padding: .7em 1em; background: #063e46; font-size: .85em; color: var(--mist); }
+.hv2-m-code pre { padding: 1em 1.2em; font: inherit; font-size: .95em; line-height: 1.6; white-space: pre; overflow: hidden; }
+.hv2-m-code .hv2-k { color: #d6fb00; } .hv2-m-code .hv2-t { color: #6fd8e0; } .hv2-m-code .hv2-s { color: #ecffb6; } .hv2-m-code .hv2-c { color: #5f9aa0; }
+.hv2-m-rbac { background: #f3fcd8; color: #04323a; padding: 1.2em 1.4em; display: flex; flex-direction: column; gap: .9em; }
+.hv2-m-rbac table { width: 100%; border-collapse: collapse; font-size: .95em; }
+.hv2-m-rbac th { text-align: left; font-weight: 500; opacity: .55; font-size: .8em; padding-bottom: .5em; }
+.hv2-m-rbac td, .hv2-m-rbac th { padding: .5em .3em; border-bottom: 1px solid rgba(0,50,58,.14); }
+.hv2-m-rbac td:first-child { font-weight: 600; }
+.hv2-m-rbac s { display: block; width: 1em; height: 1em; border-radius: .25em; border: .12em solid #b3cc7a; text-decoration: none; }
+.hv2-m-rbac s.hv2-y { background: #00545f; border-color: #00545f; }
+.hv2-m-mon { background: #012226; color: #e6f7d8; padding: 1.2em 1.4em; display: flex; flex-direction: column; gap: .8em; }
+.hv2-m-mon svg { flex: 1; width: 100%; min-height: 0; }
+.hv2-m-mon polyline { fill: none; stroke: #d6fb00; stroke-width: 1.6; vector-effect: non-scaling-stroke; }
+.hv2-m-mon polygon { fill: rgba(214,251,0,.16); }
+.hv2-pills { display: flex; gap: .6em; flex-wrap: wrap; }
+.hv2-pills span { font-size: .8em; padding: .25em .7em; border-radius: 99em; background: rgba(255,255,255,.08); }
+.hv2-pills .hv2-ok::before, .hv2-pills .hv2-warn::before { content: ""; display: inline-block; width: .55em; height: .55em; border-radius: 50%; background: #d6fb00; margin-right: .5em; }
+.hv2-pills .hv2-warn::before { background: var(--ember); }
+.hv2-m-phone { background: linear-gradient(135deg, #ecffb6, #9fd9cf); display: grid; place-items: center; }
+.hv2-m-phone .hv2-ph { width: 38%; height: 88%; background: #fff; color: #04323a; border-radius: 1.6em; padding: 1.4em 1em; box-shadow: 0 .8em 2em rgba(0,50,58,.28); display: flex; flex-direction: column; gap: .5em; font-size: .85em; }
+.hv2-m-phone small { opacity: .5; font-size: .8em; }
+.hv2-m-phone .hv2-bal { font-size: 1.7em; font-weight: 700; letter-spacing: -.02em; margin-bottom: .4em; }
+.hv2-m-phone .hv2-row { display: flex; justify-content: space-between; padding: .45em 0; border-top: 1px solid rgba(0,50,58,.1); }
+.hv2-m-phone em { font-style: normal; font-weight: 600; }
+.hv2-m-event { background: #f7ffe0; color: #04323a; display: flex; flex-direction: column; }
+.hv2-m-event .hv2-art { height: 42%; background: linear-gradient(120deg, #00545f, #d6fb00); }
+.hv2-m-event .hv2-info { padding: 1em 1.3em; display: flex; flex-direction: column; gap: .35em; }
+.hv2-m-event .hv2-t { font-weight: 750; font-size: 1.5em; letter-spacing: -.02em; }
+.hv2-m-event .hv2-d { opacity: .6; font-size: .9em; }
+.hv2-m-event .hv2-seats { display: grid; grid-template-columns: repeat(14, 1fr); gap: .3em; margin-top: .5em; }
+.hv2-m-event .hv2-seats u { aspect-ratio: 1; border-radius: 50%; background: #cfe3a0; }
+.hv2-m-event .hv2-seats u.hv2-x { background: #00545f; }
+.hv2-m-term { background: #011b1f; color: #c9f27a; font-family: var(--font-code); padding: 1.1em 1.3em; font-size: 3.1cqw; line-height: 1.7; white-space: pre; }
+.hv2-m-term .hv2-dim { color: #5f9aa0; }
+
+/* ───────── PHONE / SMALL ───────── */
+@media (max-width: 767px) {
+  .hv2-intro { top: 18%; bottom: auto; justify-content: flex-start; padding-bottom: 0; }
+  .hv2-headline { font-size: min(13vw, 6svh); }
+  .hv2-subject { right: -4%; top: calc(var(--H) * .44); height: calc(var(--H) * .95); }
+  .hv2-metas { display: none; }
+  .hv2-hint { display: none; }
+  
+}
+
+/* ───────── LIGHT THEME ───────── */
+/* The hero card keeps its teal/lime gradient in both themes; only the space
+   around it (seen once it shrinks into the collage) follows the page. */
+[data-theme="light"] .hv2 { background: #e9efe4; }
+[data-theme="light"] .hv2-tile { box-shadow: 0 1.2vw 3vw rgba(0,60,68,.18); }
+[data-theme="light"] .hv2-card { box-shadow: 0 50px 120px rgba(0,60,68,.25); }

@@ -197,7 +197,7 @@ export const projects: Project[] = [
 export type Job = {
   company: string;
   meta: string;
-  roles: { title: string; period: string; detail: string }[];
+  roles: { title: string; period: string; detail: string; highlights?: string[]; tags?: string[] }[];
 };
 
 export const experience: Job[] = [
@@ -210,12 +210,20 @@ export const experience: Job[] = [
         period: "May 2025 to Present",
         detail:
           "Building and maintaining fintech products across server-side services and front-end development.",
+        highlights: [
+          "Implementing role-based access control (RBAC) so each user only sees and does what their role allows.",
+          "Building merchant-facing APIs that power the merchant app.",
+          "Standardising admin-panel forms and moving uniqueness checks to the first request, with clear field-level errors.",
+          "Administering production Linux (RHEL) servers that run the services.",
+        ],
+        tags: ["Java", "Spring Boot", "React", "Next.js", "RHEL"],
       },
       {
         title: "Associate Software Engineer",
         period: "Apr 2024 to May 2025",
         detail:
           "Developed backend services and REST APIs with Spring Boot and RESTful web services.",
+        tags: ["Java", "Spring Boot", "REST APIs"],
       },
     ],
   },
@@ -228,12 +236,14 @@ export const experience: Job[] = [
         period: "May 2023 to Apr 2024",
         detail:
           "Back-end web development with Java, building and integrating payment-related services.",
+        tags: ["Java", "Payments", "Integrations"],
       },
       {
         title: "Software Engineer Intern",
         period: "Nov 2022 to Apr 2023",
         detail:
           "Started in back-end web development with Java, contributing to core services remotely.",
+        tags: ["Java", "Remote"],
       },
     ],
   },
@@ -288,4 +298,52 @@ export const navLinks = [
   { href: "#work", label: "work" },
   { href: "#experience", label: "experience" },
   { href: "#contact", label: "contact" },
+];
+
+export type Recommendation = {
+  name: string;
+  title: string;
+  relation: string;
+  date: string;
+  /** Quoted verbatim from LinkedIn. */
+  paragraphs: string[];
+};
+
+export const recommendationsUrl = "https://www.linkedin.com/in/prabharsha/details/recommendations/";
+
+export const recommendations: Recommendation[] = [
+  {
+    name: "Dr. Amal Illesinghe",
+    title: "Retired CIO at National Savings Bank",
+    relation: "Client",
+    date: "June 2025",
+    paragraphs: [
+      "I had the opportunity to work closely with Prabharsha during his time as the primary developer for NSB’s Internet Banking (IB) and Mobile Banking (MB) applications. He was a key contributor to the maintenance and enhancement of these platforms, consistently handling live issues with efficiency and professionalism.",
+      "One of his major contributions was the successful integration of LPOPP into the IB and MB platforms — a complex task that he executed seamlessly. Additionally, during NSB’s core banking system migration from the legacy platform to T24, Prabharsha played a critical role in updating and adapting both the IB/MB and CEFT applications. His deep understanding of the systems and ability to deliver under pressure were instrumental to the project’s success.",
+      "He’s not only technically strong but also dependable, solution-oriented, and a team player — a true asset to any tech team. Thereby I would certify this recommendation for Prabharsha as professionally software development asset",
+    ],
+  },
+  {
+    name: "Dilun Panduka",
+    title: "Associate Team Lead at PayMedia",
+    relation: "Senior colleague",
+    date: "September 2025",
+    paragraphs: [
+      "I’ve had the pleasure of working closely with Pansilu, and I can confidently say that they are one of the most well-rounded and technically proficient full stack developers I’ve met. Their expertise spans across web(NextJs, SpringThymleaf) and backend, making them an invaluable asset to any tech team.",
+      "What truly sets Pansilu apart is not just their hands-on development skills, but also their deep understanding of computer science fundamentals and software architecture. Whether it’s designing robust monolithic systems or orchestrating scalable microservices, Pansilu approaches each challenge with clarity and precision.",
+      "They’re also highly capable when it comes to deployment—skilled in cloud platforms as well as on-premises infrastructures, ensuring reliable and secure delivery pipelines across environments.",
+      "Pansilu is a rare blend of a strong theoretical foundation and practical execution. If you’re looking for someone who can architect, build, and deploy modern software solutions end-to-end, I would highly recommend Pansilu without hesitation.",
+    ],
+  },
+  {
+    name: "Chamith Kodikara",
+    title: "Tech Leader & Java Specialist",
+    relation: "Managed me directly",
+    date: "June 2025",
+    paragraphs: [
+      "I had the pleasure of working with Pansilu, He contributed to a Spring Boot-based microservices project that I directly managed. From day one, Pansilu demonstrated strong technical skills, a solid understanding of Java, and a proactive attitude toward learning and problem-solving.",
+      "What impressed me most was his ability to grasp complex concepts quickly and apply them effectively in real development scenarios. He showed great attention to detail, wrote clean and efficient code, and was always open to feedback. They collaborated well with the team, communicated clearly, and took full ownership of assigned tasks.",
+      "I highly recommend Pansilu for any opportunity that values a technically capable, dedicated, and growth-oriented developer. With continued mentorship and experience, I’m confident he will become a valuable asset to any development team.",
+    ],
+  },
 ];
