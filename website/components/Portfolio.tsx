@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowDown, ArrowUpRight, ArrowUp, Menu, X, Pause, Play, Download, Copy, Check } from "lucide-react";
 import { site, experience, services } from "@/data/site";
 
+import HeroV2 from "./HeroV2";
 import SkillsProjects from "./SkillsProjects";
 
 const links = [{ href: "#work", label: "Work" }, { href: "#skills", label: "Skills" }, { href: "#about", label: "About" }, { href: "#contact", label: "Contact" }];
@@ -84,19 +85,7 @@ export default function Portfolio() {
       <nav id="mobile-navigation" aria-label="Mobile navigation" className="mobile-nav" hidden={!menuOpen}>{links.map(link => <a key={link.href} href={link.href} onClick={() => setMenuOpen(false)}>{link.label}<ArrowUpRight size={18} /></a>)}</nav>
     </header>
     <main id="main">
-      <section id="top" className="hero wrap" aria-labelledby="hero-heading">
-        <div className="hero-copy">
-          <h1 id="hero-heading">Engineering<br />with <em>intent.</em></h1>
-          <p className="hero-intro">I’m Prabharsha, a software engineer turning complex problems into dependable digital experiences.</p>
-          <p className="hero-current"><span className="status-dot" />Building fintech at <strong>PayMedia</strong></p>
-          <div className="hero-actions"><a className="button primary" href="#work">Explore my work <ArrowDown size={18} /></a><a className="text-link" href="#skills">Explore my stack <ArrowDown size={18} /></a></div>
-        </div>
-        <div className="hero-portrait">
-          <Image src="/images/prabharsha-avatar.jpg" alt="A 3D portrait of Prabharsha wearing sunglasses, a black T-shirt and orange sneakers" width={896} height={1195} priority sizes="(max-width: 700px) 80vw, 45vw" />
-          <span className="portrait-note">The person<br />behind the code.</span>
-        </div>
-        <div className="hero-bottom"><span>Colombo, Sri Lanka</span><span className="hero-specialties">Full-stack development <span aria-hidden="true">/</span> Fintech <span aria-hidden="true">/</span> SaaS</span><a href="#work" aria-label="Scroll to selected work"><ArrowDown size={18} /></a></div>
-      </section>
+      <HeroV2 />
       <SkillsProjects />
       <section id="about" className="about-section wrap section-space" aria-labelledby="about-heading">
         <div className="about-intro"><h2 id="about-heading">Serious about the work.<br /><em>Human</em> about the rest.</h2><div className="about-description"><p>{site.bio}</p><p>I care about clean architecture, dependable APIs and interfaces that feel effortless. Outside of work, I build side projects to learn new tools across the stack.</p><a href={site.socials.linkedin} target="_blank" rel="noopener noreferrer" className="text-link">A little more about me <ArrowUpRight size={18} /></a></div></div>
