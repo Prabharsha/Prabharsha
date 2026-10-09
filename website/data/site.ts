@@ -211,6 +211,7 @@ export const experience: Job[] = [
         detail:
           "Building and maintaining fintech products across server-side services and front-end development.",
         highlights: [
+          "Leading development for a dedicated client while running several projects in parallel.",
           "Implementing role-based access control (RBAC) so each user only sees and does what their role allows.",
           "Building merchant-facing APIs that power the merchant app.",
           "Standardising admin-panel forms and moving uniqueness checks to the first request, with clear field-level errors.",
@@ -222,8 +223,15 @@ export const experience: Job[] = [
         title: "Associate Software Engineer",
         period: "Apr 2024 to May 2025",
         detail:
-          "Developed backend services and REST APIs with Spring Boot and RESTful web services.",
-        tags: ["Java", "Spring Boot", "REST APIs"],
+          "Full-stack enhancements for banking platforms, from Spring Boot APIs to the web portals operations teams use.",
+        highlights: [
+          "Built and maintained REST APIs, service-level validation and business logic for banking workflows.",
+          "Improved operational web portals with React, Next.js and TypeScript.",
+          "Traced production bugs through server logs, failed transactions and API response mismatches.",
+          "Coordinated integrations between financial applications, banking services and external providers.",
+          "Took part in code reviews, UAT support and release coordination.",
+        ],
+        tags: ["Java", "Spring Boot", "REST APIs", "React", "Next.js"],
       },
     ],
   },
@@ -235,15 +243,24 @@ export const experience: Job[] = [
         title: "Associate Software Engineer",
         period: "May 2023 to Apr 2024",
         detail:
-          "Back-end web development with Java, building and integrating payment-related services.",
-        tags: ["Java", "Payments", "Integrations"],
+          "Backend and web features for fintech and digital banking platforms.",
+        highlights: [
+          "Built customer-facing web features and the backend improvements behind banking workflows.",
+          "Worked across APIs, databases and front-end components to ship complete features.",
+          "Fixed defects quickly and validated service behaviour across testing and production.",
+        ],
+        tags: ["Java", "REST APIs", "SQL", "Payments"],
       },
       {
         title: "Software Engineer Intern",
         period: "Nov 2022 to Apr 2023",
         detail:
-          "Started in back-end web development with Java, contributing to core services remotely.",
-        tags: ["Java", "Remote"],
+          "Started on fintech and digital banking web applications, working remotely.",
+        highlights: [
+          "Helped build production-ready features for fintech and digital banking web apps.",
+          "Supported backend and front-end tasks across APIs, database operations and app logic.",
+        ],
+        tags: ["Java", "APIs", "SQL", "Remote"],
       },
     ],
   },

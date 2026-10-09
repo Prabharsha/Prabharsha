@@ -16,6 +16,8 @@ export type CaseStudy = {
   /** Highlighted checklist (e.g. SEO work) shown as chips. */
   checklist?: { title: string; items: string[] };
   stats?: { value: string; label: string }[];
+  /** Full-width row that features the screens worth a closer look. */
+  spotlight?: { title: string; text: string; screens: { src: string; alt: string; caption: string; points: string[] }[] };
   media:
     | { kind: "site"; url: string; page: string; peek: string; peekAlt: string; badges: string[] }
     | { kind: "phones"; screens: { src: string; alt: string }[]; badges: string[] };
@@ -94,6 +96,24 @@ export const caseStudies: CaseStudy[] = [
       { value: "4", label: "Guided break-in stages" },
       { value: "3", label: "Export formats" },
     ],
+    spotlight: {
+      title: "Every ride, replayed.",
+      text: "After each ride, RideLedger rebuilds the trip from GPS: a speed trace drawn against the break-in limit, and every warning pinned to the exact spot on the route where it happened.",
+      screens: [
+        {
+          src: "/images/projects/rideledger-trip-summary.webp",
+          alt: "Trip detail: distance, duration, average and max speed, fuel used, a speed profile chart with the 40 km/h limit line, and the route map with warning markers",
+          caption: "Speed profile against the limit",
+          points: ["Distance, duration, speeds and fuel at a glance", "Speed trace with the break-in limit drawn across it", "Route map with start, end and every warning"],
+        },
+        {
+          src: "/images/projects/rideledger-trip-events.webp",
+          alt: "Trip events: route map centred on an overspeed marker, above a timeline of overspeed warnings with time, speed and coordinates",
+          caption: "Warnings, pinned to the map",
+          points: ["Each overspeed with time, speed and GPS position", "Tap a target to centre the map on that moment", "A timeline of the ride, in order"],
+        },
+      ],
+    },
     media: {
       kind: "phones",
       screens: [

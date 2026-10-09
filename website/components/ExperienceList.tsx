@@ -1,7 +1,7 @@
 import { experience } from "@/data/site";
 
 /**
- * Experience, grouped by company. Each role row: title, period, summary,
+ * Experience as a timeline, grouped by company. Each role row: title, period, summary,
  * highlights and the stack used.
  */
 export default function ExperienceList() {
@@ -15,7 +15,7 @@ export default function ExperienceList() {
           </header>
           <ol className="exp-list">
             {job.roles.map((role) => (
-              <li key={role.title + role.period} className="exp-row">
+              <li key={role.title + role.period} className={`exp-row ${/present/i.test(role.period) ? "is-current" : ""}`}>
                 <div className="exp-main">
                   <p className="exp-meta">{role.period}</p>
                   <h4>{role.title}</h4>
