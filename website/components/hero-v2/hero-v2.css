@@ -44,8 +44,10 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 .hv2-glow {
-  position: absolute; left: 0; top: 0; width: 46vmax; height: 46vmax; margin: -23vmax 0 0 -23vmax;
-  background: radial-gradient(closest-side, rgba(214,251,0,.26), rgba(214,251,0,0));
+  position: absolute; left: 0; top: 0; width: 56vmax; height: 56vmax; margin: -28vmax 0 0 -28vmax;
+  background:
+    radial-gradient(closest-side, rgba(236,255,182,.55) 0%, rgba(236,255,182,0) 32%),
+    radial-gradient(closest-side, rgba(214,251,0,.5) 0%, rgba(214,251,0,.18) 45%, rgba(214,251,0,0) 100%);
   pointer-events: none; display: none; will-change: transform;
 }
 @media (min-width: 768px) and (prefers-reduced-motion: no-preference) { .hv2-glow { display: block; } }

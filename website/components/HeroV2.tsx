@@ -54,20 +54,20 @@ export default function HeroV2() {
 
         // 2. mouse parallax: portrait moves most, headline less, background against them
         const glow = q(".hv2-glow")[0];
-        const layers = ([[".hv2-bg-wrap", -7], [".hv2-intro", 7], [".hv2-subject-wrap", 14]] as const).map(
+        const layers = ([[".hv2-bg-wrap", -20], [".hv2-intro", 16], [".hv2-subject-wrap", 36]] as const).map(
           ([sel, f]) => ({
             f,
-            x: gsap.quickTo(q(sel)[0], "x", { duration: 1, ease: "power3.out" }),
-            y: gsap.quickTo(q(sel)[0], "y", { duration: 1, ease: "power3.out" }),
+            x: gsap.quickTo(q(sel)[0], "x", { duration: 0.9, ease: "power3.out" }),
+            y: gsap.quickTo(q(sel)[0], "y", { duration: 0.9, ease: "power3.out" }),
           }),
         );
-        const gx = gsap.quickTo(glow, "x", { duration: 0.7, ease: "power3.out" });
-        const gy = gsap.quickTo(glow, "y", { duration: 0.7, ease: "power3.out" });
+        const gx = gsap.quickTo(glow, "x", { duration: 0.55, ease: "power3.out" });
+        const gy = gsap.quickTo(glow, "y", { duration: 0.55, ease: "power3.out" });
         gsap.set(glow, { x: innerWidth * 0.6, y: innerHeight * 0.3 });
         const onMove = (e: PointerEvent) => {
           const nx = (e.clientX / innerWidth) * 2 - 1;
           const ny = (e.clientY / innerHeight) * 2 - 1;
-          const k = Math.min(innerWidth / 1900, 1.2);
+          const k = Math.min(innerWidth / 1600, 1.3);
           layers.forEach((l) => {
             l.x(nx * l.f * k);
             l.y(ny * l.f * k * 0.7);

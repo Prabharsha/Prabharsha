@@ -56,6 +56,41 @@ export default function Portfolio() {
     mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)", () => {
       gsap.fromTo(q(".service-track"), { xPercent: 6 }, { xPercent: -6, ease: "none", scrollTrigger: { trigger: q(".services-section")[0], start: "top bottom", end: "bottom top", scrub: 0.6 } });
     });
+    // Contact card: the hero's cursor glow, plus a gentle counter-move of the content.
+    mm.add("(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)", () => {
+      const card = q<HTMLElement>(".contact-card")[0];
+      const glow = q<HTMLElement>(".contact-glow")[0];
+      if (!card || !glow) return;
+      const gx = gsap.quickTo(glow, "x", { duration: 0.55, ease: "power3.out" });
+      const gy = gsap.quickTo(glow, "y", { duration: 0.55, ease: "power3.out" });
+      const layers = ([[".contact-top", 14], [".contact-bottom", 8]] as const).map(([sel, f]) => ({
+        f,
+        x: gsap.quickTo(q(sel)[0], "x", { duration: 0.9, ease: "power3.out" }),
+        y: gsap.quickTo(q(sel)[0], "y", { duration: 0.9, ease: "power3.out" }),
+      }));
+      gsap.set(glow, { x: card.offsetWidth * 0.3, y: card.offsetHeight * 0.8 });
+      const move = (e: PointerEvent) => {
+        const r = card.getBoundingClientRect();
+        gx(e.clientX - r.left);
+        gy(e.clientY - r.top);
+        const nx = ((e.clientX - r.left) / r.width) * 2 - 1;
+        const ny = ((e.clientY - r.top) / r.height) * 2 - 1;
+        layers.forEach((l) => { l.x(nx * l.f); l.y(ny * l.f * 0.6); });
+      };
+      const enter = () => gsap.to(glow, { autoAlpha: 1, duration: 0.4 });
+      const leave = () => {
+        gsap.to(glow, { autoAlpha: 0, duration: 0.6 });
+        layers.forEach((l) => { l.x(0); l.y(0); });
+      };
+      card.addEventListener("pointermove", move);
+      card.addEventListener("pointerenter", enter);
+      card.addEventListener("pointerleave", leave);
+      return () => {
+        card.removeEventListener("pointermove", move);
+        card.removeEventListener("pointerenter", enter);
+        card.removeEventListener("pointerleave", leave);
+      };
+    });
     const refresh = () => ScrollTrigger.refresh();
     window.addEventListener("load", refresh);
     return () => { window.removeEventListener("load", refresh); mm.revert(); };
@@ -144,6 +179,7 @@ export default function Portfolio() {
 
       <section id="contact" className="contact-section wrap" aria-labelledby="contact-heading">
         <div className="contact-card" data-reveal>
+          <div className="contact-glow" aria-hidden="true" />
           <div className="contact-top">
             <p className="contact-mark" aria-hidden="true">prabharsha<span>.</span></p>
             <div className="contact-cta">
