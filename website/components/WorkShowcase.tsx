@@ -17,7 +17,7 @@ const slug = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, "-").
 
 /**
  * "Selected work" panel, modelled on the reference's curved accent panel.
- * Desktop with motion: the panel pins, scroll steps through the project list on
+ * Desktop with motion: the list + card pin centred on screen, scroll steps through the project list on
  * the left and the window card on the right swaps to match. Phones and reduced
  * motion get every card stacked as a plain list.
  */
@@ -35,8 +35,13 @@ export default function WorkShowcase() {
       el.classList.add("is-pinned");
       const header = document.querySelector<HTMLElement>(".site-header");
       const st = ScrollTrigger.create({
-        trigger: el.querySelector(".work-stage"),
-        start: () => `top ${header?.offsetHeight ?? 80}px`,
+        // Pin the list + card only, once the whole card sits centred in the
+        // space under the header; the title scrolls away first.
+        trigger: el.querySelector(".work-grid"),
+        start: () => {
+          const h = header?.offsetHeight ?? 80;
+          return `center ${h + (innerHeight - h) / 2}px`;
+        },
         end: () => `+=${projects.length * innerHeight * 0.38}`,
         pin: true,
         anticipatePin: 1,
