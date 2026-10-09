@@ -10,7 +10,7 @@ import "./hero-v2/hero-v2.css";
 /**
  * Scroll-driven hero (teal / lime).
  *
- * Layers, back to front: gradient, cursor glow, intro chips, cut-out portrait,
+ * Layers, back to front: gradient, cursor glow, headline, cut-out portrait,
  * labels. On scroll the whole card shrinks into a code-editor window over
  * columns of project screens that drift upward on their own, then the pin
  * releases into the rest of the page.
@@ -47,6 +47,7 @@ export default function HeroV2() {
         const intro = gsap.timeline({ defaults: { ease: "power4.out" } });
         intro
           .from(q(".hv2-stage-bg"), { scale: 1.12, duration: 1.8, ease: "power2.out" }, 0)
+          .from(q(".hv2-hl-line > span"), { yPercent: 115, duration: 1.1, stagger: 0.12 }, 0.15)
           .from(q(".hv2-subject"), { y: 70, opacity: 0, duration: 1.4 }, 0.35)
           .from(q(".hv2-meta, .hv2-hint"), { opacity: 0, y: -12, duration: 0.8, stagger: 0.06 }, 0.8);
         if (!full) return () => intro.kill();
