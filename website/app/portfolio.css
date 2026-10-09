@@ -63,7 +63,10 @@
   --surface: 0 22 26;
   --accent: 214 251 0;
   --hh-site: 60px;
-  --font-ui: var(--font-forum), "Helvetica Neue", Arial, sans-serif;
+  /* Forum is a display face (hairline strokes, small x-height): headings only.
+     Body text uses Inter, which stays legible at 13-17px. */
+  --font-ui: var(--font-inter), system-ui, sans-serif;
+  --font-heading: var(--font-forum), Georgia, serif;
   --noise: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 html { scroll-padding-top: 72px; scrollbar-color: var(--scroll-thumb) var(--bg); }
@@ -77,6 +80,7 @@ body { background: var(--bg); color: var(--text); transition: background-color .
 [data-theme="light"] .portfolio :focus-visible { outline-color: var(--teal); }
 .portfolio button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
 .portfolio h1, .portfolio h2, .portfolio h3, .portfolio h4, .portfolio p { margin: 0; }
+.portfolio :is(h1, h2, h3, h4), .wordmark, .contact-mark, .work-index, .cs-stats dd { font-family: var(--font-heading); }
 .portfolio h2, .portfolio h3 { font-weight: 500; line-height: 1.08; letter-spacing: -.03em; text-wrap: balance; }
 .portfolio h2 { font-size: clamp(2.3rem, 4.2vw, 4.1rem); }
 .portfolio h3 { font-size: clamp(1.3rem, 1.8vw, 1.7rem); }
@@ -577,19 +581,19 @@ body { background: var(--bg); color: var(--text); transition: background-color .
 .cs-phones .cs-badges li:nth-child(4) { bottom: 12%; right: 2%; }
 
 /* copy */
-.cs-kicker { display: flex; align-items: center; gap: 12px; font-size: 15px; color: var(--muted); }
+.cs-kicker { display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--muted); }
 .cs-kicker span { padding: 3px 10px; border-radius: 99px; background: var(--lime); color: var(--ink-dark); font-family: var(--font-jetbrains), monospace; font-size: 11.5px; font-weight: 600; }
 .cs-copy h3 { font-size: clamp(2.4rem, 4.2vw, 4rem); font-weight: 600; letter-spacing: -.045em; line-height: 1; margin: 16px 0 18px !important; }
 .cs-copy h3 span { color: var(--cs-accent); }
-.cs-summary { font-size: 18px; line-height: 1.7; max-width: 58ch; opacity: .88; }
+.cs-summary { font-size: 17px; line-height: 1.7; max-width: 58ch; opacity: .88; }
 .cs-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin: 26px 0 0; }
 .cs-stats div { display: flex; flex-direction: column-reverse; gap: 2px; padding: 14px 14px 12px; border-radius: 16px; background: var(--cs-panel); border: 1px solid var(--cs-panel-edge); }
-.cs-stats dt { font-size: 14px; line-height: 1.35; color: var(--muted); }
+.cs-stats dt { font-size: 13px; line-height: 1.35; color: var(--muted); }
 .cs-stats dd { margin: 0; font-size: 26px; font-weight: 600; letter-spacing: -.03em; color: var(--cs-accent); }
 .cs-blocks { list-style: none; margin: 26px 0 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 16px 24px; }
-.cs-blocks li strong { display: flex; align-items: baseline; gap: 8px; font-size: 17.5px; font-weight: 600; }
+.cs-blocks li strong { display: flex; align-items: baseline; gap: 8px; font-size: 16px; font-weight: 600; }
 .cs-blocks li strong em { font-style: normal; font-family: var(--font-jetbrains), monospace; font-size: 11.5px; color: var(--cs-accent); background: none; }
-.cs-blocks li p { margin-top: 5px !important; font-size: 15.5px; line-height: 1.6; color: var(--muted); }
+.cs-blocks li p { margin-top: 5px !important; font-size: 15px; line-height: 1.6; color: var(--muted); }
 .cs-blocks--steps li { padding-top: 14px; border-top: 1px solid var(--cs-panel-edge); }
 .cs-checklist { margin-top: 26px; padding: 18px 20px; border-radius: 18px; background: var(--cs-panel); border: 1px solid var(--cs-panel-edge); }
 .cs-checklist > p { font-size: 11.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--cs-accent); }
