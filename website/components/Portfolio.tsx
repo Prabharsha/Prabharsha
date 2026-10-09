@@ -17,8 +17,8 @@ import ThemeToggle from "./ThemeToggle";
 import WorkShowcase from "./WorkShowcase";
 
 const links = [
-  { href: "#skills", label: "Stack" },
   { href: "#work", label: "Work" },
+  { href: "#skills", label: "Stack" },
   { href: "#about", label: "About" },
   { href: "#experience", label: "Experience" },
   { href: "#contact", label: "Contact" },
@@ -132,8 +132,8 @@ export default function Portfolio() {
     <div className="ambient" aria-hidden="true"><i /><i /><i /><i /></div>
     <main id="main">
       <HeroV2 />
-      <StackOrbit />
       <WorkShowcase />
+      <StackOrbit />
 
       <section id="about" className="why-section wrap section-space" aria-labelledby="about-heading">
         <div className="why-head" data-reveal>

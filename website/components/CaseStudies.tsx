@@ -123,19 +123,16 @@ function Study({ study, index }: { study: CaseStudy; index: number }) {
             <p className="cs-kicker"><span>Highlight</span>Trip replay</p>
             <h4>{study.spotlight.title}</h4>
             <p>{study.spotlight.text}</p>
+            <ul>{study.spotlight.points.map((pt) => <li key={pt}><Check size={13} aria-hidden="true" />{pt}</li>)}</ul>
           </div>
-          {study.spotlight.screens.map((s) => (
-            <figure key={s.src} className="cs-spot-fig">
-              <div className="cs-phone">
+          <figure className="cs-spot-pair">
+            {study.spotlight.screens.map((s) => (
+              <div key={s.src} className="cs-phone">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={s.src} alt={s.alt} width={432} height={960} loading="lazy" decoding="async" />
               </div>
-              <figcaption>
-                <strong>{s.caption}</strong>
-                <ul>{s.points.map((pt) => <li key={pt}><Check size={13} aria-hidden="true" />{pt}</li>)}</ul>
-              </figcaption>
-            </figure>
-          ))}
+            ))}
+          </figure>
         </div>
       )}
     </article>
@@ -168,7 +165,8 @@ export default function CaseStudies() {
         gsap.fromTo(ph.querySelector(".cs-phone-slot--center"), { y: 80 }, { y: 0, ease: "none", scrollTrigger: st(ph) });
       });
       q<HTMLElement>(".cs-spot").forEach((spot) => {
-        gsap.from(spot.querySelectorAll(".cs-spot-fig"), { y: 90, rotate: (i: number) => (i ? 4 : -4), autoAlpha: 0, duration: 1.1, ease: "power3.out", stagger: 0.15, scrollTrigger: { trigger: spot, start: "top 80%" } });
+        // the pair slides together from a single stack
+        gsap.from(spot.querySelectorAll(".cs-spot-pair .cs-phone"), { y: 90, xPercent: (i: number) => (i ? -40 : 0), autoAlpha: 0, duration: 1.1, ease: "power3.out", stagger: 0.15, scrollTrigger: { trigger: spot, start: "top 80%" } });
       });
       q<HTMLElement>(".cs-copy").forEach((copy) => {
         gsap.from(copy.children, { y: 30, autoAlpha: 0, duration: 0.8, ease: "power3.out", stagger: 0.07, scrollTrigger: { trigger: copy, start: "top 80%" } });
