@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Forum, Inter, JetBrains_Mono, Fraunces } from "next/font/google";
+import { Forum, DM_Sans, JetBrains_Mono, Fraunces } from "next/font/google";
 import "./globals.css";
 import "./portfolio.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
@@ -8,9 +8,9 @@ import "lenis/dist/lenis.css";
 
 import Providers from "@/components/Providers";
 
-const inter = Inter({
+const dmSans = DM_Sans({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-dm-sans",
   display: "swap",
 });
 
@@ -77,7 +77,7 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${jetbrains.variable} ${fraunces.variable} ${forum.variable}`}
+      className={`${dmSans.variable} ${jetbrains.variable} ${fraunces.variable} ${forum.variable}`}
     >
       <body className="font-sans antialiased">
         <Providers>{children}</Providers>
