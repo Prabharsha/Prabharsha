@@ -655,3 +655,40 @@ body { background: var(--bg); color: var(--text); transition: background-color .
   .cs-peek { display: none; }
   .cs-site { padding: 0; }
 }
+
+/* ── intro loader (Loader.tsx) ──
+   Night teal in both themes, like the hero card it opens onto. The background
+   is the iris: transparent inside --hole, lime out to --iris, night beyond. */
+.loader {
+  --night: #001e23;
+  --g: clamp(16px, 3.2vw, 56px);
+  --iris: 0px;
+  --hole: -2px;
+  position: fixed; inset: 0; z-index: 200; overflow: hidden;
+  display: grid; place-items: center;
+  color: #fff;
+  background: radial-gradient(circle at 50% 50%, transparent var(--hole), var(--lime) calc(var(--hole) + 1px), var(--lime) var(--iris), var(--night) calc(var(--iris) + 1px));
+  /* failsafe: if the script never runs, the page still shows up */
+  animation: loader-failsafe .6s 10s forwards;
+}
+@keyframes loader-failsafe { to { opacity: 0; visibility: hidden; } }
+.loader-grain { position: absolute; inset: 0; opacity: .07; background-image: var(--noise); pointer-events: none; }
+.loader-glow {
+  position: absolute; left: 50%; top: 50%; width: 110vmax; aspect-ratio: 1; margin: -55vmax 0 0 -55vmax; opacity: 0; pointer-events: none;
+  /* the hero's own teal: low-alpha lime over night reads olive */
+  background: radial-gradient(closest-side, rgba(0, 128, 145, .6) 0%, rgba(0, 105, 122, .32) 35%, rgba(0, 105, 122, .1) 65%, rgba(0, 105, 122, 0) 100%);
+}
+.loader-mark { position: relative; font-family: var(--font-heading); font-weight: 400; font-size: clamp(3.4rem, 11vw, 9.5rem); line-height: 1; letter-spacing: -.035em; white-space: nowrap; }
+.loader-ch { display: inline-block; overflow: hidden; padding: .06em 0 .22em; margin: -.06em 0 -.22em; vertical-align: bottom; }
+.loader-ch > span { display: inline-block; }
+.loader-dot { display: inline-block; width: .16em; height: .16em; margin-left: .06em; border-radius: 50%; background: var(--lime); }
+.loader-meter { position: absolute; left: var(--g); right: var(--g); bottom: var(--g); display: flex; align-items: center; gap: 20px; color: #bfe0cf; }
+.loader-track { flex: 1; height: 1px; background: rgba(255, 255, 255, .14); overflow: hidden; }
+.loader-bar { display: block; height: 100%; background: var(--lime); transform: scaleX(0); transform-origin: 0 50%; }
+.loader-count { font-family: var(--font-jetbrains), ui-monospace, monospace; font-size: 13px; letter-spacing: .08em; font-variant-numeric: tabular-nums; }
+/* parked for first paint so the server markup matches what GSAP takes over */
+@media (prefers-reduced-motion: no-preference) {
+  .loader-ch > span { transform: translateY(110%); }
+  .loader-dot { transform: scale(0); }
+}
+@media (prefers-reduced-motion: reduce) { .loader-meter { display: none; } }

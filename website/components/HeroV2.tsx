@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
 
+import { revealed } from "./Loader";
 import markup from "./hero-v2/markup";
 import "./hero-v2/hero-v2.css";
 
@@ -43,14 +44,16 @@ export default function HeroV2() {
       (ctx) => {
         const full = !!ctx.conditions?.full;
 
-        // 1. page load: headline lines rise through their masks, portrait settles in
-        const intro = gsap.timeline({ defaults: { ease: "power4.out" } });
+        // 1. as the loader opens: headline lines rise through their masks, portrait settles in
+        const intro = gsap.timeline({ paused: true, defaults: { ease: "power4.out" } });
         intro
           .from(q(".hv2-stage-bg"), { scale: 1.12, duration: 1.8, ease: "power2.out" }, 0)
           .from(q(".hv2-hl-line > span"), { yPercent: 115, duration: 1.1, stagger: 0.12 }, 0.15)
           .from(q(".hv2-subject"), { y: 70, opacity: 0, duration: 1.4 }, 0.35)
           .from(q(".hv2-meta, .hv2-hint"), { opacity: 0, y: -12, duration: 0.8, stagger: 0.06 }, 0.8);
-        if (!full) return () => intro.kill();
+        let live = true;
+        revealed.then(() => { if (live) intro.play(); });
+        if (!full) return () => { live = false; intro.kill(); };
 
         // 2. mouse parallax: portrait moves most, headline less, background against them
         const glow = q(".hv2-glow")[0];
@@ -104,6 +107,7 @@ export default function HeroV2() {
           .to({}, { duration: 0.4 });
 
         return () => {
+          live = false;
           window.removeEventListener("pointermove", onMove);
           intro.kill();
         };

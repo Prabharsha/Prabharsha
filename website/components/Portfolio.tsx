@@ -11,6 +11,7 @@ import { site, services } from "@/data/site";
 
 import ExperienceList from "./ExperienceList";
 import HeroV2 from "./HeroV2";
+import Loader from "./Loader";
 import Recommendations from "./Recommendations";
 import StackOrbit from "./StackOrbit";
 import ThemeToggle from "./ThemeToggle";
@@ -115,6 +116,7 @@ export default function Portfolio() {
   }
 
   return <div className="portfolio" ref={page}>
+    <Loader />
     <a href="#main" className="skip-link">Skip to content</a>
     <header className="site-header">
       <div className="header-inner wrap">
