@@ -324,6 +324,12 @@ export type Recommendation = {
   date: string;
   /** Quoted verbatim from LinkedIn. */
   paragraphs: string[];
+  /**
+   * Optional photo under /public, e.g. "/images/recs/amal.jpg". Only add one
+   * the person has agreed to (or sent you) for this site; without it the
+   * avatar shows their initials.
+   */
+  avatar?: string;
 };
 
 export const recommendationsUrl = "https://www.linkedin.com/in/prabharsha/details/recommendations/";

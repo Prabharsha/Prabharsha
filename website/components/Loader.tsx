@@ -25,6 +25,29 @@ function pageReady(): Promise<void> {
 }
 
 /**
+ * Sets the full stop on the letters' baseline. The letters sit in overflow
+ * masks aligned to the bottom of the line, so where the line's own baseline
+ * lands depends on the font's ascent/descent metrics, which differ between
+ * operating systems (Windows reads other metrics than macOS or Linux). On
+ * some systems that floated the dot up to mid-letter height. A zero-size
+ * probe inside the last letter finds the true baseline; offsetTop ignores the
+ * transforms GSAP is animating, so this works while the letters are parked.
+ */
+function seatDot(mark: HTMLElement) {
+  const dot = mark.querySelector<HTMLElement>(".loader-dot");
+  const letters = mark.querySelectorAll<HTMLElement>(".loader-ch > span");
+  const last = letters[letters.length - 1];
+  if (!dot || !last) return;
+  const probe = document.createElement("i");
+  probe.style.cssText = "display:inline-block;width:0;height:0;vertical-align:baseline";
+  last.appendChild(probe);
+  dot.style.top = "0px";
+  const shift = probe.offsetTop - (dot.offsetTop + dot.offsetHeight);
+  probe.remove();
+  dot.style.top = `${shift}px`;
+}
+
+/**
  * Intro loader. The wordmark sets letter by letter through its masks, then the
  * letters leave and the full stop glides to the centre of the screen, swells
  * into a lime iris that floods the viewport, and opens from that same point
@@ -66,6 +89,13 @@ export default function Loader() {
     const block = (e: Event) => { e.preventDefault(); e.stopPropagation(); };
     el.addEventListener("wheel", block, { passive: false });
     el.addEventListener("touchmove", block, { passive: false });
+
+    const mark = el.querySelector<HTMLElement>(".loader-mark");
+    if (mark) {
+      seatDot(mark);
+      // the web font may swap in after first paint and change the metrics
+      document.fonts.ready.then(() => seatDot(mark));
+    }
 
     let live = true;
     const ctx = gsap.context(() => {}, el);
