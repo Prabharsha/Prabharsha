@@ -203,9 +203,12 @@ export default function Portfolio() {
               <div className="email-line">
                 <a href={site.socials.email}>{site.email}</a>
                 <button type="button" className="copy-email" aria-label={copied ? "Email address copied" : "Copy email address"} onClick={copyEmail}>{copied ? <Check size={16} /> : <Copy size={16} />}</button>
-                <span className="copy-status" role="status">{copied ? "Copied!" : copyError ? "Please copy the email address manually." : ""}</span>
               </div>
-              <p className="reach-loc">{site.location}</p>
+              {/* the status takes the location line's place for a moment instead of overlapping it */}
+              <div className={`reach-sub ${copied || copyError ? "is-status" : ""}`}>
+                <p className="reach-loc">{site.location}</p>
+                <span className="copy-status" role="status">{copied ? "Copied to clipboard" : copyError ? "Please copy the email address manually." : ""}</span>
+              </div>
             </div>
             <div className="social-links">
               <a href={site.socials.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"><FaGithub /></a>
