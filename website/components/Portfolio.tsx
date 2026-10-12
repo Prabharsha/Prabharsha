@@ -11,6 +11,7 @@ import { site, services } from "@/data/site";
 
 import ExperienceList from "./ExperienceList";
 import HeroV2 from "./HeroV2";
+import BrandMark from "./BrandMark";
 import Loader from "./Loader";
 import Recommendations from "./Recommendations";
 import StackOrbit from "./StackOrbit";
@@ -120,7 +121,7 @@ export default function Portfolio() {
     <a href="#main" className="skip-link">Skip to content</a>
     <header className="site-header">
       <div className="header-inner wrap">
-        <a href="#top" className="wordmark" aria-label="Prabharsha, back to top">prabharsha<span>.</span></a>
+        <a href="#top" className="wordmark" aria-label="Prabharsha, back to top"><BrandMark /><b>prabharsha<span>.</span></b></a>
         <nav aria-label="Main navigation" className="desktop-nav">{links.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}</nav>
         <div className="header-actions">
           <ThemeToggle />
