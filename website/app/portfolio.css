@@ -677,8 +677,10 @@ body { background: var(--bg); color: var(--text); transition: background-color .
 .loader {
   --night: #001e23;
   --g: clamp(16px, 3.2vw, 56px);
-  --iris: 0px;
-  --hole: -2px;
+  /* resting values sit below zero so no lime is drawn until the iris starts:
+     at 0px the 1px lime-to-night blend showed as a speck in the middle */
+  --iris: -1px;
+  --hole: -3px;
   position: fixed; inset: 0; z-index: 200; overflow: hidden;
   display: grid; place-items: center;
   color: #fff;
