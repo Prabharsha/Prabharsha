@@ -53,7 +53,7 @@ export default function Recommendations() {
     <section id="recommendations" ref={root} className={`recs-section wrap section-space ${paused || !visible ? "is-paused" : ""}`} aria-labelledby="recs-heading">
       <div className="recs-head" data-reveal>
         <h2 id="recs-heading">Don’t take it from me.<br /><em>Take it from them.</em></h2>
-        <p>Recommendations from a client, a manager and a senior colleague, as written on LinkedIn.</p>
+        <p>Recommendations from a client, two managers and a senior colleague, as written on LinkedIn.</p>
       </div>
       <div className="recs-controls">
         <div className="recs-people" role="tablist" aria-label="Recommendations" onKeyDown={(e) => {
