@@ -16,8 +16,6 @@ export type CaseStudy = {
   /** Highlighted checklist (e.g. SEO work) shown as chips. */
   checklist?: { title: string; items: string[] };
   stats?: { value: string; label: string }[];
-  /** Full-width row that features the screens worth a closer look. */
-  spotlight?: { title: string; text: string; points: string[]; screens: { src: string; alt: string }[] };
   media:
     | { kind: "site"; url: string; page: string; peek: string; peekAlt: string; badges: string[] }
     | { kind: "phones"; screens: { src: string; alt: string }[]; badges: string[] };
@@ -96,25 +94,13 @@ export const caseStudies: CaseStudy[] = [
       { value: "4", label: "Guided break-in stages" },
       { value: "3", label: "Export formats" },
     ],
-    spotlight: {
-      title: "Every ride, replayed.",
-      text: "After each ride, RideLedger rebuilds the trip from GPS: a speed trace drawn against the break-in limit, and every warning pinned to the exact spot on the route where it happened.",
-      points: [
-        "Distance, duration, speeds and fuel at a glance",
-        "Speed trace with the break-in limit drawn across it",
-        "Each overspeed with time, speed and GPS position",
-        "Tap a warning to centre the map on that moment",
-      ],
-      screens: [
-        { src: "/images/projects/rideledger-trip-summary.webp", alt: "Trip detail: distance, duration, average and max speed, fuel used, a speed profile chart with the 40 km/h limit line, and the route map with warning markers" },
-        { src: "/images/projects/rideledger-trip-events.webp", alt: "Trip events: route map centred on an overspeed marker, above a timeline of overspeed warnings with time, speed and coordinates" },
-      ],
-    },
     media: {
       kind: "phones",
       screens: [
         { src: "/images/projects/rideledger-live.webp", alt: "Live ride screen showing speed, RPM band and break-in stage" },
         { src: "/images/projects/rideledger-home.webp", alt: "Home dashboard with today's rides, fuel and service reminders" },
+        { src: "/images/projects/rideledger-trip-summary.webp", alt: "Trip detail: distance, duration, average and max speed, fuel used, a speed profile chart with the 40 km/h limit line, and the route map with warning markers" },
+        { src: "/images/projects/rideledger-trip-events.webp", alt: "Trip events: route map centred on an overspeed marker, above a timeline of overspeed warnings with time, speed and coordinates" },
         { src: "/images/projects/rideledger-breakin.webp", alt: "Break-in planner with stage progress and throttle guidance" },
         { src: "/images/projects/rideledger-history.webp", alt: "Ride history list with distance, duration and speed" },
         { src: "/images/projects/rideledger-reports.webp", alt: "Reports and export screen with PDF, CSV and JSON options" },

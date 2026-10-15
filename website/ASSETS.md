@@ -20,4 +20,4 @@ The coffee animation and its video files were removed in v2 at the owner's reque
 | Asset | Origin |
 | --- | --- |
 | `mathy-page.webp`, `mathy-map.webp` | Captures of the live site mathysurfcoach.com (hero, lessons, packages, bay gallery, surf-spot map), built by the portfolio owner for his client. The reviews section was not captured because it shows customers' faces. |
-| `rideledger-*.webp` | Owner-supplied screenshots of his RideLedger app, resized. The fuel screen showing the vehicle number plate was left out. The two trip-detail screens (`rideledger-trip-summary.webp`, `rideledger-trip-events.webp`, with route map and GPS points) were added later at the owner's request for the case-study spotlight. |
+| `rideledger-*.webp` | Owner-supplied screenshots of his RideLedger app, resized. The fuel screen showing the vehicle number plate was left out. The two trip-detail screens (`rideledger-trip-summary.webp`, `rideledger-trip-events.webp`, with route map and GPS points) were added later at the owner's request and rotate in the case-study phone slider. |

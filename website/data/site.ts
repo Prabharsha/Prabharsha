@@ -324,11 +324,30 @@ export type Recommendation = {
   date: string;
   /** Quoted verbatim from LinkedIn. */
   paragraphs: string[];
+  /**
+   * Optional photo under /public, e.g. "/images/recs/amal.jpg". Only add one
+   * the person has agreed to (or sent you) for this site; without it the
+   * avatar shows their initials.
+   */
+  avatar?: string;
 };
 
 export const recommendationsUrl = "https://www.linkedin.com/in/prabharsha/details/recommendations/";
 
 export const recommendations: Recommendation[] = [
+  {
+    name: "Supun Sadeepa",
+    title: "Fin-Tech | Solutions Architect | Digital Payments",
+    relation: "Managed me directly",
+    date: "October 2026",
+    paragraphs: [
+      "I had the pleasure of working closely with Prabharsha at PayMedia, where he reported directly to me from his internship days through his journey to becoming a Software Engineer. Over the years, he became one of my core team members, and I had the opportunity to witness his professional growth, technical capabilities, and commitment firsthand.",
+      "Prabharsha is a talented software engineer with strong capabilities in both frontend and backend development. He contributed to several web and backend applications, consistently demonstrating his ability to understand complex requirements and deliver efficient, reliable solutions. One of the qualities I appreciate most about him is his open mindedness and willingness to learn. He actively explores emerging trends and industry technologies, adapts to new approaches, and is always looking for ways to improve the solutions he delivers.",
+      "He is also an excellent communicator who values clarity and collaboration. Whenever he needed clarification, he would approach me directly, ask thoughtful questions, and work through the details until he had a complete understanding of the requirements and underlying logic. He is confident enough to share his honest opinions on proposed solutions, which often contributes to better technical decisions and outcomes.",
+      "Beyond his technical strengths, Prabharsha has a great attitude, a friendly personality, and a genuine team player mindset. He stood by me during critical situations, contributing to important milestones and helping us work through challenging problems. His ability to communicate effectively with clients, navigate difficult situations, and support and guide junior team members makes him an especially valuable professional to have on a team.",
+      "I highly recommend Prabharsha to any organization looking for a dependable, adaptable, and technically strong software engineer. He has the qualities of a senior fullstack engineer, combining solid technical expertise with sound judgment, strong communication skills, and a collaborative attitude. I am confident he will bring significant value to any team fortunate enough to work with him.",
+    ],
+  },
   {
     name: "Dr. Amal Illesinghe",
     title: "Retired CIO at National Savings Bank",

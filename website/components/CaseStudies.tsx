@@ -2,7 +2,7 @@
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ArrowUpRight, Check, Lock } from "lucide-react";
+import { ArrowUpRight, Check, ChevronLeft, ChevronRight, Lock, X, ZoomIn } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 import { caseStudies, type CaseStudy } from "@/data/caseStudies";
@@ -42,8 +42,11 @@ function SiteShowcase({ media, title }: { media: SiteMedia; title: string }) {
 function PhoneShowcase({ media, title }: { media: PhoneMedia; title: string }) {
   const [current, setCurrent] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [open, setOpen] = useState(false);
   const box = useRef<HTMLDivElement>(null);
+  const dialog = useRef<HTMLDialogElement>(null);
   const count = media.screens.length;
+  const step = (d: number) => setCurrent((c) => (c + d + count) % count);
 
   useEffect(() => {
     const el = box.current;
@@ -51,9 +54,9 @@ function PhoneShowcase({ media, title }: { media: PhoneMedia; title: string }) {
     let visible = false;
     const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; }, { threshold: 0.3 });
     io.observe(el);
-    const id = window.setInterval(() => { if (visible && !paused) setCurrent((c) => (c + 1) % count); }, 2600);
+    const id = window.setInterval(() => { if (visible && !paused && !open) setCurrent((c) => (c + 1) % count); }, 2600);
     return () => { io.disconnect(); window.clearInterval(id); };
-  }, [count, paused]);
+  }, [count, paused, open]);
 
   const back = [media.screens[2], media.screens[4]];
   return (
@@ -72,7 +75,20 @@ function PhoneShowcase({ media, title }: { media: PhoneMedia; title: string }) {
           <img key={s.src} src={s.src} alt={i === current ? s.alt : ""} aria-hidden={i !== current} width={432} height={960}
             loading="lazy" decoding="async" className={i === current ? "is-on" : ""} />
         ))}
+        <button type="button" className="cs-zoom" aria-label={`Enlarge screen: ${media.screens[current].alt}`}
+          onClick={() => { setOpen(true); dialog.current?.showModal(); }}>
+          <span aria-hidden="true"><ZoomIn size={16} /></span>
+        </button>
       </div></div>
+      {/* Native modal: focus trap, Esc to close and backdrop for free. Click outside the image closes it. */}
+      <dialog ref={dialog} className="cs-lightbox" aria-label={`${title} screen`} onClose={() => setOpen(false)}
+        onClick={(e) => { if (e.target === e.currentTarget) e.currentTarget.close(); }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={media.screens[current].src} alt={media.screens[current].alt} width={432} height={960} />
+        <button type="button" className="cs-lightbox-btn cs-lightbox-prev" aria-label="Previous screen" onClick={() => step(-1)}><ChevronLeft size={22} /></button>
+        <button type="button" className="cs-lightbox-btn cs-lightbox-next" aria-label="Next screen" onClick={() => step(1)}><ChevronRight size={22} /></button>
+        <button type="button" className="cs-lightbox-btn cs-lightbox-close" aria-label="Close" onClick={() => dialog.current?.close()}><X size={20} /></button>
+      </dialog>
       <div className="cs-dots" role="group" aria-label={`${title} screens`}>
         {media.screens.map((s, i) => (
           <button key={s.src} type="button" aria-label={`Show screen ${i + 1}: ${s.alt}`} aria-pressed={i === current} onClick={() => setCurrent(i)} />
@@ -117,24 +133,6 @@ function Study({ study, index }: { study: CaseStudy; index: number }) {
         <ul className="tag-list" aria-label={`${study.title} technologies`}>{study.tags.map((t) => <li key={t}>{t}</li>)}</ul>
         <a className="pill-button cs-cta" href={study.link.href} target="_blank" rel="noopener noreferrer"><i aria-hidden="true" />{study.link.label} <ArrowUpRight size={16} /></a>
       </div>
-      {study.spotlight && (
-        <div className="cs-spot">
-          <div className="cs-spot-copy">
-            <p className="cs-kicker"><span>Highlight</span>Trip replay</p>
-            <h4>{study.spotlight.title}</h4>
-            <p>{study.spotlight.text}</p>
-            <ul>{study.spotlight.points.map((pt) => <li key={pt}><Check size={13} aria-hidden="true" />{pt}</li>)}</ul>
-          </div>
-          <figure className="cs-spot-pair">
-            {study.spotlight.screens.map((s) => (
-              <div key={s.src} className="cs-phone">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={s.src} alt={s.alt} width={432} height={960} loading="lazy" decoding="async" />
-              </div>
-            ))}
-          </figure>
-        </div>
-      )}
     </article>
   );
 }
@@ -163,10 +161,6 @@ export default function CaseStudies() {
         gsap.fromTo(ph.querySelector(".cs-phone-slot--left"), { xPercent: 55, rotate: 6, autoAlpha: 0.4 }, { xPercent: 0, rotate: 0, autoAlpha: 1, ease: "none", scrollTrigger: st(ph) });
         gsap.fromTo(ph.querySelector(".cs-phone-slot--right"), { xPercent: -55, rotate: -6, autoAlpha: 0.4 }, { xPercent: 0, rotate: 0, autoAlpha: 1, ease: "none", scrollTrigger: st(ph) });
         gsap.fromTo(ph.querySelector(".cs-phone-slot--center"), { y: 80 }, { y: 0, ease: "none", scrollTrigger: st(ph) });
-      });
-      q<HTMLElement>(".cs-spot").forEach((spot) => {
-        // the pair slides together from a single stack
-        gsap.from(spot.querySelectorAll(".cs-spot-pair .cs-phone"), { y: 90, xPercent: (i: number) => (i ? -40 : 0), autoAlpha: 0, duration: 1.1, ease: "power3.out", stagger: 0.15, scrollTrigger: { trigger: spot, start: "top 80%" } });
       });
       q<HTMLElement>(".cs-copy").forEach((copy) => {
         gsap.from(copy.children, { y: 30, autoAlpha: 0, duration: 0.8, ease: "power3.out", stagger: 0.07, scrollTrigger: { trigger: copy, start: "top 80%" } });

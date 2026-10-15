@@ -4,36 +4,24 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useEffect, useRef } from "react";
 
+import { revealed } from "./Loader";
 import markup from "./hero-v2/markup";
 import "./hero-v2/hero-v2.css";
 
 /**
  * Scroll-driven hero (teal / lime).
  *
- * Layers, back to front: gradient, cursor glow, intro chips, cut-out portrait,
- * labels. On scroll the whole card
- * shrinks into a code-editor window over a collage of project screens, then
- * the pin releases into the rest of the page.
+ * Layers, back to front: gradient, cursor glow, headline, cut-out portrait,
+ * labels. On scroll the whole card shrinks into a code-editor window over
+ * columns of project screens that drift upward on their own, then the pin
+ * releases into the rest of the page.
  *
  * The markup is static, so it is injected as a string; GSAP only touches it
  * after mount. Without JS or with reduced motion the hero stays a plain,
  * readable full-bleed card.
  */
-export default function HeroV2({ introReady = true }: { introReady?: boolean }) {
+export default function HeroV2() {
   const root = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    if (!introReady || !root.current) return;
-    const q = gsap.utils.selector(root.current);
-    const mm = gsap.matchMedia();
-    mm.add("(prefers-reduced-motion: no-preference)", () => {
-      gsap.timeline({ defaults: { ease: "power4.out" } })
-        .from(q(".hv2-stage-bg"), { scale: 1.12, duration: 1.5, ease: "power2.out" }, 0)
-        .from(q(".hv2-subject"), { y: 70, opacity: 0, duration: 1.2 }, 0.15)
-        .from(q(".hv2-meta, .hv2-hint"), { opacity: 0, y: -12, duration: 0.8, stagger: 0.06 }, 0.45);
-    });
-    return () => mm.revert();
-  }, [introReady]);
 
   useEffect(() => {
     const el = root.current;
@@ -56,7 +44,16 @@ export default function HeroV2({ introReady = true }: { introReady?: boolean }) 
       (ctx) => {
         const full = !!ctx.conditions?.full;
 
-        if (!full) return;
+        // 1. as the loader opens: headline lines rise through their masks, portrait settles in
+        const intro = gsap.timeline({ paused: true, defaults: { ease: "power4.out" } });
+        intro
+          .from(q(".hv2-stage-bg"), { scale: 1.12, duration: 1.8, ease: "power2.out" }, 0)
+          .from(q(".hv2-hl-line > span"), { yPercent: 115, duration: 1.1, stagger: 0.12 }, 0.15)
+          .from(q(".hv2-subject"), { y: 70, opacity: 0, duration: 1.4 }, 0.35)
+          .from(q(".hv2-meta, .hv2-hint"), { opacity: 0, y: -12, duration: 0.8, stagger: 0.06 }, 0.8);
+        let live = true;
+        revealed.then(() => { if (live) intro.play(); });
+        if (!full) return () => { live = false; intro.kill(); };
 
         // 2. mouse parallax: portrait moves most, headline less, background against them
         const glow = q(".hv2-glow")[0];
@@ -100,21 +97,19 @@ export default function HeroV2({ introReady = true }: { introReady?: boolean }) 
         tl.to(q(".hv2-card"), { scale: 0.46, borderRadius: 56, duration: 1 }, 0)
           .to(q(".hv2-ui, .hv2-glow, .hv2-metas"), { autoAlpha: 0, duration: 0.35 }, 0)
           .to(q(".hv2-chrome"), { autoAlpha: 1, duration: 0.45 }, 0.4)
+          // tiles arrive here; their endless upward drift is a CSS marquee (hero-v2.css)
           .fromTo(
             q(".hv2-tile"),
             { autoAlpha: 0, scale: 1.4 },
-            { autoAlpha: 1, scale: 1, duration: 0.9, stagger: { each: 0.05, from: "center" } },
+            { autoAlpha: 1, scale: 1, duration: 0.9, stagger: { amount: 0.5, from: "center" } },
             0.1,
-          )
-          .to(
-            q(".hv2-tile"),
-            { y: (_i: number, t: HTMLElement) => -Number(t.dataset.depth) * 34, duration: 1.5, ease: "none" },
-            0,
           )
           .to({}, { duration: 0.4 });
 
         return () => {
+          live = false;
           window.removeEventListener("pointermove", onMove);
+          intro.kill();
         };
       },
     );

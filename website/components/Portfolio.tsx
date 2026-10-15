@@ -2,7 +2,7 @@
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowUpRight, ArrowUp, Menu, X, Copy, Check, Download, ShieldCheck, Layers, MousePointerClick } from "lucide-react";
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
@@ -11,7 +11,8 @@ import { site, services } from "@/data/site";
 
 import ExperienceList from "./ExperienceList";
 import HeroV2 from "./HeroV2";
-import PageLoader from "./PageLoader";
+import BrandMark from "./BrandMark";
+import Loader from "./Loader";
 import Recommendations from "./Recommendations";
 import StackOrbit from "./StackOrbit";
 import ThemeToggle from "./ThemeToggle";
@@ -32,8 +33,6 @@ const strengths = [
 ];
 
 export default function Portfolio() {
-  const [introReady, setIntroReady] = useState(false);
-  const revealPage = useCallback(() => setIntroReady(true), []);
   const [menuOpen, setMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [copyError, setCopyError] = useState(false);
@@ -117,12 +116,12 @@ export default function Portfolio() {
     } catch { setCopyError(true); }
   }
 
-  return <>
-    <div className="portfolio" ref={page}>
+  return <div className="portfolio" ref={page}>
+    <Loader />
     <a href="#main" className="skip-link">Skip to content</a>
     <header className="site-header">
       <div className="header-inner wrap">
-        <a href="#top" className="wordmark" aria-label="Prabharsha, back to top">prabharsha<span>.</span></a>
+        <a href="#top" className="wordmark" aria-label="Prabharsha, back to top"><BrandMark /><b>prabharsha<span>.</span></b></a>
         <nav aria-label="Main navigation" className="desktop-nav">{links.map(link => <a key={link.href} href={link.href}>{link.label}</a>)}</nav>
         <div className="header-actions">
           <ThemeToggle />
@@ -135,7 +134,7 @@ export default function Portfolio() {
 
     <div className="ambient" aria-hidden="true"><i /><i /><i /><i /></div>
     <main id="main">
-      <HeroV2 introReady={introReady} />
+      <HeroV2 />
       <WorkShowcase />
       <StackOrbit />
 
@@ -204,9 +203,12 @@ export default function Portfolio() {
               <div className="email-line">
                 <a href={site.socials.email}>{site.email}</a>
                 <button type="button" className="copy-email" aria-label={copied ? "Email address copied" : "Copy email address"} onClick={copyEmail}>{copied ? <Check size={16} /> : <Copy size={16} />}</button>
-                <span className="copy-status" role="status">{copied ? "Copied!" : copyError ? "Please copy the email address manually." : ""}</span>
               </div>
-              <p className="reach-loc">{site.location}</p>
+              {/* the status takes the location line's place for a moment instead of overlapping it */}
+              <div className={`reach-sub ${copied || copyError ? "is-status" : ""}`}>
+                <p className="reach-loc">{site.location}</p>
+                <span className="copy-status" role="status">{copied ? "Copied to clipboard" : copyError ? "Please copy the email address manually." : ""}</span>
+              </div>
             </div>
             <div className="social-links">
               <a href={site.socials.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub"><FaGithub /></a>
@@ -219,7 +221,5 @@ export default function Portfolio() {
     </main>
 
     <footer className="footer wrap"><span>© {new Date().getFullYear()} Prabharsha</span><a href="#top" className="back-top">Back to top <ArrowUp size={16} /></a></footer>
-  </div>
-  <PageLoader content={page} onReveal={revealPage} />
-  </>;
+  </div>;
 }

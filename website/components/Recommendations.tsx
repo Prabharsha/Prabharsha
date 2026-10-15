@@ -8,6 +8,19 @@ import { recommendations, recommendationsUrl, type Recommendation } from "@/data
 const initials = (name: string) =>
   name.replace(/^Dr\.\s*/, "").split(/\s+/).map((part) => part[0]).slice(0, 2).join("");
 
+/** Photo when the person has supplied one, otherwise their initials. */
+function Avatar({ rec, large = false }: { rec: Recommendation; large?: boolean }) {
+  const cls = `recs-avatar${large ? " recs-avatar--lg" : ""}${rec.avatar ? " recs-avatar--photo" : ""}`;
+  return (
+    <span className={cls} aria-hidden="true">
+      {rec.avatar
+        // eslint-disable-next-line @next/next/no-img-element
+        ? <img src={rec.avatar} alt="" width={large ? 52 : 40} height={large ? 52 : 40} loading="lazy" decoding="async" />
+        : initials(rec.name)}
+    </span>
+  );
+}
+
 /** How long a recommendation stays on screen before the slider moves on. */
 function slideDuration(rec: Recommendation): number {
   // TODO(human): return milliseconds for this slide.
@@ -40,7 +53,7 @@ export default function Recommendations() {
     <section id="recommendations" ref={root} className={`recs-section wrap section-space ${paused || !visible ? "is-paused" : ""}`} aria-labelledby="recs-heading">
       <div className="recs-head" data-reveal>
         <h2 id="recs-heading">Don’t take it from me.<br /><em>Take it from them.</em></h2>
-        <p>Recommendations from a client, a manager and a senior colleague, as written on LinkedIn.</p>
+        <p>Recommendations from a client, two managers and a senior colleague, as written on LinkedIn.</p>
       </div>
       <div className="recs-controls">
         <div className="recs-people" role="tablist" aria-label="Recommendations" onKeyDown={(e) => {
@@ -51,7 +64,7 @@ export default function Recommendations() {
         }}>
           {recommendations.map((r, i) => (
             <button key={r.name} type="button" role="tab" id={`rec-tab-${i}`} aria-selected={active === i} tabIndex={active === i ? 0 : -1} aria-controls={`rec-panel-${i}`} className="recs-person" onClick={() => go(i)}>
-              <span className="recs-avatar" aria-hidden="true">{initials(r.name)}</span>
+              <Avatar rec={r} />
               <span className="recs-who"><strong>{r.name}</strong><small>{r.relation}</small></span>
               {active === i && <i className="recs-progress" aria-hidden="true" style={{ animationDuration: `${slideDuration(r)}ms` }} onAnimationEnd={() => go(i + 1)} />}
             </button>
@@ -70,7 +83,7 @@ export default function Recommendations() {
               {rec.paragraphs.map((p) => <p key={p.slice(0, 24)}>{p}</p>)}
             </blockquote>
             <footer className="recs-foot">
-              <span className="recs-avatar recs-avatar--lg" aria-hidden="true">{initials(rec.name)}</span>
+              <Avatar rec={rec} large />
               <div><strong>{rec.name}</strong><span>{rec.title}</span><small>{rec.relation} · {rec.date}</small></div>
               <a className="pill-link" href={recommendationsUrl} target="_blank" rel="noopener noreferrer">View on LinkedIn <ArrowUpRight size={16} /></a>
             </footer>
