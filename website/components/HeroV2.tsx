@@ -19,8 +19,21 @@ import "./hero-v2/hero-v2.css";
  * after mount. Without JS or with reduced motion the hero stays a plain,
  * readable full-bleed card.
  */
-export default function HeroV2() {
+export default function HeroV2({ introReady = true }: { introReady?: boolean }) {
   const root = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!introReady || !root.current) return;
+    const q = gsap.utils.selector(root.current);
+    const mm = gsap.matchMedia();
+    mm.add("(prefers-reduced-motion: no-preference)", () => {
+      gsap.timeline({ defaults: { ease: "power4.out" } })
+        .from(q(".hv2-stage-bg"), { scale: 1.12, duration: 1.5, ease: "power2.out" }, 0)
+        .from(q(".hv2-subject"), { y: 70, opacity: 0, duration: 1.2 }, 0.15)
+        .from(q(".hv2-meta, .hv2-hint"), { opacity: 0, y: -12, duration: 0.8, stagger: 0.06 }, 0.45);
+    });
+    return () => mm.revert();
+  }, [introReady]);
 
   useEffect(() => {
     const el = root.current;
@@ -43,13 +56,7 @@ export default function HeroV2() {
       (ctx) => {
         const full = !!ctx.conditions?.full;
 
-        // 1. page load: headline lines rise through their masks, portrait settles in
-        const intro = gsap.timeline({ defaults: { ease: "power4.out" } });
-        intro
-          .from(q(".hv2-stage-bg"), { scale: 1.12, duration: 1.8, ease: "power2.out" }, 0)
-          .from(q(".hv2-subject"), { y: 70, opacity: 0, duration: 1.4 }, 0.35)
-          .from(q(".hv2-meta, .hv2-hint"), { opacity: 0, y: -12, duration: 0.8, stagger: 0.06 }, 0.8);
-        if (!full) return () => intro.kill();
+        if (!full) return;
 
         // 2. mouse parallax: portrait moves most, headline less, background against them
         const glow = q(".hv2-glow")[0];
@@ -108,7 +115,6 @@ export default function HeroV2() {
 
         return () => {
           window.removeEventListener("pointermove", onMove);
-          intro.kill();
         };
       },
     );

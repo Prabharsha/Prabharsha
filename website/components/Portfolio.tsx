@@ -2,7 +2,7 @@
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowUpRight, ArrowUp, Menu, X, Copy, Check, Download, ShieldCheck, Layers, MousePointerClick } from "lucide-react";
 import { FaGithub, FaLinkedinIn } from "react-icons/fa";
 import { MdOutlineEmail } from "react-icons/md";
@@ -11,6 +11,7 @@ import { site, services } from "@/data/site";
 
 import ExperienceList from "./ExperienceList";
 import HeroV2 from "./HeroV2";
+import PageLoader from "./PageLoader";
 import Recommendations from "./Recommendations";
 import StackOrbit from "./StackOrbit";
 import ThemeToggle from "./ThemeToggle";
@@ -31,6 +32,8 @@ const strengths = [
 ];
 
 export default function Portfolio() {
+  const [introReady, setIntroReady] = useState(false);
+  const revealPage = useCallback(() => setIntroReady(true), []);
   const [menuOpen, setMenuOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const [copyError, setCopyError] = useState(false);
@@ -114,7 +117,8 @@ export default function Portfolio() {
     } catch { setCopyError(true); }
   }
 
-  return <div className="portfolio" ref={page}>
+  return <>
+    <div className="portfolio" ref={page}>
     <a href="#main" className="skip-link">Skip to content</a>
     <header className="site-header">
       <div className="header-inner wrap">
@@ -131,7 +135,7 @@ export default function Portfolio() {
 
     <div className="ambient" aria-hidden="true"><i /><i /><i /><i /></div>
     <main id="main">
-      <HeroV2 />
+      <HeroV2 introReady={introReady} />
       <WorkShowcase />
       <StackOrbit />
 
@@ -215,5 +219,7 @@ export default function Portfolio() {
     </main>
 
     <footer className="footer wrap"><span>© {new Date().getFullYear()} Prabharsha</span><a href="#top" className="back-top">Back to top <ArrowUp size={16} /></a></footer>
-  </div>;
+  </div>
+  <PageLoader content={page} onReveal={revealPage} />
+  </>;
 }
