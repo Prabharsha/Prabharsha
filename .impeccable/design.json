@@ -1,0 +1,152 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-17T11:49:09Z",
+  "title": "Design System: Prabharsha Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "Warm Paper"
+      },
+      "charcoal": {
+        "role": "neutral",
+        "displayName": "Charcoal"
+      },
+      "orange": {
+        "role": "primary",
+        "displayName": "Burnt Orange"
+      },
+      "dark-accent": {
+        "role": "primary",
+        "displayName": "Warm Orange on Charcoal"
+      },
+      "quiet": {
+        "role": "neutral",
+        "displayName": "Quiet Text"
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Paper Divider"
+      },
+      "dark-muted": {
+        "role": "neutral",
+        "displayName": "Secondary Text on Charcoal"
+      },
+      "dark-rule": {
+        "role": "neutral",
+        "displayName": "Charcoal Divider"
+      },
+      "tag-text": {
+        "role": "neutral",
+        "displayName": "Technology Text"
+      },
+      "tag-rule": {
+        "role": "neutral",
+        "displayName": "Technology Underline"
+      },
+      "experience-surface": {
+        "role": "neutral",
+        "displayName": "Career Surface"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Hero headline; mobile uses clamp(2.8rem, 10.9vw, 4.7rem)."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings with local size adjustments."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Project and practice headings."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Portfolio base; descriptions use local 14px to 18px sizes."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Metadata, captions and technology labels."
+      },
+      "emphasis": {
+        "displayName": "Serif Emphasis",
+        "purpose": "Italic highlighted words inherit the surrounding size and use the surface-appropriate orange."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "skill-stage",
+        "value": "400ms cubic-bezier(.16,1,.3,1)",
+        "purpose": "Skill selection state continuity."
+      },
+      {
+        "name": "project-filter",
+        "value": "500ms cubic-bezier(.16,1,.3,1)",
+        "purpose": "Filtered project entrance with 45ms stagger."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "mobile-max",
+        "value": "700px"
+      },
+      {
+        "name": "tablet-max",
+        "value": "1000px"
+      },
+      {
+        "name": "wide-min",
+        "value": "1600px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Action",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Compact dark action with orange hover and a visible keyboard outline.",
+      "html": "<a class=\"ds-primary\" href=\"#work\">Explore my work <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 5v14m-7-7 7 7 7-7\"/></svg></a>",
+      "css": ".ds-primary{display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:54px;padding:14px 24px;border-radius:4px;background:var(--charcoal,#242723);color:var(--paper,#f3f2ee);font-family:var(--font-inter,Inter),sans-serif;font-size:14px;font-weight:500;line-height:1.65;text-decoration:none;transition:background-color .25s,transform .25s}.ds-primary:hover{background:var(--orange,#ad4822);transform:translateY(-2px)}.ds-primary:focus-visible{outline:2px solid var(--orange,#ad4822);outline-offset:6px;border-radius:2px}@media(max-width:700px){.ds-primary{padding:13px 18px;min-height:50px}}@media(prefers-reduced-motion:reduce){.ds-primary{transition:none}}"
+    },
+    {
+      "name": "Project Disclosure",
+      "kind": "custom",
+      "refersTo": "project-disclosure",
+      "description": "Native details and summary with ruled boundaries, plus/minus state and readable supporting text.",
+      "html": "<details class=\"ds-project\"><summary><h3>Selected project</h3><span class=\"ds-toggle\"><svg class=\"ds-plus\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M5 12h14M12 5v14\"/></svg><svg class=\"ds-minus\" width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" aria-hidden=\"true\"><path d=\"M5 12h14\"/></svg></span></summary><div class=\"ds-details\"><p>Project description and engineering context.</p></div></details>",
+      "css": ".ds-project{background:var(--charcoal,#242723);color:var(--paper,#f3f2ee);border-block:1px solid #54594f;font-family:var(--font-inter,Inter),sans-serif;line-height:1.65}.ds-project summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:30px 0}.ds-project summary::-webkit-details-marker{display:none}.ds-project h3{margin:0;font-size:clamp(1.35rem,2.6vw,2.25rem);font-weight:500;line-height:1.1;letter-spacing:-.04em;transition:color .2s}.ds-project summary:hover h3{color:#ea946a}.ds-project summary:focus-visible{outline:2px solid #ea946a;outline-offset:6px;border-radius:2px}.ds-toggle{width:44px;height:44px;flex-shrink:0;display:grid;place-items:center}.ds-minus,.ds-project[open] .ds-plus{display:none}.ds-project[open] .ds-minus{display:block}.ds-details{padding:0 0 34px;animation:ds-detail-arrive .35s ease-out}.ds-details p{margin:0;color:#bfc2b8;max-width:65ch;line-height:1.75;font-size:15px}@keyframes ds-detail-arrive{from{transform:translateY(-6px);opacity:.6}to{transform:translateY(0);opacity:1}}@media(max-width:700px){.ds-project summary{padding-block:22px;gap:12px}.ds-project h3{font-size:23px;overflow-wrap:anywhere}.ds-details p{font-size:14px}}@media(prefers-reduced-motion:reduce){.ds-project h3{transition:none}.ds-details{animation:none}}"
+    }
+  ],
+  "narrative": {
+    "northStar": "An engineer's personal studio",
+    "overview": "Warm paper, dark ink, burnt orange and restrained serif emphasis support a professional, personal portfolio. Broad open sections give engineering content room to breathe; thin rules organize repeated material. Supplied portraits and a coffee animation bring the person into the same visual language as the work. This specification records the current Portfolio component and portfolio stylesheet; it does not expand the system using retained legacy components.",
+    "keyCharacteristics": [
+      "Warm neutral surfaces with a dark work section",
+      "Confident Inter headings with selective italic Fraunces accents",
+      "Open layouts, understated controls and ruled native disclosures",
+      "Purposeful motion that respects reduced-motion preferences"
+    ],
+    "rules": [
+      {
+        "name": "The Surface Contrast Rule",
+        "body": "Carry the dark section's lighter text, accent and focus treatment together when using its charcoal background.",
+        "section": "colors"
+      }
+    ],
+    "dos": [
+      "Do preserve the warm paper, charcoal and orange relationship and lighter accent on dark surfaces.",
+      "Do use ruled content, bounded paragraphs and restrained serif emphasis.",
+      "Do retain keyboard focus, native disclosure behavior, visible media controls and reduced-motion support.",
+      "Do preserve supplied personal imagery and truthful project and career content."
+    ],
+    "donts": [
+      "Don't infer new portfolio tokens from retained legacy components or the unused mono font.",
+      "Don't turn descriptive technology labels into interactive pills without a real interaction.",
+      "Don't hide content or required interaction behind motion."
+    ]
+  }
+}
