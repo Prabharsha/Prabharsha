@@ -53,7 +53,7 @@ export default function Portfolio() {
         gsap.from(target, { y: 40, autoAlpha: 0, duration: 1, ease: "power3.out", scrollTrigger: { trigger: target, start: "top 85%" } });
       });
       q<HTMLElement>("[data-stagger]").forEach((group) => {
-        gsap.from(group.children, { y: 36, autoAlpha: 0, duration: 0.9, ease: "power3.out", stagger: 0.1, scrollTrigger: { trigger: group, start: "top 85%" } });
+        gsap.from(group.children, { y: 36, autoAlpha: 0, duration: 0.9, ease: "power3.out", stagger: 0.1, clearProps: "all", scrollTrigger: { trigger: group, start: "top 85%" } });
       });
     });
     mm.add("(min-width: 900px) and (prefers-reduced-motion: no-preference)", () => {
