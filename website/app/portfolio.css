@@ -253,11 +253,14 @@ body { background: var(--bg); color: var(--text); transition: background-color .
 .services-head p { color: var(--muted); font-size: 15px; line-height: 1.75; max-width: 52ch; }
 .service-viewport { margin-top: 70px; }
 .service-track { list-style: none; margin: 0 auto; padding: 0 56px; display: flex; justify-content: center; gap: 18px; width: max-content; min-width: 100%; }
-.service-card { position: relative; width: 300px; min-height: 320px; flex: none; display: flex; flex-direction: column; justify-content: flex-end; gap: 14px; padding: 26px; border-radius: 22px; overflow: hidden; isolation: isolate; transition: color .35s, border-color .35s, transform .35s; }
+.service-card { position: relative; width: 300px; min-height: 320px; flex: none; display: flex; flex-direction: column; justify-content: flex-end; gap: 14px; padding: 26px; border-radius: 22px; overflow: hidden; isolation: isolate; transition: color .35s, border-color .35s, translate .35s; }
 .service-card::before { content: ""; position: absolute; inset: 0; z-index: -1; opacity: 0; transition: opacity .45s; background: radial-gradient(120% 90% at 100% 100%, var(--lime-pale) 0%, var(--lime) 38%, #7fb01a 66%, #00545f 100%); }
 .service-card:first-child::before, .service-card:hover::before { opacity: 1; }
 .service-card:first-child, .service-card:hover { border-color: transparent; }
-.service-card:hover { transform: translateY(-6px); }
+/* Lift via `translate`, not `transform`: GSAP's reveal owns `transform`, and a CSS
+   transition on it makes GSAP read a mid-transition value, stranding the cards
+   36px low where the mobile scroll strip clips them. */
+.service-card:hover { translate: 0 -6px; }
 .service-track:hover .service-card:first-child:not(:hover)::before { opacity: 0; }
 .service-track:hover .service-card:first-child:not(:hover) { border-color: var(--glass-edge); }
 .service-arrow { position: absolute; top: 20px; right: 20px; width: 32px; height: 32px; display: grid; place-items: center; border-radius: 50%; border: 1px solid var(--glass-edge); background: var(--tag-bg); transition: background-color .3s, color .3s, transform .3s; }
@@ -431,7 +434,8 @@ body { background: var(--bg); color: var(--text); transition: background-color .
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .portfolio *, .portfolio *::before, .portfolio *::after { transition: none !important; animation: none !important; }
-  .service-card:hover, .exp-row:hover > div { transform: none; }
+  .service-card:hover { translate: none; }
+  .exp-row:hover > div { transform: none; }
   .ambient i, .drift i { animation: none !important; }
 }
 
